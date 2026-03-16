@@ -1,0 +1,6 @@
+name,email,phone,address,pincode,desc
+John Doe,john.doe@example.com,9876543210,"123 Main Street, Downtown, City, State",123456,"Expert in web development and UI/UX design with 5+ years of experience"
+Jane Smith,jane.smith@example.com,8765432109,"456 Oak Avenue, Business District, Town, State",654321,"Specialist in data science and machine learning with expertise in Python and R"
+Michael Johnson,michael.johnson@example.com,7654321098,"789 Pine Road, Tech Park, City, State",789012,"Senior software engineer specializing in backend development and cloud architecture"
+Sarah Wilson,sarah.wilson@example.com,6543210987,"321 Elm Street, Innovation Hub, Town, State",345678,"Digital marketing expert with focus on social media strategy and content creation"
+David Brown,david.brown@example.com,5432109876,"654 Maple Drive, Creative Quarter, City, State",567890,"Graphic designer and brand consultant with expertise in visual identity design" 

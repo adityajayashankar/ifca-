@@ -1,0 +1,47 @@
+.label {
+    @apply flex flex-col gap-1;
+}
+.label__text {
+    @apply flex gap-1 items-center max-w-max;
+}
+
+.label-checkbox {
+    @apply flex flex-row gap-2 items-center;
+}
+
+input {
+    @apply accent-[#4E795E80];
+}
+
+.input {
+    @apply py-1 px-2 border-2 border-gray-300 outline-none focus:border-2 focus:border-gray-500 focus:outline-none rounded-md;
+}
+
+.input__group {
+    @apply flex flex-col gap-3 pb-8;
+}
+
+.input__group__header {
+    @apply flex justify-between items-center py-2 border-b-2;
+}
+.input__group__header p {
+    @apply text-lg;
+}
+
+.select {
+    @apply py-2 px-2 bg-gray-50 focus:bg-gray-100 rounded-md;
+}
+
+/* BUTTONS */
+
+.button {
+    @apply py-2 px-2 rounded-md transition duration-300;
+}
+
+.button-blue {
+    @apply bg-blue-500 text-white hover:bg-blue-600;
+}
+
+.button-gray {
+    @apply bg-gray-300 text-black hover:bg-gray-400;
+}

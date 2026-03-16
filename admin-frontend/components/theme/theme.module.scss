@@ -1,0 +1,32 @@
+.themeCont{
+    position: relative;
+    width: 30%;
+
+    img{
+        height: 100%;
+        width: 100%;
+    }
+
+    .themeTitle{
+        position: absolute;
+        font-size: 21px;
+        font-weight: 500;
+        color: rgb(255,255,255);
+        bottom: 15px;
+        left: 15px;
+        mix-blend-mode: difference;
+    }
+
+    .isActiveMarker{
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: white;
+        border-radius: 50%;
+        color: #3554C5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2.5px;
+    }
+}

@@ -1,0 +1,43 @@
+###
+@base_URL=http://localhost:5000/api/v1/channel
+
+
+### CREATE CHANNEL
+POST {{base_URL}}
+Content-Type: application/json
+
+{
+    "name":"Sample_channel3",
+    "communityId":5,
+    "isDm":false
+}
+
+### GET ALL CHANNELS (DEV)
+GET {{base_URL}}
+
+
+### GET CHANNEL BY ID
+GET {{base_URL}}/2
+
+### UPDATE CHANNEL BY ID
+PATCH {{base_URL}}/3
+Content-Type: application/json
+
+{
+    "photoURL":"casncjkasbhc"
+}
+
+
+### DELETE CHANNEL BY ID
+DELETE {{base_URL}}/2
+
+
+### GET CHANNEL BY COMMUNITY ID
+GET {{base_URL}}/community/4
+
+### CREATE CHANNEL FOR RECEIVER
+### NO PAYLOAD REQUIRED
+POST {{base_URL}}/userchannels/5
+
+### TO GET USERCHANNELS FOR A SUBSCRIPTION
+GET {{base_URL}}/userchannels/21

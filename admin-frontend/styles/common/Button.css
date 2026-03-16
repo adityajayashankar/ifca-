@@ -1,0 +1,49 @@
+.btn {
+  @apply px-4 py-2 rounded-md text-center transition-all duration-300 ease-in-out hover:scale-[1.05];
+}
+
+.btn-sm {
+  @apply px-2 py-1 rounded-md text-center transition-all duration-300 ease-in-out hover:scale-[1.05];
+}
+
+.btn-lg {
+  @apply px-8 py-3 rounded-md text-center transition-all duration-300 ease-in-out hover:scale-[1.05];
+}
+
+.btn-gray {
+  @apply bg-gray-500 text-white;
+}
+.btn-white {
+  @apply bg-white text-black;
+}
+.btn-pink {
+  @apply text-black shadow-xl border-x-2;
+}
+.btn-blue {
+  @apply bg-[#0C74D4] text-white;
+}
+
+.btn-green {
+  @apply bg-green-500 text-white;
+}
+.btn-red {
+  @apply bg-red-600 text-white;
+}
+.blue-tag {
+  @apply font-semibold px-4 py-1 bg-primary-500 text-white w-max rounded-full;
+}
+
+.bg-colorpop {
+  @apply bg-[conic-gradient(at_bottom_left,_var(--tw-gradient-stops))] from-fuchsia-300 via-green-400 to-rose-700;
+}
+
+.bg-pop {
+  @apply bg-[conic-gradient(at_left,_var(--tw-gradient-stops))] from-yellow-500 via-purple-500 to-blue-500;
+}
+
+.bg-grad {
+  @apply bg-gradient-to-r from-[#7C58F6] to-[#E296F9];
+}
+.grad {
+  @apply bg-gradient-to-r from-[#7C58F6] to-[#E296F9] bg-clip-text text-transparent;
+}

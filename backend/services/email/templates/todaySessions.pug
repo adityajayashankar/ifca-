@@ -1,0 +1,54 @@
+doctype html
+html
+    head
+        title IFCA
+        //- link(rel="stylesheet", href="style.css")
+        style.
+            .greyFooter {
+                background-color: #e1e1e4;
+                padding: 5px 0px;
+                text-align: center;
+                font-size: 24px;
+                color: #000;
+            }
+
+            .btn {
+                background-color: #4CAF50; /* Green */
+                border: none;
+                color: white;
+                padding: 10px 20px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 20px;
+                border-radius: 12px;
+            }
+
+            .btn:hover {
+                border-left: 3px solid blue;
+            }
+
+    body(style='text-align: center;')
+        //- block head
+        //-     include ../components/header.pug
+        h1  Hello #{user}!
+
+        h2(style="color: black") This is an auto-generated email from IFCA
+
+        h3  #{message}
+
+        if sessions.length > 0
+            h4(style="color: #21259c") Here are the sessions for today:
+            each session in sessions
+                .session
+                    h5 Title: #{session.title}
+                    p Description: #{session.desc}
+                    p Time: #{session.startTime} - #{session.endTime}
+                    //- p
+                        a(href=`${session.meetingLink}`, class="btn") Join the session
+                    hr
+        else
+            h4(style="color: #21259c") There are no sessions for today.
+
+        block foot
+            include ../components/footer.pug

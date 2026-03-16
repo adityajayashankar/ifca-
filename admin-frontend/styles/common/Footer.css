@@ -1,0 +1,10 @@
+.footer {
+    @apply bg-slate-800 px-6 py-6 text-peach-100;
+}
+.footer__container {
+    @apply flex flex-row gap-4 flex-wrap items-center;
+}
+
+.footer__contact__item {
+    @apply flex gap-2 items-center text-sm;
+}

@@ -1,0 +1,12 @@
+@baseURL=http://localhost:5000/api/v1/sessionThreads
+
+### Create new thread
+POST {{baseURL}}/
+Content-Type: application/json
+
+{
+    "title" 
+}
+
+### Get threads related to sessionSLot
+GET {{baseURL}}/1

@@ -1,0 +1,50 @@
+{{#> base title="Role Update Notification"}}
+<div class="alert-success">
+    <h3>🎉 Your Role Has Been Updated!</h3>
+    <p>Hello {{recipientName}},</p>
+    
+    <p>Your role in the <strong>{{communityName}}</strong> community has been updated.</p>
+    
+    <div class="metadata">
+        <p><strong>Previous Role:</strong> {{oldRoleDisplay}}</p>
+        <p><strong>New Role:</strong> {{newRoleDisplay}}</p>
+        <p><strong>Updated On:</strong> {{changedAt}}</p>
+    </div>
+    
+    <p>With your new role, you now have additional permissions and responsibilities within the community. Here's what this means:</p>
+    
+    {{#if (eq newRole "ADMIN")}}
+    <ul>
+        <li>Full administrative control over the community</li>
+        <li>Ability to manage members and their roles</li>
+        <li>Control over community settings and content</li>
+        <li>Access to all community features and tools</li>
+    </ul>
+    {{else if (eq newRole "MODERATOR")}}
+    <ul>
+        <li>Moderate community discussions and content</li>
+        <li>Manage posts and comments</li>
+        <li>Help maintain community guidelines</li>
+        <li>Assist with member management</li>
+    </ul>
+    {{else}}
+    <ul>
+        <li>Participate in community discussions</li>
+        <li>Access community resources and content</li>
+        <li>Connect with other community members</li>
+        <li>Engage in community activities</li>
+    </ul>
+    {{/if}}
+    
+    <p>If you have any questions about your new role or need assistance, please don't hesitate to reach out to the community administrators.</p>
+    
+    <div style="text-align: center; margin: 24px 0;">
+        <a href="{{actionUrl}}" class="button">Visit Community</a>
+    </div>
+    
+    <p>Thank you for being an active member of our community!</p>
+    
+    <p>Best regards,<br>
+    The {{communityName}} Team</p>
+</div>
+{{/base}} 

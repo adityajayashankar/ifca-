@@ -1,0 +1,43 @@
+.courseCardList{
+
+    max-width: 1350px;
+    margin: auto;
+    width: 100%;
+    margin-top: 50px;
+
+    .courseCardListTop{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        h1{
+            margin-bottom: 40px;
+            color: #333;
+            font-size: 42px;
+        }
+
+        .comBtn{
+            padding: 15px 30px;
+            border-radius: 30px;
+            margin-right: 10px;
+            border: 2px solid #888;
+            font-weight: 500;
+            background-color: white;
+            cursor: pointer;
+
+            &.activeComBtn{
+                background-color: #3554C5;
+                color: white;
+                border: 2px solid #3554C5;
+            }
+        }
+    }
+
+    .courseCardListBtm{
+        display: flex;
+        flex-direction: column;
+        row-gap: 20px;
+        width: 75%;
+    }
+
+}

@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Post" ADD COLUMN     "isAsk" BOOLEAN NOT NULL DEFAULT false,
+ADD COLUMN     "isGreeting" BOOLEAN NOT NULL DEFAULT false;

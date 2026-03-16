@@ -1,0 +1,47 @@
+{{#> base}}
+{{#*inline "content"}}
+    <h2>New IFCA Connection Request</h2>
+    <p>Dear {{recipientName}},</p>
+    
+    <p>You have received a new connection request from a fellow IFCA member!</p>
+    
+    <div class="profile">
+        {{#if metadata.senderPhotoURL}}
+        <img src="{{metadata.senderPhotoURL}}" alt="Profile" class="profile-image">
+        {{/if}}
+        <div class="profile-info">
+            <h3>{{metadata.senderName}}</h3>
+            {{#if metadata.senderTitle}}
+            <p>{{metadata.senderTitle}}</p>
+            {{/if}}
+        </div>
+    </div>
+
+    {{#if metadata.message}}
+    <div class="alert alert-info">
+        <p><strong>Message:</strong> {{metadata.message}}</p>
+    </div>
+    {{/if}}
+
+    <div class="metadata">
+        <p><strong>Connection Benefits:</strong></p>
+        <ul>
+            <li>Share culinary expertise and experiences</li>
+            <li>Exchange industry insights and knowledge</li>
+            <li>Network within the IFCA community</li>
+        </ul>
+    </div>
+
+    <a href="{{actionUrl}}" class="button">View Connection Request</a>
+
+    <div class="metadata">
+        <p><strong>Need Help?</strong></p>
+        <p>Contact IFCA support at:</p>
+        <p>Email: contact.pvlifcaindia@gmail.com<br>
+        Phone: +91 00000 00000</p>
+    </div>
+
+    <p>Best regards,<br>
+    The IFCA Team</p>
+{{/inline}}
+{{/base}} 

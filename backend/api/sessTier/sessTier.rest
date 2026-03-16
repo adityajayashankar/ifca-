@@ -1,0 +1,56 @@
+###
+@base_URL=http://localhost:5000/api/v1/tier
+@auth_JWT=Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJwYXJ0bmVyQHNlbmlvci5pbiIsIm5hbWUiOiJwYXJ0bmVyMCIsInBob25lIjoiNDY1MTUzMjEiLCJhZGRyZXNzIjoiYWJjZGVmZyIsInBpbmNvZGUiOiIxMjEyMjEiLCJwYXNzd29yZCI6IiQyYSQxMCRHMGYuUW5pR1lFV1BJUWlJcXdqU2dleDdxY3B5WWRKQ2tuUjBaMC5zVWVUaVI4aXkveTYweSIsImNyZWRpdHMiOjAsImNyZWF0ZWRBdCI6IjIwMjItMDYtMjRUMTI6MTc6NDIuNDYyWiIsInVwZGF0ZWRBdCI6IjIwMjItMTAtMTNUMTA6MjM6NDUuOTgwWiIsInBob3RvVVJMIjoiaHR0cHM6Ly9yb2JvaGFzaC5vcmcvZG9qbyIsImRlc2MiOiJIZXkgdGhlcmUhIEkgYW0gY29tbXVuaXR5IG1hbmFnZXIiLCJhZG1pbklkIjoxLCJ1c2VyVHlwZSI6InBhcnRuZXIiLCJpYXQiOjE2NjU5MjQyNDYsImV4cCI6MTY2NTkyNzg0Nn0.k0hseNQFi9865oPlxeeybqQNeKf34RdLH-X7OHreR4k
+
+### Get Partner JWT, update the auth_JWT above
+
+###
+POST http://localhost:5000/api/v1/auth/signin 
+Content-Type: application/json
+
+{
+    "userType":"partner",
+    "email":"partner@senior.in",
+    "password":"12345"
+}
+
+# DEV ONLY 
+### GET ALL SESS TIERS
+GET {{base_URL}}
+authorization: {{auth_JWT}}
+
+###
+GET {{base_URL}}?communityId=10
+authorization: {{auth_JWT}}
+
+
+# USED BY PARTNER CLIENT
+### CREATE SESSION TIER
+POST {{base_URL}}
+authorization: {{auth_JWT}}
+Content-Type: application/json
+
+{
+    "communityId":10,
+    "sessionSlotId":1,
+    "discount":100
+}
+
+### GET COLLEGE TIER
+GET  {{base_URL}}/change-tier?communityId=10&sessionSlotId=29
+authorization: {{auth_JWT}}
+
+
+### Used to change discount/numParticipants
+PATCH  {{base_URL}}/change-tier?communityId=10&sessionSlotId=29
+authorization: {{auth_JWT}}
+Content-Type: application/json
+
+{
+    "numParticipants":23
+}
+
+### DELETE a tier
+DELETE   {{base_URL}}/change-tier?communityId=10&sessionSlotId=1
+authorization: {{auth_JWT}}
+

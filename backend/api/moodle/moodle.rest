@@ -1,0 +1,174 @@
+### Variables
+@baseUrl = http://localhost:5000/api/v1/course
+@courseId = 26
+@communityId = 2
+@moduleId = 6
+@userId = 21
+
+### Course Management APIs
+
+### Test Moodle API Connection
+GET {{baseUrl}}/test-moodle-api
+
+### Create Moodle Accounts for All Users
+POST {{baseUrl}}/users/create-moodle-accounts
+
+### Get All Courses from Moodle
+GET {{baseUrl}}/courses/moodle
+
+### Sync All Moodle Courses with Database
+GET {{baseUrl}}/sync-courses
+
+### Get All Courses from db
+GET {{baseUrl}}/courses/
+
+
+### Map Selected Moodle Courses with Amount and Community
+POST {{baseUrl}}/courses/map
+Content-Type: application/json
+
+{
+    "courses": [
+        {
+            "moodleCourseId": 1,
+            "price": 1000,
+            "discount": 10,
+            "communityId": 1,
+            "creatorId": 1
+        },
+        {
+            "moodleCourseId": 2,
+            "price": 2000,
+            "discount": 20,
+            "communityId": 2,
+            "creatorId": 1
+        }
+    ]
+}
+
+### Get Course Details from Moodle
+GET {{baseUrl}}/courses/{{courseId}}/details
+
+### Get Course Contents from Moodle
+GET {{baseUrl}}/courses/{{courseId}}/contents
+
+### Get User's Enrolled Courses
+GET {{baseUrl}}/users/{{userId}}/enrolled-courses
+
+### Get Courses User is Not Enrolled In
+GET {{baseUrl}}/users/{{userId}}/not-enrolled-courses
+
+### Get Enrolled Users in a Course
+GET {{baseUrl}}/courses/{{courseId}}/users?count=true
+
+### Check if User is Enrolled in Course
+GET {{baseUrl}}/courses/{{courseId}}/users/{{userId}}/status
+
+### Get User Session Token
+GET {{baseUrl}}/users/{{userId}}/token
+
+### Get User Session URL
+GET {{baseUrl}}/users/{{userId}}?courseId={{courseId}}
+
+### Request One-time Key Based Login URL
+POST {{baseUrl}}/auth/userkey/request_login_url
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "admin"
+}
+
+### Create Course Payment Order
+POST {{baseUrl}}/courses/payment/order
+Content-Type: application/json
+
+{
+    "courseId": {{courseId}},
+    "userId": {{userId}},
+    "amount": 1000,
+    "discount": 10
+}
+
+### Verify Course Payment
+POST {{baseUrl}}/courses/payment/verify
+Content-Type: application/json
+
+{
+    "orderId": "order_123",
+    "paymentId": "pay_123",
+    "signature": "signature_123"
+}
+
+### Direct Moodle API Call Example
+GET {{baseUrl}}/moodle?wsfunction=core_course_get_courses&moodlewsrestformat=json
+
+### Remove Course Registration
+DELETE {{baseUrl}}/courses/{{courseId}}/users/{{userId}}/registration
+
+### Enroll in Paid Course
+POST {{baseUrl}}/courses/{{courseId}}/enroll-paid
+Content-Type: application/json
+
+{
+    "userId": {{userId}}
+}
+
+### Verify Paid Course Enrollment
+POST {{baseUrl}}/courses/{{courseId}}/verify-paid-enrollment
+Content-Type: application/json
+
+{
+    "userId": {{userId}},
+    "razorpay_order_id": "order_123",
+    "razorpay_payment_id": "pay_123",
+    "razorpay_signature": "signature_123"
+}
+
+### Check Course Registration Status
+GET {{baseUrl}}/courses/{{courseId}}/users/{{userId}}/registration-status
+
+### Remove All Course Registrations
+DELETE {{baseUrl}}/courses/{{courseId}}/registrations
+
+# Example Response:
+# {
+#     "message": "All course registrations removed successfully",
+#     "summary": {
+#         "totalRegistrations": 50,
+#         "paidRegistrations": 10,
+#         "unpaidRegistrations": 40,
+#         "moodleUsersRemoved": 45,
+#         "courseId": 10,
+#         "courseName": "Example Course"
+#     },
+#     "warning": "Some paid subscriptions were removed. Consider refunding these users."
+# }
+
+### Create Course (Syncs with Moodle)
+POST {{baseUrl}}/courses
+Content-Type: application/json
+
+{
+  "name": "New Course Title",
+  "description": "Course description here.",
+  "status": "active",
+  "price": 1000,
+  "discount": 10,
+  "creatorId": 1,
+  "image": "https://example.com/image.png",
+  "communityId": 1
+}
+
+### Update Course (Syncs with Moodle)
+PUT {{baseUrl}}/courses/{{courseId}}
+Content-Type: application/json
+
+{
+  "name": "Updated Course Title",
+  "description": "Updated description.",
+  "status": "active",
+  "communityId": 1
+}
+
+# Both endpoints will create/update the course in Moodle and then in the local database.

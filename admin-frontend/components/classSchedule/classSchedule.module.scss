@@ -1,0 +1,122 @@
+.mainClassScheduleContainer{
+    width: 37.5%;
+    
+    .classSchedule{
+        border: 2px solid #3554C5;
+        border-radius: 10px;
+        height: 334px;
+        overflow-y: scroll;
+
+        &.noDet{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            color: #ADADAD;
+            font-weight: 500;
+        }
+
+        &::-webkit-scrollbar{
+            width: 0px;
+        }
+
+        &::-webkit-scrollbar-thumb{
+            width: 5px;
+            background-color: #CDCDCD;
+            border-radius: 2.5px;
+        }
+
+        &::-webkit-scrollbar-track{
+            background-color: transparent;
+        }
+    
+        .classScheduleContainer{
+            display: flex;
+            align-items: center;
+            column-gap: 15px;
+            padding: 10px 20px;
+            justify-content: space-between;
+            border: 2px solid #CDCDCD;
+            border-radius: 10px;
+            background-color: white;
+            color: gray;
+    
+            &.classScheduleContainerMissed{
+                background: #DFDFDF;
+                opacity: 0.5;
+            }
+    
+            &.classScheduleContainerNext{
+                background-color: #3554C566;
+                border: 2px solid #3554C5;
+                color: #3554C5;
+            }
+    
+            .classScheduleLeft{
+                display: flex;
+                align-items: center;
+                gap: 30px;
+                
+                p{
+                    padding: 0;
+                    margin: 0;
+                }
+    
+                .date{
+                    font-weight: 500;
+    
+                    .month{
+                        font-size: 21px;
+                        margin-bottom: 10px;
+                    }
+    
+                    .dateVal{
+                        font-size: 28px;
+                        font-weight: 600;
+                    }
+                }
+    
+                .detail{
+                    font-weight: 600;
+    
+                    .detailHead{
+                        font-size: 24px;
+                        margin-bottom: 10px;
+                    }
+    
+                    .detSchedule{
+                        display: flex;
+                        align-items: center;
+                        gap: 5px;
+                        font-size: 18px;
+                        font-weight: 500;
+                    }
+                }
+            }
+    
+            .classScheduleRight{
+                font-weight: 500;
+                letter-spacing: 1px;
+            }
+        }
+    
+    }
+    
+    .regContainer{
+        margin: 20px 0;
+    
+        .regBtn{
+            width: 100%;
+            background-color: #3554C5;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 10px;
+            border: none;
+            outline: none;
+            font-size: 21px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+    }
+}
+

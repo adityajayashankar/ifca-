@@ -1,0 +1,285 @@
+### Create a new community
+
+@base_URL=http://localhost:5000/api/v1/community
+@prod_URL=https://pvl.ifcaindia.com/api/api/v1/community
+@auth_JWT=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlmaWVkVXNlcklkIjoxNSwidXNlcklkIjoyMSwiZW1haWwiOiJhbmlsZ293ZGEubmowOEBnbWFpbC5jb20iLCJ1c2VyVHlwZSI6InVzZXIiLCJpYXQiOjE3NTM5NTY3MzgsImV4cCI6MTc1NDA0MzEzOH0.TzlmJVe3CUQ0a5cogO7rXjEQ5LCiWZJ9_Szjr-YWp6Q
+
+### Admin Login
+POST http://localhost:5000/api/v1/auth/signin
+Content-Type: application/json
+
+{
+  "email": "anilgowda.nj08@gmail.com",
+  "password": "Abcd@123"
+}
+
+### Create Community
+POST {{base_URL}}/
+Content-Type: application/json
+Authorization: Bearer {{auth_JWT}}
+
+{
+  "title": "Test Community",
+  "desc": "A test community",
+  "creatorId": 1,
+  "communityType": "public",
+  "bannerImg": "https://example.com/banner.jpg",
+  "infoImgs": ["https://example.com/info1.jpg"],
+  "price": 1000,
+  "isApproved": true,
+  "tagIds": [1, 2]
+}
+
+### Get all communities (admin/authenticated)
+GET {{prod_URL}}/
+Authorization: Bearer {{auth_JWT}}
+
+### Get recent communities by user
+GET {{base_URL}}/recent
+Authorization: Bearer {{auth_JWT}}
+
+### Search communities
+GET {{prod_URL}}/search-communities?q=ma
+Authorization: Bearer {{auth_JWT}}
+
+
+### Get all public communities
+GET {{base_URL}}/public
+
+### Get community by ID
+GET {{base_URL}}/178
+Authorization: Bearer {{auth_JWT}}
+
+### Update a community
+PATCH {{base_URL}}/1
+Content-Type: application/json
+Authorization: Bearer {{auth_JWT}}
+
+{
+  "title": "Updated Community Title",
+  "desc": "Updated description",
+  "tagIds": [2, 3]
+}
+
+### Delete a community
+DELETE {{base_URL}}/1
+Authorization: Bearer {{auth_JWT}}
+
+### Approve a community
+PATCH {{base_URL}}/1/approve
+Authorization: Bearer {{auth_JWT}}
+
+{
+  "id": 1,
+  "role": "admin"
+}
+
+### Get all pending communities
+GET {{base_URL}}/pending
+Authorization: Bearer {{auth_JWT}}
+
+### Get people in a community
+GET {{base_URL}}/1/people
+Authorization: Bearer {{auth_JWT}}
+
+### Get community activities (all types)
+GET {{base_URL}}/1/activities
+Authorization: Bearer {{auth_JWT}}
+
+### Get community activities with pagination
+GET {{base_URL}}/1/activities?page=1&limit=5
+Authorization: Bearer {{auth_JWT}}
+
+### Get community posts only
+GET {{base_URL}}/1/activities?type=posts&page=1&limit=10
+Authorization: Bearer {{auth_JWT}}
+
+### Get community sessions only
+GET {{base_URL}}/1/activities?type=sessions&page=1&limit=10
+Authorization: Bearer {{auth_JWT}}
+
+### Get community services only
+GET {{base_URL}}/1/activities?type=services&page=1&limit=10
+Authorization: Bearer {{auth_JWT}}
+
+### Get community forms only
+GET {{base_URL}}/1/activities?type=forms&page=1&limit=10
+Authorization: Bearer {{auth_JWT}}
+
+### Get community resources only
+GET {{base_URL}}/1/activities?type=resources&page=1&limit=10
+Authorization: Bearer {{auth_JWT}}
+
+### Get community blogs only
+GET {{base_URL}}/1/activities?type=blogs&page=1&limit=10
+Authorization: Bearer {{auth_JWT}}
+
+### Get community catchups only
+GET {{base_URL}}/1/activities?type=catchups&page=1&limit=10
+Authorization: Bearer {{auth_JWT}}
+
+### Get community subscriptions only
+GET {{base_URL}}/1/activities?type=subscriptions&page=1&limit=10
+Authorization: Bearer {{auth_JWT}}
+
+### Get tags for a community
+GET {{base_URL}}/1/tags
+Authorization: Bearer {{auth_JWT}}
+
+### Assign tags to a community
+PATCH {{base_URL}}/1
+Content-Type: application/json
+Authorization: Bearer {{auth_JWT}}
+
+{
+  "tagIds": [1, 2, 3]
+}
+
+### Get all tags (exclude archived by default)
+GET {{base_URL}}/tags
+Authorization: Bearer {{auth_JWT}}
+
+### Get all tags (include archived)
+GET {{base_URL}}/tags?includeArchived=true
+Authorization: Bearer {{auth_JWT}}
+
+### Get tag by ID
+GET {{base_URL}}/tags/1
+Authorization: Bearer {{auth_JWT}}
+
+### Update a tag
+PATCH {{base_URL}}/tags/1
+Content-Type: application/json
+Authorization: Bearer {{auth_JWT}}
+
+{
+  "name": "Updated Tag Name",
+  "description": "Updated description",
+  "tagType": "community"
+}
+
+### Delete a tag (only if not in use)
+DELETE {{base_URL}}/tags/1
+Authorization: Bearer {{auth_JWT}}
+
+### Archive a tag (soft delete)
+PATCH {{base_URL}}/tags/1/archive
+Authorization: Bearer {{auth_JWT}}
+
+### Unarchive a tag
+PATCH {{base_URL}}/tags/1/unarchive
+Authorization: Bearer {{auth_JWT}}
+
+### Get all community tags (exclude archived by default)
+GET {{base_URL}}/community-tags
+Authorization: Bearer {{auth_JWT}}
+
+### Get all community tags (include archived)
+GET {{base_URL}}/community-tags?includeArchived=true
+Authorization: Bearer {{auth_JWT}}
+
+### Search community tags (exclude archived by default)
+GET {{base_URL}}/community-tags/search?q=ifca
+Authorization: Bearer {{auth_JWT}}
+
+### Search community tags (include archived)
+GET {{base_URL}}/community-tags/search?q=ifca&includeArchived=true
+Authorization: Bearer {{auth_JWT}}
+
+### Create a community-only tag
+POST {{base_URL}}/community-tags
+Content-Type: application/json
+Authorization: Bearer {{auth_JWT}}
+
+{
+  "name": "Community Only Tag",
+  "description": "A tag only for communities"
+}
+
+### Bulk create community tags
+POST {{base_URL}}/community-tags/bulk
+Content-Type: application/json
+Authorization: Bearer {{auth_JWT}}
+
+{
+  "tags": ["IFCA Core Group", "IFCA Projects", "Hotels Restaurant Catering HOReCa", "IFCA Cultunay Industry", "IFCA Hospitality Industry", "IFCA Culinary Instituties", "IFCA Other Communities", "IFCA Action Group", "IFCA Member Associations"]
+}
+
+### Get popular community tags (exclude archived by default)
+GET {{base_URL}}/community-tags/popular?limit=10
+Authorization: Bearer {{auth_JWT}}
+
+### Get popular community tags (include archived)
+GET {{base_URL}}/community-tags/popular?limit=10&includeArchived=true
+Authorization: Bearer {{auth_JWT}}
+
+### Get tag statistics
+GET {{base_URL}}/tags/1/statistics
+Authorization: Bearer {{auth_JWT}}
+
+### Get tag suggestions for a community
+GET {{base_URL}}/tags/suggestions?communityId=1&limit=10
+Authorization: Bearer {{auth_JWT}}
+
+### Get all tags in system with usage statistics
+GET {{base_URL}}/all-tags-system
+Authorization: Bearer {{auth_JWT}}
+
+### Get parent selection options (for parent-child community relationships)
+GET {{base_URL}}/parent-selection
+Authorization: Bearer {{auth_JWT}}
+### Get community users by subscription status
+GET {{base_URL}}/42/userss
+
+### ========================================
+### COMMUNITY MEMBER ROLE MANAGEMENT
+### ========================================
+
+### Get all community members with roles
+GET {{base_URL}}/42/members
+Authorization: Bearer {{auth_JWT}}
+
+### Get community members filtered by role
+GET {{base_URL}}/42/members?role=ADMIN
+Authorization: Bearer {{auth_JWT}}
+
+### Get community members filtered by role (MODERATOR)
+GET {{base_URL}}/42/members?role=MODERATOR
+Authorization: Bearer {{auth_JWT}}
+
+### Get community members filtered by role (MEMBER)
+GET {{base_URL}}/42/members?role=MEMBER
+Authorization: Bearer {{auth_JWT}}
+
+### Update member role to ADMIN
+PUT {{base_URL}}/42/members/123/role
+Content-Type: application/json
+Authorization: Bearer {{auth_JWT}}
+
+{
+  "userId": 123,
+  "role": "ADMIN"
+}
+
+### Update member role to MODERATOR
+PUT {{base_URL}}/42/members/123/role
+Content-Type: application/json
+Authorization: Bearer {{auth_JWT}}
+
+{
+  "userId": 123,
+  "role": "MODERATOR"
+}
+
+### Update member role to MEMBER
+PUT {{base_URL}}/42/members/123/role
+Content-Type: application/json
+Authorization: Bearer {{auth_JWT}}
+
+{
+  "userId": 123,
+  "role": "MEMBER"
+}
+
+
+

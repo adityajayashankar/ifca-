@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Resource" ALTER COLUMN "sessionId" DROP NOT NULL,
+ALTER COLUMN "sessionId" DROP DEFAULT;

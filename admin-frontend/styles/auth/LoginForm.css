@@ -1,0 +1,7 @@
+.loginform__container {
+    @apply border-2 border-[#4E795E80] border-opacity-50 rounded-md p-4 shadow-sm;
+}
+
+.loginform__form {
+    @apply flex flex-col gap-6 md:w-96 w-64;
+}

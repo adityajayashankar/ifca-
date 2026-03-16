@@ -1,0 +1,182 @@
+###
+@base_URL=http://localhost:5000/api/v1/session
+@auth_JWT=Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbjFAaG91c2VvZmhvc3BpdGFsaXR5Lm9yZyIsIm5hbWUiOiJEci4gU2FyYWggSm9obnNvbiIsInBob25lIjoiKzkxOTg3NjU0MzIxMCIsImFkZHJlc3MiOiIxMjMgQWRtaW4gQmxvY2ssIEhvdXNlIG9mIEhvc3BpdGFsaXR5LCBCYW5nYWxvcmUiLCJwaW5jb2RlIjoiNTYwMDAxIiwicGFzc3dvcmQiOiIkMmEkMTAkZDUuTjFMSElhSUdQbWNnRkl4cG5vZU5tMS5iRy9HMzlVd0Y1Z0xIY0J1Y05TRk9ud2pMM20iLCJpc1N1cGVyQWRtaW4iOmZhbHNlLCJjcmVhdGVkQXQiOiIyMDI1LTAzLTI0VDE5OjAwOjEyLjg4NVoiLCJ1cGRhdGVkQXQiOiIyMDI1LTAzLTI0VDE5OjAwOjEyLjg4NVoiLCJwaG90b1VSTCI6Imh0dHBzOi8vcm9ib2hhc2gub3JnL2Rvam8iLCJ1c2VySWQiOm51bGwsInBhcnRuZXJJZCI6bnVsbCwiZXhwZXJ0SWQiOm51bGwsImFkbWluSWQiOjIsInByaXZhY3lUeXBlIjoiYWxsIiwic2VsZWN0ZWRWaWV3ZXJzIjpbXSwiZm9sbG93ZXJzIjpbXSwiZm9sbG93aW5nIjpbXSwidXNlclR5cGUiOiJhZG1pbiIsImlhdCI6MTc0Mjg0NTQ2NSwiZXhwIjoxNzQyOTMxODY1fQ.2F2HjLLheSwPFGUDB07FEm1J9Rxz9Etgp_xcx7C4X7Y
+
+###
+POST http://localhost:5000/api/v1/auth/signin
+Content-Type: application/json
+
+{
+    "email":"admin@cp.in",
+    "password":"adminCP",
+    "userType":"admin"
+}
+
+### GET ALL SESSIONS: GET 3 Sessions
+GET {{base_URL}}
+
+
+### GET TOP RATED
+GET {{base_URL}}/top-rated
+
+### GET 5 RECENTLY UPLOADED
+GET {{base_URL}}/recent-upload
+
+### SEARCH 
+GET {{base_URL}}/search?tag=aevy
+
+### CREATION OF SESSION: sess:40, slotId:30
+POST {{base_URL}}
+authorization: {{auth_JWT}}
+Content-Type: application/json
+
+{"session":{"title":"Food Blogging 11","desc":"xlkgxlk","isCourse":false,"isVideoChannel":false,"sessionType":"Everyone Speakers","bannerImgs":["https://subspacetest-greentick.s3.us-east-2.amazonaws.com/session/1753255706927-Gemini_Generated_Image_puyk9tpuyk9tpuyk.jpeg"],"infoImgs":[null],"creatorId":2,"slots":[{"startTime":"2025-07-31T07:28:00.000Z","endTime":"2025-07-31T08:28:00.000Z","price":0,"credits":0,"participantLimit":82,"speakerId":124,"isOnline":true,"isRecorded":false,"isLive":true,"videoUrl":"","location":"","topicName":"blog2"}],"isExclusive":true,"isRecurring":"none","communityId":131,"tagsData":[],"roomId":"68808f53576aae6c96bfe139"},"resources":[]}
+
+
+### GET SESSION BY ID
+GET {{base_URL}}/3
+
+### slots by date range
+GET {{base_URL}}/slots?startDate=2025-03-16&endDate=2025-05-17
+
+### UPDATE SESSION
+PATCH {{base_URL}}/40
+Content-Type: application/json
+authorization: {{auth_JWT}}
+
+{
+    "desc":"Changed2xx transaction",
+    "slots":[
+        {   
+                "id":30,
+                "startTime":"2022-10-14T18:30:30.321Z",
+                "endTime":"2022-10-16T07:30:30.321Z",
+                "participantLimit":500,
+                "isOnline":false,
+                "price":50,
+                "credits":0,
+                "location":"bangalore",
+                "speakerId":1
+        }
+
+    ]
+}
+
+### DELETE SESSION BY ID
+DELETE {{base_URL}}/35
+authorization: {{auth_JWT}}
+
+
+###
+GET {{base_URL}}/slot/32
+
+###
+PATCH {{base_URL}}/slot/32
+authorization: {{auth_JWT}}
+
+{
+                "startTime":"2022-10-14T18:30:30.321Z",
+                "endTime":"2022-10-16T07:30:30.321Z",
+                "participantLimit":500,
+                "isOnline":false,
+                "price":50,
+                "credits":0,
+                "location":"bangalore",
+                "speakerId":3
+}
+
+###
+DELETE {{base_URL}}/slot/31
+authorization: {{auth_JWT}}
+
+### GET SESSION CATEGORIES/TAGS
+GET {{base_URL}}/tags/top
+
+
+### GET roomId
+GET {{base_URL}}/token
+
+### GET SESSIONS BY TAG
+
+POST {{base_URL}}
+authorization: {{auth_JWT}}
+Content-Type: application/json
+
+{
+    "session":{
+    "title":"Advanced Culinary Techniques",
+    "desc":"A session on modern culinary methods.",
+    "bannerImgs":["https://loremflickr.com/320/240/food"],
+    "infoImgs":[],
+    "creator": {
+      "connect": { "id": 1 }, // Use the `connect` syntax to link the creator by ID
+    },
+    "isLive":true,
+    "slots":[
+        {
+                "startTime":"2023-09-10T10:00:00.321Z",
+                "endTime":"2023-09-10T12:00:00.321Z",
+                "participantLimit":200,
+                "isOnline":true,
+                "price":0,
+                "credits":10,
+                "location":"",
+                "speakerId":1
+            }
+    ]
+    }
+}
+
+###
+
+POST {{base_URL}}
+authorization: {{auth_JWT}}
+Content-Type: application/json
+
+{
+    "session":{
+    "title":"Pastry Art & Techniques",
+    "desc":"Mastering the art of pastry making.",
+    "bannerImgs":["https://loremflickr.com/320/240/pastry"],
+    "infoImgs":[],
+    "creatorId":1,
+    "slots":[
+        {
+                "startTime":"2023-09-15T14:00:00.321Z",
+                "endTime":"2023-09-15T16:00:00.321Z",
+                "participantLimit":150,
+                "isOnline":true,
+                "price":0,
+                "credits":10,
+                "location":"",
+                "speakerId":6
+            }
+    ]
+    }
+}
+
+POST {{base_URL}}
+authorization: {{auth_JWT}}
+Content-Type: application/json
+
+{
+    "session":{
+    "title":"Healthy Cooking Habits",
+    "desc":"Learn about nutritious meal preparation.",
+    "bannerImgs":["https://loremflickr.com/320/240/healthyfood"],
+    "infoImgs":[],
+    "creatorId":1,
+    "slots":[
+        {
+                "startTime":"2023-09-20T09:00:00.321Z",
+                "endTime":"2023-09-20T11:00:00.321Z",
+                "participantLimit":250,
+                "isOnline":true,
+                "price":0,
+                "credits":10,
+                "location":"",
+                "speakerId":7
+            }
+    ]
+    }
+}

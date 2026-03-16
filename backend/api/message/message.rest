@@ -1,0 +1,26 @@
+###
+@base_URL=http://localhost:5000/api/v1/message
+
+
+###
+POST {{base_URL}}
+Content-Type: application/json
+
+{
+    "channelId":1,
+    "senderId":23,
+    "content":"peaws"
+}
+
+###
+GET {{base_URL}}/usermessages
+Content-Type: application/json
+
+{
+    "senderId":23,
+    "recvId":24
+}
+
+###
+GET {{base_URL}}/channelmessage/1
+

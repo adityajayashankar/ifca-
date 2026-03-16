@@ -1,0 +1,33 @@
+.small-underline-left {
+    @apply relative;
+}
+
+.small-underline-left::after {
+    @apply absolute bg-[#4E795E80] opacity-80 rounded-full;
+    content: '';
+    bottom: -8px;
+    left: 0;
+    width: 100px;
+    height: 2.4px;
+}
+
+.small-underline-center {
+    @apply relative;
+}
+
+.small-underline-center::after {
+    @apply absolute bg-[#4E795E80] opacity-80 rounded-full;
+    content: '';
+    bottom: -8px;
+    left: calc(50% - 50px);
+    width: 100px;
+    height: 2.4px;
+}
+.topcontainer{
+    @apply flex flex-col items-center;    
+   
+}
+
+.imgcontainer{
+ @apply px-12 h-52;
+}

@@ -1,0 +1,147 @@
+@base_URL=http://localhost:5000/api/v1/connections
+@prod_URL=https://pvl.ifcaindia.com/api/api/v1/connections
+@auth_JWT=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlmaWVkVXNlcklkIjoxNSwidXNlcklkIjoyMSwiZW1haWwiOiJhbmlsZ293ZGEubmowOEBnbWFpbC5jb20iLCJ1c2VyVHlwZSI6InVzZXIiLCJpYXQiOjE3NTM3OTM2NDAsImV4cCI6MTc1Mzg4MDA0MH0.Kvc-hE9MQ3HHfTDebjjiu3x5WZVHT_RhYmY7bEmiNmE
+
+### User Login
+POST http://localhost:5000/api/v1/auth/signin
+Content-Type: application/json
+Authorization: Bearer {{auth_JWT}}
+
+{
+    "email": "anilgowda.nj08@gmail.com",
+    "password": "Abcd@123"
+}
+
+### Send a connection request (User A to User B)
+POST {{base_URL}}/send-request
+Content-Type: application/json
+Authorization: Bearer {{auth_JWT}}
+
+{
+    "receiverId": 105,
+    "message": "Hi, I'd like to connect with you on IFCA."
+}
+
+### Send a connection request (User B to User A) - Creates mutual connection
+POST {{base_URL}}/send-request
+Content-Type: application/json
+Authorization: Bearer {{auth_JWT}}
+
+{
+    "receiverId": 100,
+    "message": "Hi, I'd like to connect with you on IFCA."
+}
+
+### Accept a connection request
+PUT {{base_URL}}/accept/68
+Authorization: Bearer {{auth_JWT}}
+
+### Reject a connection request
+DELETE {{base_URL}}/68
+Authorization: Bearer {{auth_JWT}}
+
+### Get pending connection requests (incoming only)
+GET {{base_URL}}/164/pending-requests
+Authorization: Bearer {{auth_JWT}}
+
+### Get all connections for a user (bidirectional)
+GET {{base_URL}}/15/connections
+Authorization: Bearer {{auth_JWT}}
+
+### Get connection status between two users (bidirectional)
+GET {{base_URL}}/status/15/20
+Authorization: Bearer {{auth_JWT}}
+
+### Get connection status between two users (reverse)
+GET {{base_URL}}/status/20/15
+Authorization: Bearer {{auth_JWT}}
+
+### Get profile details with connection status
+GET {{base_URL}}/profile/6?currentUserId=8
+Authorization: Bearer {{auth_JWT}}
+
+### Get profile details (own profile)
+GET {{base_URL}}/profile/8?currentUserId=8
+Authorization: Bearer {{auth_JWT}}
+
+### Get selected viewers
+GET {{base_URL}}/selected-viewers/7
+Authorization: Bearer {{auth_JWT}}
+
+### Get network connections
+GET {{base_URL}}/network-connections/31
+Authorization: Bearer {{auth_JWT}}
+
+### Test connection status logic
+GET {{base_URL}}/test-connection-status/31
+Authorization: Bearer {{auth_JWT}}
+
+### Debug user arrays
+GET {{base_URL}}/debug-user-arrays/31
+Authorization: Bearer {{auth_JWT}}
+
+### Sync all users followers/following
+POST {{base_URL}}/sync-followers-following
+Authorization: Bearer {{auth_JWT}}
+
+### Test Cases for Mutual Connection Flow
+
+### 1. User A sends request to User B (creates pending A→B)
+POST {{base_URL}}/send-request
+Content-Type: application/json
+Authorization: Bearer {{auth_JWT}}
+
+{
+    "receiverId": 15,
+    "message": "Hi, I'd like to connect with you!"
+}
+
+### 2. User B sends request to User A (creates mutual connection)
+POST {{base_URL}}/send-request
+Content-Type: application/json
+Authorization: Bearer {{auth_JWT}}
+
+{
+    "receiverId": 72,
+    "message": "Hi, I'd like to connect with you too!"
+}
+
+### 3. Check mutual connection status
+GET {{base_URL}}/status/72/15
+Authorization: Bearer {{auth_JWT}}
+
+### 4. Get all connections (should show mutual connection)
+GET {{base_URL}}/15/connections
+Authorization: Bearer {{auth_JWT}}
+
+### Debug mutual connection categorization
+GET {{base_URL}}/debug-categorization/72
+Authorization: Bearer {{auth_JWT}}
+
+### Get pending connection requests (mutual)
+GET {{base_URL}}/15/pending-requests
+Authorization: Bearer {{auth_JWT}}
+
+### Debug pending requests
+GET {{base_URL}}/debug-pending-requests/15
+Authorization: Bearer {{auth_JWT}}
+
+### Test pending requests (simple)
+GET {{base_URL}}/test-pending-requests/15
+Authorization: Bearer {{auth_JWT}}
+
+### Create test incoming requests for user 15
+POST {{base_URL}}/create-test-incoming/15
+Authorization: Bearer {{auth_JWT}}
+
+### Get pending connection requests (improved)
+GET {{base_URL}}/15/pending-requests
+Authorization: Bearer {{auth_JWT}}
+
+### Test pending requests (simple)
+GET {{base_URL}}/test-pending-requests/15
+Authorization: Bearer {{auth_JWT}}
+
+### Debug pending requests
+GET {{base_URL}}/debug-pending-requests/15
+Authorization: Bearer {{auth_JWT}}

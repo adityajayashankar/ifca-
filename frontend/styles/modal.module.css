@@ -1,0 +1,53 @@
+.wrapper {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 120vh;
+    left: 0;
+    opacity: 0;
+    overflow-y: scroll;
+    width: 100vw;
+    height: 100vh;
+    background-color: #2c2c2c99;
+    z-index: 5;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .cardContainer5 {
+    box-sizing: border-box;
+    width: min(80vw, 700px);
+    background-color: white;
+    border-radius: 25px;
+    padding: 32px 34px;
+  }
+
+  .header{
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-gap: 10px;
+  }
+
+  .TCgrid{
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    grid-gap: 30px;
+  }
+
+  @media only screen and (max-width: 500px) {
+    .wrapper {
+      padding: 0 8px;
+    }  
+    .cardContainer5 {
+      box-sizing: border-box;
+      width: min(90vw, 800px);
+      height: min(70vw, 600px);
+      background-color: white;
+      border-radius: 8px;
+      overflow-y: scroll;
+      overflow-x: hidden;
+      padding: 25px;
+    }
+  }

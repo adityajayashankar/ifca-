@@ -1,0 +1,88 @@
+@baseURL=http://localhost:5000/api/v1/thread
+@authURL=http://localhost:5000/api/v1/auth
+
+@auth_JWT=Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJ1c2VyQGdldHN1YnNwYWNlLnRlY2gzIiwibmFtZSI6InVzZXIzIiwicGhvbmUiOiIrOTEyNzY1Njc4OTMyIiwiYWRkcmVzcyI6IiIsInBpbmNvZGUiOiIiLCJwYXNzd29yZCI6IiQyYSQxMCRweHRtUW9jT1NkY2VkS2YxdlI0S1ouVU5JbmdCVHFlM3Z2djhaNk9ZWVVkTmIyN1Exd0RUeSIsInBob3RvVVJMIjoiaHR0cHM6Ly9yb2JvaGFzaC5vcmcvZG9qbyIsImRlc2MiOiJ7XCJzdGFnZVwiOjAsXCJpc0NhcmVnaXZlclwiOnRydWV9IiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0yNVQxMjowODo1NC4yODNaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0yNVQxMjowODo1NC4yODNaIiwidW5pZmllZFVzZXJJZCI6eyJpZCI6NiwiZW1haWwiOiJ1c2VyQGdldHN1YnNwYWNlLnRlY2gzIiwidXNlcklkIjoxLCJwYXJ0bmVySWQiOm51bGwsImV4cGVydElkIjpudWxsLCJhZG1pbklkIjpudWxsfSwidXNlclR5cGUiOiJ1c2VyIiwiaWF0IjoxNjczODc4NDUwLCJleHAiOjE2NzM5NjQ4NTB9.ntj0yU4J7r1mds8kphVDN2ArJXMdJqx5q2WuDyQxh90
+
+### Get Partner JWT, update the auth_JWT above
+POST {{authURL}}/signin
+Content-Type: application/json
+
+{
+    "userType":"user",
+    "email":"user@getsubspace.tech3",
+    "password":"subspaceuser"
+}
+### GET ALL POSTS
+GET {{baseURL}}
+authorization: {{auth_JWT}}
+
+
+### CREATE POST AS POLL
+POST {{baseURL}}
+Content-Type: application/json
+
+{
+    "content":"This is the fourth post",
+    "creatorId":6,
+    "communityId":1,
+    "isPoll":true,
+    "pollExpiresAt":"2023-01-12T13:18:40.227Z" ,
+    "optionsData":[{"option":"First Me"},{"option":"Second Me"}]
+}
+
+
+### GET POST BY ID
+GET {{baseURL}}/4
+authorization: {{auth_JWT}}
+
+### UPDATE POST CONTENT
+PATCH {{baseURL}}/2
+authorization: {{auth_JWT}}
+Content-Type: application/json
+
+{
+    "content":"This is replaced content for the second post I believe"
+}
+
+### UPDATE POST TAGS
+PATCH  {{baseURL}}/2/tag
+authorization: {{auth_JWT}}
+Content-Type: application/json
+
+{
+    "newTags":[
+        {
+            "name":"cervical"
+        },
+        {
+            "name":"common"
+        }
+    ]
+}
+
+### GET POSTS BY SESSION
+### GET POSTS BY COMMUNITY
+GET {{baseURL}}/community/22
+authorization: {{auth_JWT}}
+
+### GET POSTS BY USER
+GET {{baseURL}}/user/1
+authorization: {{auth_JWT}}
+
+
+### LIKE A POST
+PATCH {{baseURL}}/1/user/1
+authorization: {{auth_JWT}}
+
+### VOTE ON POLL 
+PATCH {{baseURL}}/40/user/6/option/3
+authorization: {{auth_JWT}}
+
+### GET POSTS OF SESSION
+GET {{baseURL}}/session/14
+authorization: {{auth_JWT}}
+
+### GET USER COMMUNITY POSTS
+GET {{baseURL}}/user/15/community
+authorization: {{auth_JWT}}
+

@@ -1,0 +1,8 @@
+POST http://localhost:5000/api/v1/images/generate-presigned-url
+Content-Type: application/json
+
+{
+    "fileName": "test-image.jpg",
+    "fileType": "image/jpeg",
+    "folder":"user"
+}

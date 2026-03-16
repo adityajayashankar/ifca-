@@ -1,0 +1,141 @@
+### Get all services for a community (role-based interested info)
+GET http://localhost:5000/api/v1/service/getServicesByCommunityId/111
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTE2LCJlbWFpbCI6Im5lcmF5aWwzMDZAaG9zbGl5LmNvbSIsIm5hbWUiOiJOZXJheWkiLCJwaG9uZSI6Ijg5OTg3OTAyMzEiLCJwaW5jb2RlIjoibmpuIiwicGFzc3dvcmQiOiIkMmEkMTAkRXpLSjZCN1plNTBZNWZSZ3Z6VGlxTzQvYzkxLmZxaXVkSEtNemhwWWFoSWdMbGVuT0d3MW0iLCJwaG90b1VSTCI6Imh0dHBzOi8vcm9ib2hhc2gub3JnL2Rvam8iLCJjcmVhdGVkQXQiOiIyMDI1LTA2LTIwVDA3OjA2OjIwLjM1MloiLCJ1cGRhdGVkQXQiOiIyMDI1LTA2LTIwVDA3OjA2OjIwLjM1MloiLCJvdHAiOm51bGwsIm90cEV4cGlyZXNBdCI6bnVsbCwiYXZhaWxhYmlsaXR5IjpudWxsLCJhd2FyZHMiOltdLCJjdWxpbmFyeVBoaWxvc29waHkiOm51bGwsImN1cnJlbnRQb3NpdGlvbiI6bnVsbCwiZW1wbG95ZXIiOm51bGwsImV4cGVydGlzZSI6bnVsbCwiaWZjYUludm9sdmVtZW50IjpbXSwiaW5kdXN0cnlDb250cmlidXRpb25zIjpbXSwiaW50ZXJlc3RzIjpbXSwibGFuZ3VhZ2VQcm9maWNpZW5jeSI6bnVsbCwibG9jYXRpb24iOiJqb2tqIiwibWVudG9yc2hpcCI6W10sIm1lbnRvcnNoaXBBdmFpbGFiaWxpdHkiOm51bGwsIm5hdGlvbmFsaXR5IjpudWxsLCJwcmVmZXJyZWRDb250YWN0IjpudWxsLCJwcmVmZXJyZWROYW1lIjpudWxsLCJyZWNpcGVzIjpbXSwicm9sZURlc2NyaXB0aW9uIjpudWxsLCJzcGVjaWFsaXphdGlvbnMiOltdLCJzdGF0ZSI6ImpuIiwic3VzdGFpbmFiaWxpdHkiOm51bGwsInRlY2hub2xvZ3lTa2lsbHMiOltdLCJ2aXNpb24iOm51bGwsIndlYnNpdGUiOm51bGwsImxhc3RNb29kbGVTeW5jIjoiMjAyNS0wNi0yMFQwNzowNjoyMC4zNTJaIiwibW9vZGxlUGFzc3dvcmQiOiIkMmEkMTAkRXpLSjZCN1plNTBZNWZSZ3Z6VGlxTzQvYzkxLmZxaXVkSEtNemhwWWFoSWdMbGVuT0d3MW0iLCJtb29kbGVVc2VySWQiOjIwNjYsIm1vb2RsZVVzZXJuYW1lIjoiODk5ODc5MDIzMSIsImNhcmVlckhpc3RvcnkiOm51bGwsImNlcnRpZmljYXRpb25zIjpudWxsLCJjb2xsYWJvcmF0aW9ucyI6bnVsbCwiZXZlbnRzUGFydGljaXBhdGlvbiI6bnVsbCwib25saW5lUG9ydGZvbGlvcyI6bnVsbCwicHJvZmVzc2lvbmFsTmV0d29ya3MiOm51bGwsInB1YmxpY2F0aW9ucyI6bnVsbCwic29jaWFsTWVkaWFMaW5rcyI6bnVsbCwidHV0b3JpYWxzIjpudWxsLCJyZXNldFRva2VuIjpudWxsLCJyZXNldFRva2VuRXhwaXJlcyI6bnVsbCwidXNlcklkIjo3NywicGFydG5lcklkIjpudWxsLCJleHBlcnRJZCI6bnVsbCwiYWRtaW5JZCI6bnVsbCwiZm9sbG93ZXJzIjpbXSwiZm9sbG93aW5nIjpbXSwicHJpdmFjeVR5cGUiOiJhbGwiLCJzZWxlY3RlZFZpZXdlcnMiOltdLCJpc0FjdGl2ZSI6dHJ1ZSwidXNlclR5cGUiOiJ1c2VyIiwiaWF0IjoxNzUwOTU4MTM2LCJleHAiOjE3NTEwNDQ1MzZ9.m30baJh660bYQnrQ9D4QkJeuqM6b6FADYsrPu71YNcg
+# Example response
+# {
+#   "message": "Services fetched successfully",
+#   "data": [
+#     {
+#       "id": 13,
+#       "title": "Virtual Cooking Masterclass",
+#       "description": "Join weekly live sessions with expert chefs and learn global cuisines from the comfort of your kitchen. Interactive, hands-on, and guided step-by-step.\n\n",
+#       "imageUrl": "https://subspacetest-0.s3.ap-south-1.amazonaws.com/images/1750828145836-ChatGPT%20Image%20Jun%2025%2C%202025%2C%2010_38_54%20AM.png",
+#       "videoUrl": "",
+#       "communityId": 111,
+#       "creatorId": 2,
+#       "interestedCount": 2,
+#       "alreadyResponded": true
+#     }
+#   ]
+# }
+
+### Subscribe to a service
+POST http://localhost:5000/api/v1/service/subscribeToService
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTE2LCJlbWFpbCI6Im5lcmF5aWwzMDZAaG9zbGl5LmNvbSIsIm5hbWUiOiJOZXJheWkiLCJwaG9uZSI6Ijg5OTg3OTAyMzEiLCJwaW5jb2RlIjoibmpuIiwicGFzc3dvcmQiOiIkMmEkMTAkRXpLSjZCN1plNTBZNWZSZ3Z6VGlxTzQvYzkxLmZxaXVkSEtNemhwWWFoSWdMbGVuT0d3MW0iLCJwaG90b1VSTCI6Imh0dHBzOi8vcm9ib2hhc2gub3JnL2Rvam8iLCJjcmVhdGVkQXQiOiIyMDI1LTA2LTIwVDA3OjA2OjIwLjM1MloiLCJ1cGRhdGVkQXQiOiIyMDI1LTA2LTIwVDA3OjA2OjIwLjM1MloiLCJvdHAiOm51bGwsIm90cEV4cGlyZXNBdCI6bnVsbCwiYXZhaWxhYmlsaXR5IjpudWxsLCJhd2FyZHMiOltdLCJjdWxpbmFyeVBoaWxvc29waHkiOm51bGwsImN1cnJlbnRQb3NpdGlvbiI6bnVsbCwiZW1wbG95ZXIiOm51bGwsImV4cGVydGlzZSI6bnVsbCwiaWZjYUludm9sdmVtZW50IjpbXSwiaW5kdXN0cnlDb250cmlidXRpb25zIjpbXSwiaW50ZXJlc3RzIjpbXSwibGFuZ3VhZ2VQcm9maWNpZW5jeSI6bnVsbCwibG9jYXRpb24iOiJqb2tqIiwibWVudG9yc2hpcCI6W10sIm1lbnRvcnNoaXBBdmFpbGFiaWxpdHkiOm51bGwsIm5hdGlvbmFsaXR5IjpudWxsLCJwcmVmZXJyZWRDb250YWN0IjpudWxsLCJwcmVmZXJyZWROYW1lIjpudWxsLCJyZWNpcGVzIjpbXSwicm9sZURlc2NyaXB0aW9uIjpudWxsLCJzcGVjaWFsaXphdGlvbnMiOltdLCJzdGF0ZSI6ImpuIiwic3VzdGFpbmFiaWxpdHkiOm51bGwsInRlY2hub2xvZ3lTa2lsbHMiOltdLCJ2aXNpb24iOm51bGwsIndlYnNpdGUiOm51bGwsImxhc3RNb29kbGVTeW5jIjoiMjAyNS0wNi0yMFQwNzowNjoyMC4zNTJaIiwibW9vZGxlUGFzc3dvcmQiOiIkMmEkMTAkRXpLSjZCN1plNTBZNWZSZ3Z6VGlxTzQvYzkxLmZxaXVkSEtNemhwWWFoSWdMbGVuT0d3MW0iLCJtb29kbGVVc2VySWQiOjIwNjYsIm1vb2RsZVVzZXJuYW1lIjoiODk5ODc5MDIzMSIsImNhcmVlckhpc3RvcnkiOm51bGwsImNlcnRpZmljYXRpb25zIjpudWxsLCJjb2xsYWJvcmF0aW9ucyI6bnVsbCwiZXZlbnRzUGFydGljaXBhdGlvbiI6bnVsbCwib25saW5lUG9ydGZvbGlvcyI6bnVsbCwicHJvZmVzc2lvbmFsTmV0d29ya3MiOm51bGwsInB1YmxpY2F0aW9ucyI6bnVsbCwic29jaWFsTWVkaWFMaW5rcyI6bnVsbCwidHV0b3JpYWxzIjpudWxsLCJyZXNldFRva2VuIjpudWxsLCJyZXNldFRva2VuRXhwaXJlcyI6bnVsbCwidXNlcklkIjo3NywicGFydG5lcklkIjpudWxsLCJleHBlcnRJZCI6bnVsbCwiYWRtaW5JZCI6bnVsbCwiZm9sbG93ZXJzIjpbXSwiZm9sbG93aW5nIjpbXSwicHJpdmFjeVR5cGUiOiJhbGwiLCJzZWxlY3RlZFZpZXdlcnMiOltdLCJpc0FjdGl2ZSI6dHJ1ZSwidXNlclR5cGUiOiJ1c2VyIiwiaWF0IjoxNzUwOTU4MTM2LCJleHAiOjE3NTEwNDQ1MzZ9.m30baJh660bYQnrQ9D4QkJeuqM6b6FADYsrPu71YNcg
+{
+  "userId": 77,
+  "serviceId": 13
+}
+# Response: { "message": "Subscription successful", ... }
+
+### Get responses for creator
+GET http://localhost:5000/api/v1/service/getResponseForCreator/2
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTE2LCJlbWFpbCI6Im5lcmF5aWwzMDZAaG9zbGl5LmNvbSIsIm5hbWUiOiJOZXJheWkiLCJwaG9uZSI6Ijg5OTg3OTAyMzEiLCJwaW5jb2RlIjoibmpuIiwicGFzc3dvcmQiOiIkMmEkMTAkRXpLSjZCN1plNTBZNWZSZ3Z6VGlxTzQvYzkxLmZxaXVkSEtNemhwWWFoSWdMbGVuT0d3MW0iLCJwaG90b1VSTCI6Imh0dHBzOi8vcm9ib2hhc2gub3JnL2Rvam8iLCJjcmVhdGVkQXQiOiIyMDI1LTA2LTIwVDA3OjA2OjIwLjM1MloiLCJ1cGRhdGVkQXQiOiIyMDI1LTA2LTIwVDA3OjA2OjIwLjM1MloiLCJvdHAiOm51bGwsIm90cEV4cGlyZXNBdCI6bnVsbCwiYXZhaWxhYmlsaXR5IjpudWxsLCJhd2FyZHMiOltdLCJjdWxpbmFyeVBoaWxvc29waHkiOm51bGwsImN1cnJlbnRQb3NpdGlvbiI6bnVsbCwiZW1wbG95ZXIiOm51bGwsImV4cGVydGlzZSI6bnVsbCwiaWZjYUludm9sdmVtZW50IjpbXSwiaW5kdXN0cnlDb250cmlidXRpb25zIjpbXSwiaW50ZXJlc3RzIjpbXSwibGFuZ3VhZ2VQcm9maWNpZW5jeSI6bnVsbCwibG9jYXRpb24iOiJqb2tqIiwibWVudG9yc2hpcCI6W10sIm1lbnRvcnNoaXBBdmFpbGFiaWxpdHkiOm51bGwsIm5hdGlvbmFsaXR5IjpudWxsLCJwcmVmZXJyZWRDb250YWN0IjpudWxsLCJwcmVmZXJyZWROYW1lIjpudWxsLCJyZWNpcGVzIjpbXSwicm9sZURlc2NyaXB0aW9uIjpudWxsLCJzcGVjaWFsaXphdGlvbnMiOltdLCJzdGF0ZSI6ImpuIiwic3VzdGFpbmFiaWxpdHkiOm51bGwsInRlY2hub2xvZ3lTa2lsbHMiOltdLCJ2aXNpb24iOm51bGwsIndlYnNpdGUiOm51bGwsImxhc3RNb29kbGVTeW5jIjoiMjAyNS0wNi0yMFQwNzowNjoyMC4zNTJaIiwibW9vZGxlUGFzc3dvcmQiOiIkMmEkMTAkRXpLSjZCN1plNTBZNWZSZ3Z6VGlxTzQvYzkxLmZxaXVkSEtNemhwWWFoSWdMbGVuT0d3MW0iLCJtb29kbGVVc2VySWQiOjIwNjYsIm1vb2RsZVVzZXJuYW1lIjoiODk5ODc5MDIzMSIsImNhcmVlckhpc3RvcnkiOm51bGwsImNlcnRpZmljYXRpb25zIjpudWxsLCJjb2xsYWJvcmF0aW9ucyI6bnVsbCwiZXZlbnRzUGFydGljaXBhdGlvbiI6bnVsbCwib25saW5lUG9ydGZvbGlvcyI6bnVsbCwicHJvZmVzc2lvbmFsTmV0d29ya3MiOm51bGwsInB1YmxpY2F0aW9ucyI6bnVsbCwic29jaWFsTWVkaWFMaW5rcyI6bnVsbCwidHV0b3JpYWxzIjpudWxsLCJyZXNldFRva2VuIjpudWxsLCJyZXNldFRva2VuRXhwaXJlcyI6bnVsbCwidXNlcklkIjo3NywicGFydG5lcklkIjpudWxsLCJleHBlcnRJZCI6bnVsbCwiYWRtaW5JZCI6bnVsbCwiZm9sbG93ZXJzIjpbXSwiZm9sbG93aW5nIjpbXSwicHJpdmFjeVR5cGUiOiJhbGwiLCJzZWxlY3RlZFZpZXdlcnMiOltdLCJpc0FjdGl2ZSI6dHJ1ZSwidXNlclR5cGUiOiJ1c2VyIiwiaWF0IjoxNzUwOTU4MTM2LCJleHAiOjE3NTEwNDQ1MzZ9.m30baJh660bYQnrQ9D4QkJeuqM6b6FADYsrPu71YNcg
+# Example response
+# {
+#   "message": "Responses fetched successfully",
+#   "data": [
+#     {
+#       "id": 1,
+#       "title": "Response Title 1",
+#       "description": "Response description 1",
+#       "imageUrl": "https://example.com/image1.jpg",
+#       "videoUrl": "https://example.com/video1.mp4",
+#       "communityId": 111,
+#       "creatorId": 2,
+#       "interestedCount": 2,
+#       "alreadyResponded": true
+#     },
+#     {
+#       "id": 2,
+#       "title": "Response Title 2",
+#       "description": "Response description 2",
+#       "imageUrl": "https://example.com/image2.jpg",
+#       "videoUrl": "https://example.com/video2.mp4",
+#       "communityId": 111,
+#       "creatorId": 2,
+#       "interestedCount": 1,
+#       "alreadyResponded": false
+#     }
+#   ]
+# }
+
+### Get responses for a service (role-based)
+GET http://localhost:5000/api/v1/service/getServiceResponsesWithRole/13
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTE2LCJlbWFpbCI6Im5lcmF5aWwzMDZAaG9zbGl5LmNvbSIsIm5hbWUiOiJOZXJheWkiLCJwaG9uZSI6Ijg5OTg3OTAyMzEiLCJwaW5jb2RlIjoibmpuIiwicGFzc3dvcmQiOiIkMmEkMTAkRXpLSjZCN1plNTBZNWZSZ3Z6VGlxTzQvYzkxLmZxaXVkSEtNemhwWWFoSWdMbGVuT0d3MW0iLCJwaG90b1VSTCI6Imh0dHBzOi8vcm9ib2hhc2gub3JnL2Rvam8iLCJjcmVhdGVkQXQiOiIyMDI1LTA2LTIwVDA3OjA2OjIwLjM1MloiLCJ1cGRhdGVkQXQiOiIyMDI1LTA2LTIwVDA3OjA2OjIwLjM1MloiLCJvdHAiOm51bGwsIm90cEV4cGlyZXNBdCI6bnVsbCwiYXZhaWxhYmlsaXR5IjpudWxsLCJhd2FyZHMiOltdLCJjdWxpbmFyeVBoaWxvc29waHkiOm51bGwsImN1cnJlbnRQb3NpdGlvbiI6bnVsbCwiZW1wbG95ZXIiOm51bGwsImV4cGVydGlzZSI6bnVsbCwiaWZjYUludm9sdmVtZW50IjpbXSwiaW5kdXN0cnlDb250cmlidXRpb25zIjpbXSwiaW50ZXJlc3RzIjpbXSwibGFuZ3VhZ2VQcm9maWNpZW5jeSI6bnVsbCwibG9jYXRpb24iOiJqb2tqIiwibWVudG9yc2hpcCI6W10sIm1lbnRvcnNoaXBBdmFpbGFiaWxpdHkiOm51bGwsIm5hdGlvbmFsaXR5IjpudWxsLCJwcmVmZXJyZWRDb250YWN0IjpudWxsLCJwcmVmZXJyZWROYW1lIjpudWxsLCJyZWNpcGVzIjpbXSwicm9sZURlc2NyaXB0aW9uIjpudWxsLCJzcGVjaWFsaXphdGlvbnMiOltdLCJzdGF0ZSI6ImpuIiwic3VzdGFpbmFiaWxpdHkiOm51bGwsInRlY2hub2xvZ3lTa2lsbHMiOltdLCJ2aXNpb24iOm51bGwsIndlYnNpdGUiOm51bGwsImxhc3RNb29kbGVTeW5jIjoiMjAyNS0wNi0yMFQwNzowNjoyMC4zNTJaIiwibW9vZGxlUGFzc3dvcmQiOiIkMmEkMTAkRXpLSjZCN1plNTBZNWZSZ3Z6VGlxTzQvYzkxLmZxaXVkSEtNemhwWWFoSWdMbGVuT0d3MW0iLCJtb29kbGVVc2VySWQiOjIwNjYsIm1vb2RsZVVzZXJuYW1lIjoiODk5ODc5MDIzMSIsImNhcmVlckhpc3RvcnkiOm51bGwsImNlcnRpZmljYXRpb25zIjpudWxsLCJjb2xsYWJvcmF0aW9ucyI6bnVsbCwiZXZlbnRzUGFydGljaXBhdGlvbiI6bnVsbCwib25saW5lUG9ydGZvbGlvcyI6bnVsbCwicHJvZmVzc2lvbmFsTmV0d29ya3MiOm51bGwsInB1YmxpY2F0aW9ucyI6bnVsbCwic29jaWFsTWVkaWFMaW5rcyI6bnVsbCwidHV0b3JpYWxzIjpudWxsLCJyZXNldFRva2VuIjpudWxsLCJyZXNldFRva2VuRXhwaXJlcyI6bnVsbCwidXNlcklkIjo3NywicGFydG5lcklkIjpudWxsLCJleHBlcnRJZCI6bnVsbCwiYWRtaW5JZCI6bnVsbCwiZm9sbG93ZXJzIjpbXSwiZm9sbG93aW5nIjpbXSwicHJpdmFjeVR5cGUiOiJhbGwiLCJzZWxlY3RlZFZpZXdlcnMiOltdLCJpc0FjdGl2ZSI6dHJ1ZSwidXNlclR5cGUiOiJ1c2VyIiwiaWF0IjoxNzUwOTU4MTM2LCJleHAiOjE3NTEwNDQ1MzZ9.m30baJh660bYQnrQ9D4QkJeuqM6b6FADYsrPu71YNcg
+# Example response
+# {
+#   "message": "Responses fetched successfully",
+#   "data": [
+#     {
+#       "id": 1,
+#       "title": "Response Title 1",
+#       "description": "Response description 1",
+#       "imageUrl": "https://example.com/image1.jpg",
+#       "videoUrl": "https://example.com/video1.mp4",
+#       "communityId": 111,
+#       "creatorId": 2,
+#       "interestedCount": 2,
+#       "alreadyResponded": true
+#     },
+#     {
+#       "id": 2,
+#       "title": "Response Title 2",
+#       "description": "Response description 2",
+#       "imageUrl": "https://example.com/image2.jpg",
+#       "videoUrl": "https://example.com/video2.mp4",
+#       "communityId": 111,
+#       "creatorId": 2,
+#       "interestedCount": 1,
+#       "alreadyResponded": false
+#     }
+#   ]
+# }
+
+### Get all responses by community
+GET http://localhost:5000/api/v1/service/getAllResponsesByCommunityId/111
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTE2LCJlbWFpbCI6Im5lcmF5aWwzMDZAaG9zbGl5LmNvbSIsIm5hbWUiOiJOZXJheWkiLCJwaG9uZSI6Ijg5OTg3OTAyMzEiLCJwaW5jb2RlIjoibmpuIiwicGFzc3dvcmQiOiIkMmEkMTAkRXpLSjZCN1plNTBZNWZSZ3Z6VGlxTzQvYzkxLmZxaXVkSEtNemhwWWFoSWdMbGVuT0d3MW0iLCJwaG90b1VSTCI6Imh0dHBzOi8vcm9ib2hhc2gub3JnL2Rvam8iLCJjcmVhdGVkQXQiOiIyMDI1LTA2LTIwVDA3OjA2OjIwLjM1MloiLCJ1cGRhdGVkQXQiOiIyMDI1LTA2LTIwVDA3OjA2OjIwLjM1MloiLCJvdHAiOm51bGwsIm90cEV4cGlyZXNBdCI6bnVsbCwiYXZhaWxhYmlsaXR5IjpudWxsLCJhd2FyZHMiOltdLCJjdWxpbmFyeVBoaWxvc29waHkiOm51bGwsImN1cnJlbnRQb3NpdGlvbiI6bnVsbCwiZW1wbG95ZXIiOm51bGwsImV4cGVydGlzZSI6bnVsbCwiaWZjYUludm9sdmVtZW50IjpbXSwiaW5kdXN0cnlDb250cmlidXRpb25zIjpbXSwiaW50ZXJlc3RzIjpbXSwibGFuZ3VhZ2VQcm9maWNpZW5jeSI6bnVsbCwibG9jYXRpb24iOiJqb2tqIiwibWVudG9yc2hpcCI6W10sIm1lbnRvcnNoaXBBdmFpbGFiaWxpdHkiOm51bGwsIm5hdGlvbmFsaXR5IjpudWxsLCJwcmVmZXJyZWRDb250YWN0IjpudWxsLCJwcmVmZXJyZWROYW1lIjpudWxsLCJyZWNpcGVzIjpbXSwicm9sZURlc2NyaXB0aW9uIjpudWxsLCJzcGVjaWFsaXphdGlvbnMiOltdLCJzdGF0ZSI6ImpuIiwic3VzdGFpbmFiaWxpdHkiOm51bGwsInRlY2hub2xvZ3lTa2lsbHMiOltdLCJ2aXNpb24iOm51bGwsIndlYnNpdGUiOm51bGwsImxhc3RNb29kbGVTeW5jIjoiMjAyNS0wNi0yMFQwNzowNjoyMC4zNTJaIiwibW9vZGxlUGFzc3dvcmQiOiIkMmEkMTAkRXpLSjZCN1plNTBZNWZSZ3Z6VGlxTzQvYzkxLmZxaXVkSEtNemhwWWFoSWdMbGVuT0d3MW0iLCJtb29kbGVVc2VySWQiOjIwNjYsIm1vb2RsZVVzZXJuYW1lIjoiODk5ODc5MDIzMSIsImNhcmVlckhpc3RvcnkiOm51bGwsImNlcnRpZmljYXRpb25zIjpudWxsLCJjb2xsYWJvcmF0aW9ucyI6bnVsbCwiZXZlbnRzUGFydGljaXBhdGlvbiI6bnVsbCwib25saW5lUG9ydGZvbGlvcyI6bnVsbCwicHJvZmVzc2lvbmFsTmV0d29ya3MiOm51bGwsInB1YmxpY2F0aW9ucyI6bnVsbCwic29jaWFsTWVkaWFMaW5rcyI6bnVsbCwidHV0b3JpYWxzIjpudWxsLCJyZXNldFRva2VuIjpudWxsLCJyZXNldFRva2VuRXhwaXJlcyI6bnVsbCwidXNlcklkIjo3NywicGFydG5lcklkIjpudWxsLCJleHBlcnRJZCI6bnVsbCwiYWRtaW5JZCI6bnVsbCwiZm9sbG93ZXJzIjpbXSwiZm9sbG93aW5nIjpbXSwicHJpdmFjeVR5cGUiOiJhbGwiLCJzZWxlY3RlZFZpZXdlcnMiOltdLCJpc0FjdGl2ZSI6dHJ1ZSwidXNlclR5cGUiOiJ1c2VyIiwiaWF0IjoxNzUwOTU4MTM2LCJleHAiOjE3NTEwNDQ1MzZ9.m30baJh660bYQnrQ9D4QkJeuqM6b6FADYsrPu71YNcg
+# Example response
+# {
+#   "message": "Responses fetched successfully",
+#   "data": [
+#     {
+#       "id": 1,
+#       "title": "Response Title 1",
+#       "description": "Response description 1",
+#       "imageUrl": "https://example.com/image1.jpg",
+#       "videoUrl": "https://example.com/video1.mp4",
+#       "communityId": 111,
+#       "creatorId": 2,
+#       "interestedCount": 2,
+#       "alreadyResponded": true
+#     },
+#     {
+#       "id": 2,
+#       "title": "Response Title 2",
+#       "description": "Response description 2",
+#       "imageUrl": "https://example.com/image2.jpg",
+#       "videoUrl": "https://example.com/video2.mp4",
+#       "communityId": 111,
+#       "creatorId": 2,
+#       "interestedCount": 1,
+#       "alreadyResponded": false
+#     }
+#   ]
+# }
+
+### Get service responses with role
+GET http://localhost:5000/api/v1/service/getServiceResponsesWithRole/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTE2LCJlbWFpbCI6Im5lcmF5aWwzMDZAaG9zbGl5LmNvbSIsIm5hbWUiOiJOZXJheWkiLCJwaG9uZCI6Ijg5OTg3OTAyMzEiLCJwaW5jb2RlIjoibmpuIiwicGFzc3dvcmQiOiIkMmEkMTAkRXpLSjZCN1plNTBZNWZSZ3Z6VGlxTzQvYzkxLmZxaXVkSEtNemhwWWFoSWdMbGVuT0d3MW0iLCJwaG90b1VSTCI6Imh0dHBzOi8vcm9ib2hhc2gub3JnL2Rvam8iLCJjcmVhdGVkQXQiOiIyMDI1LTA2LTIwVDA3OjA2OjIwLjM1MloiLCJ1cGRhdGVkQXQiOiIyMDI1LTA2LTIwVDA3OjA2OjIwLjM1MloiLCJvdHAiOm51bGwsIm90cEV4cGlyZXNBdCI6bnVsbCwiYXZhaWxhYmlsaXR5IjpudWxsLCJhd2FyZHMiOltdLCJjdWxpbmFyeVBoaWxvc29waHkiOm51bGwsImN1cnJlbnRQb3NpdGlvbiI6bnVsbCwiZW1wbG95ZXIiOm51bGwsImV4cGVydGlzZSI6bnVsbCwiaWZjYUludm9sdmVtZW50IjpbXSwiaW5kdXN0cnlDb250cmlidXRpb25zIjpbXSwiaW50ZXJlc3RzIjpbXSwibGFuZ3VhZ2VQcm9maWNpZW5jeSI6bnVsbCwibG9jYXRpb24iOiJqb2tqIiwibWVudG9yc2hpcCI6W10sIm1lbnRvcnNoaXBBdmFpbGFiaWxpdHkiOm51bGwsIm5hdGlvbmFsaXR5IjpudWxsLCJwcmVmZXJyZWRDb250YWN0IjpudWxsLCJwcmVmZXJyZWROYW1lIjpudWxsLCJyZWNpcGVzIjpbXSwicm9sZURlc2NyaXB0aW9uIjpudWxsLCJzcGVjaWFsaXphdGlvbnMiOltdLCJzdGF0ZSI6ImpuIiwic3VzdGFpbmFiaWxpdHkiOm51bGwsInRlY2hub2xvZ3lTa2lsbHMiOltdLCJ2aXNpb24iOm51bGwsIndlYnNpdGUiOm51bGwsImxhc3RNb29kbGVTeW5jIjoiMjAyNS0wNi0yMFQwNzowNjoyMC4zNTJaIiwibW9vZGxlUGFzc3dvcmQiOiIkMmEkMTAkRXpLSjZCN1plNTBZNWZSZ3Z6VGlxTzQvYzkxLmZxaXVkSEtNemhwWWFoSWdMbGVuT0d3MW0iLCJtb29kbGVVc2VySWQiOjIwNjYsIm1vb2RsZVV
+
+
+### user interests
+GET http://localhost:5000/api/v1/service/getUserInterests/116
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTE2LCJlbWFpbCI6Im5lcmF5aWwzMDZAaG9zbGl5LmNvbSIsIm5hbWUiOiJOZXJheWkiLCJwaG9uZCI6Ijg5OTg3OTAyMzEiLCJwaW5jb2RlIjoibmpuIiwicGFzc3dvcmQiOiIkMmEkMTAkRXpLSjZCN1plNTBZNWZSZ3Z6VGlxTzQvYzkxLmZxaXVkSEtNemhwWWFoSWdMbGVuT0d3MW0iLCJwaG90b1VSTCI6Imh0dHBzOi8vcm9ib2hhc2gub3JnL2Rvam8iLCJjcmVhdGVkQXQiOiIyMDI1LTA2LTIwVDA3OjA2OjIwLjM1MloiLCJ1cGRhdGVkQXQiOiIyMDI1LTA2LTIwVDA3OjA2OjIwLjM1MloiLCJvdHAiOm51bGwsIm90cEV4cGlyZXNBdCI6bnVsbCwiYXZhaWxhYmlsaXR5IjpudWxsLCJhd2FyZHMiOltdLCJjdWxpbmFyeVBoaWxvc29waHkiOm51bGwsImN1cnJlbnRQb3NpdGlvbiI6bnVsbCwiZW1wbG95ZXIiOm51bGwsImV4cGVydGlzZSI6bnVsbCwiaWZjYUludm9sdmVtZW50IjpbXSwiaW5kdXN0cnlDb250cmlidXRpb25zIjpbXSwiaW50ZXJlc3RzIjpbXSwibGFuZ3VhZ2VQcm9maWNpZW5jeSI6bnVsbCwibG9jYXRpb24iOiJqb2tqIiwibWVudG9yc2hpcCI6W10sIm1lbnRvcnNoaXBBdmFpbGFiaWxpdHkiOm51bGwsIm5hdGlvbmFsaXR5IjpudWxsLCJwcmVmZXJyZWRDb250YWN0IjpudWxsLCJwcmVmZXJyZWROYW1lIjpudWxsLCJyZWNpcGVzIjpbXSwicm9sZURlc2NyaXB0aW9uIjpudWxsLCJzcGVjaWFsaXphdGlvbnMiOltdLCJzdGF0ZSI6ImpuIiwic3VzdGFpbmFiaWxpdHkiOm51bGwsInRlY2hub2xvZ3lTa2lsbHMiOltdLCJ2aXNpb24iOm51bGwsIndlYnNpdGUiOm51bGwsImxhc3RNb29kbGVTeW5jIjoiMjAyNS0wNi0yMFQwNzowNjoyMC4zNTJaIiwibW9vZGxlUGFzc3dvcmQiOiIkMmEkMTAkRXpLSjZCN1plNTBZNWZSZ3Z6VGlxTzQvYzkxLmZxaXVkSEtNemhwWWFoSWdMbGVuT0d3MW0iLCJtb29kbGVVc2VySWQiOjIwNjYsIm1vb2RsZVV

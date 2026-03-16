@@ -1,0 +1,239 @@
+# @base_URL=http://localhost:5000/api/v1/user
+@base_URL=https://pvl.ifcaindia.com/api/api/v1/user
+@auth_JWT=Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJocml0aGlua2JveUBnbWFpbC5jb20iLCJuYW1lIjoiSHJpdGhpbiBCb3kiLCJwaG9uZSI6Ijg2NjA2MDAwNzkiLCJhZGRyZXNzIjoiIiwicGluY29kZSI6IiIsInBhc3N3b3JkIjoiJDJhJDEwJHNMVFllMjRZREdsajN5L0xhVkZxZU85RFF1SXdhcEEwTU9rWlo0dWtmSGN2MzRVLlpENkhXIiwicGhvdG9VUkwiOiIiLCJkZXNjIjoiIiwiY3JlYXRlZEF0IjoiMjAyMy0wMy0xNVQwNTozOTozOC40NjlaIiwidXBkYXRlZEF0IjoiMjAyMy0wMy0xNVQwNTozOTozOC40NzJaIiwidW5pZmllZFVzZXJJZCI6eyJpZCI6MywiZW1haWwiOiJocml0aGlua2JveUBnbWFpbC5jb20iLCJ1c2VySWQiOjIsInBhcnRuZXJJZCI6bnVsbCwiZXhwZXJ0SWQiOm51bGwsImFkbWluSWQiOm51bGx9LCJ1c2VyVHlwZSI6InVzZXIiLCJpYXQiOjE2NzkzOTgyMzQsImV4cCI6MTY3OTQ4NDYzNH0.b_g8i8u_Nd9bLkmXi8cztDFzw6W5MRMEppchtm7cdYE
+
+###
+POST http://localhost:5000/api/v1/auth/signin
+Content-Type: application/json
+
+{
+    "email":"anilgowda.nj08@gmail.com",
+    "password":"Abcd@123"
+}
+
+
+### get all users
+GET {{base_URL}}
+authorization: {{auth_JWT}}
+
+
+### GET USER BY ID
+GET {{base_URL}}/117
+GET {{base_URL}}/117
+authorization: {{auth_JWT}}
+
+###
+PATCH {{base_URL}}/117
+authorization: {{auth_JWT}}
+Content-Type: application/json
+
+{
+    "email":"kiran@gmail.com",
+
+}
+
+###
+DELETE {{base_URL}}/14
+authorization: {{auth_JWT}}
+
+### Get user subscriptions
+GET {{base_URL}}/21/subscription
+authorization: {{auth_JWT}}
+
+### Get user sessions
+GET {{base_URL}}/21/sessions
+authorization: {{auth_JWT}}
+
+### ADD session to cart
+POST {{base_URL}}/4/sessions
+authorization: {{auth_JWT}}
+Content-Type: application/json
+
+{
+    "sessionId":14,
+    "sessionSlotId":0,
+    "price":0
+}
+
+### Used to MARK RSVP
+PATCH {{base_URL}}/4/sessions
+authorization: {{auth_JWT}}
+Content-Type: application/json
+
+{
+    "attendanceId":38,
+    "rsvp":true
+}
+
+### Delete user session: DELETE Attendance record
+DELETE {{base_URL}}/7/sessions
+authorization: {{auth_JWT}}
+
+### Buy a session: MAKE PAYMENT
+PATCH {{base_URL}}/4/sessions/buy
+authorization: {{auth_JWT}}
+Content-Type: application/json
+
+{
+    "transactionId":53,
+    "attendanceId":38
+}
+
+###  Get user subscribed communities
+GET {{base_URL}}/21/community
+authorization: {{auth_JWT}}
+
+### Get user subscribed communities
+GET {{base_URL}}/21/community/subscribed
+authorization: {{auth_JWT}}
+
+### Get user non-subscribed communities (excluding requested ones)
+GET {{base_URL}}/69/community/non-subscribed
+authorization: {{auth_JWT}}
+
+### Debug: Get all communities
+GET {{base_URL}}/debug/communities
+authorization: {{auth_JWT}}
+
+### Get user communities
+GET {{base_URL}}/21/community/sessions
+authorization: {{auth_JWT}}
+
+### Get user attendance
+GET {{base_URL}}/4/attendance
+authorization: {{auth_JWT}}
+
+
+### GET CART ITEMS
+GET {{base_URL}}/7/cart
+authorization: {{auth_JWT}}
+
+### Delete CART ITEMS
+PATCH {{base_URL}}/7/cart
+authorization: {{auth_JWT}}
+Content-Type: application/json
+
+{
+    "attendanceIds":[38]
+}
+
+
+### 
+DELETE {{base_URL}}/14
+authorization: {{auth_JWT}}
+
+### Update user by ID
+PATCH {{base_URL}}/117
+authorization: {{auth_JWT}}
+Content-Type: application/json
+
+{
+    "name": "John Doe",
+    "preferredName": "John",
+    "email": "john.doe1@example.com",
+    "phone": "9000000001",
+    "preferredContact": "email",
+    "nationality": "American",
+    "state": "California",
+    "pincode": "90001",
+    "location": "Los Angeles",
+    "currentPosition": "Chef",
+    "employer": "Restaurant",
+    "roleDescription": "Head Chef",
+    "careerHistory": ["10 years in culinary industry"],
+    "specializations": ["Italian Cuisine", "French Cuisine"],
+    "certifications": ["Certified Chef"],
+    "awards": ["Best Chef 2020"],
+    "culinaryPhilosophy": "Farm to table",
+    "vision": "To innovate culinary arts",
+    "sustainability": "Use of organic ingredients",
+    "ifcaInvolvement": ["Member"],
+    "industryContributions": ["Published articles"],
+    "mentorship": ["Mentor for young chefs"],
+    "publications": ["Culinary Magazine"],
+    "recipes": ["Pasta", "Pizza"],
+    "tutorials": ["How to make pasta"],
+    "expertise": "Italian Cuisine",
+    "professionalNetworks": ["Culinary Association"],
+    "collaborations": ["With top chefs"],
+    "eventsParticipation": ["Food Festival"],
+    "socialMediaLinks": ["http://twitter.com/johndoe"],
+    "website": "http://johndoe.com",
+    "onlinePortfolios": ["http://portfolio.com/johndoe"],
+    "availability": "Weekdays",
+    "interests": ["Cooking", "Traveling"],
+    "mentorshipAvailability": true,
+    "languageProficiency": [
+        {
+            "language": "English",
+            "proficiency": "Fluent"
+        },
+        {
+            "language": "Spanish",
+            "proficiency": "Intermediate"
+        }
+    ],
+    "technologySkills": ["Microsoft Office"]
+}
+
+### Get user profile progress
+GET {{base_URL}}/1/profile-progress
+authorization: {{auth_JWT}}
+
+
+### Get user profile progress
+GET {{base_URL}}/48/intial-community
+authorization: {{auth_JWT}}
+
+### Get user recent activities
+GET {{base_URL}}/23/recent-activities
+authorization: {{auth_JWT}}
+
+### Check if user is subscribed to a community
+GET {{base_URL}}/69/community/4/subscribed
+authorization: {{auth_JWT}}
+
+### Check if user has requested to join a community
+GET {{base_URL}}/69/community/4/requested
+authorization: {{auth_JWT}}
+
+### List all requested (pending) communities for a user
+GET {{base_URL}}/69/communities/requested
+authorization: {{auth_JWT}}
+
+### Get user subscribed sessions
+GET {{base_URL}}/21/sessions/subscribed
+authorization: {{auth_JWT}}
+
+### Get user subscribed sessions with pagination
+GET {{base_URL}}/69/sessions/subscribed?page=1&limit=10
+authorization: {{auth_JWT}}
+
+### Get user non-subscribed sessions 
+GET {{base_URL}}/69/sessions/non-subscribed
+authorization: {{auth_JWT}}
+
+### Get user non-subscribed sessions with pagination
+GET {{base_URL}}/69/sessions/non-subscribed?page=1&limit=10
+authorization: {{auth_JWT}}
+
+### Check if user is subscribed to a specific session
+GET {{base_URL}}/69/session/14/subscribed
+authorization: {{auth_JWT}}
+
+### Get user session join status
+GET {{base_URL}}/69/session/14/join-status
+authorization: {{auth_JWT}}
+
+### Get user session statistics
+GET {{base_URL}}/69/sessions/stats
+authorization: {{auth_JWT}}
+
+### Get user ongoing sessions
+GET {{base_URL}}/69/sessions/ongoing
+authorization: {{auth_JWT}}
+
+### Get user upcoming session slots
+GET {{base_URL}}/69/sessions/upcoming-slots?page=1&limit=10
+authorization: {{auth_JWT}}
+

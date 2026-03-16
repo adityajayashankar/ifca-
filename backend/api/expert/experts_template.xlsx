@@ -1,0 +1,8 @@
+# This is a placeholder for the Excel template
+# The actual Excel file should have the following columns:
+# email, name, phone, address, pincode, photoURL, desc
+# 
+# Example data:
+# email | name | phone | address | pincode | photoURL | desc
+# expert1@example.com | John Doe | 9876543210 | 123 Expert Street | 12345 | https://s3.amazonaws.com/bucket/expert1.jpg | Software Engineer
+# expert2@example.com | Jane Smith | 9876543211 | 456 Expert Avenue | 12346 | https://s3.amazonaws.com/bucket/expert2.jpg | Data Scientist 

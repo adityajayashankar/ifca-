@@ -1,0 +1,195 @@
+@baseUrl = https://pvl.ifcaindia.com/api/api/v1/requests
+@comRequestBaseUrl = http://localhost:5000/api/v1/comRequest
+
+# ===== REQUESTS CONTROLLER ENDPOINTS =====
+
+### Get All Requests (admin) - both pending and approved
+GET {{baseUrl}}
+Content-Type: application/json
+
+###
+
+### Get All Pending Requests
+GET {{baseUrl}}/pending
+Content-Type: application/json
+
+###
+
+### Get All Approved Requests
+GET {{baseUrl}}/approved
+Content-Type: application/json
+
+###
+
+### Get Requests by User ID (all requests)
+GET {{baseUrl}}/user/1
+Content-Type: application/json
+
+###
+
+### Get Pending Requests by User ID
+GET {{baseUrl}}/user/2/pending
+Content-Type: application/json
+
+###
+
+### Get Approved Requests by User ID
+GET {{baseUrl}}/user/1/approved
+Content-Type: application/json
+
+###
+
+### Get All Requests by User ID (both pending and approved)
+GET {{baseUrl}}/user/1/all
+Content-Type: application/json
+
+###
+
+### Get Requests by Community ID (pending only)
+GET {{baseUrl}}/community/106
+Content-Type: application/json
+
+###
+
+### Get Approved Requests by Community ID
+GET {{baseUrl}}/community/44/approved
+Content-Type: application/json
+
+###
+
+### Get All Requests by Community ID (both pending and approved)
+GET {{baseUrl}}/community/4/all
+Content-Type: application/json
+
+###
+
+### Get Requests by Community ID for a specific user (community manager)
+GET {{baseUrl}}/community/4/user/16
+Content-Type: application/json
+
+###
+
+### Get a single request by ID
+GET {{baseUrl}}/1
+Content-Type: application/json
+
+###
+
+### Create a Request
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+  "communityDetails": [
+    {
+      "name": "Abhijith",
+      "email": "abhijithsai9@gmail.com",
+      "phone": "9380126624",
+      "q1": "Question 1 Answer",
+      "q2": "Question 2 Answer",
+      "q3": "Question 3 Answer",
+      "communityId": 35,
+      "userId": 72
+    }
+  ]
+}
+
+###
+
+### Respond to a Request (batch)
+PUT {{baseUrl}}/respond
+Content-Type: application/json
+
+[
+  {
+    "requestId": 1,
+    "communityId": 1,
+    "userId": 1
+  }
+]
+
+###
+
+### Update Request Status (approve/reject single request)
+PUT {{baseUrl}}/1/status
+Content-Type: application/json
+
+{
+  "status": true,
+  "reason": "Approved - User meets community requirements"
+}
+
+###
+
+# ===== COMREQUEST ENDPOINTS (using same requests controller) =====
+
+### Get Requests by Community ID (pending only) - COMREQUEST
+GET {{comRequestBaseUrl}}/106
+Content-Type: application/json
+
+###
+
+### Get Approved Requests by Community ID - COMREQUEST
+GET {{comRequestBaseUrl}}/44/approved
+Content-Type: application/json
+
+###
+
+### Get All Requests by Community ID (both pending and approved) - COMREQUEST
+GET {{comRequestBaseUrl}}/4/all
+Content-Type: application/json
+
+###
+
+### Get Requests by Community ID for a specific user (community manager) - COMREQUEST
+GET {{comRequestBaseUrl}}/4/user/16
+Content-Type: application/json
+
+###
+
+### Create a Request for Community - COMREQUEST
+POST {{comRequestBaseUrl}}
+Content-Type: application/json
+
+{
+  "communityDetails": [
+    {
+      "name": "John Doe",
+      "email": "john.doe@example.com",
+      "phone": "1234567890",
+      "q1": "Question 1 Answer",
+      "q2": "Question 2 Answer",
+      "q3": "Question 3 Answer",
+      "communityId": 4,
+      "userId": 16
+    }
+  ]
+}
+
+###
+
+### Respond to a Request (batch) - COMREQUEST
+PUT {{comRequestBaseUrl}}/respond
+Content-Type: application/json
+
+[
+  {
+    "requestId": 1,
+    "communityId": 1,
+    "userId": 1
+  }
+]
+
+###
+
+### Update Request Status (approve/reject single request) - COMREQUEST
+PUT {{comRequestBaseUrl}}/1/status
+Content-Type: application/json
+
+{
+  "status": true,
+  "reason": "Approved - User meets community requirements"
+}
+
+###
+

@@ -1,0 +1,15 @@
+.card {
+    @apply p-4 border flex flex-col max-w-min transition-shadow duration-200 hover:shadow-lg rounded-md;
+}
+
+.card__header {
+    @apply h-48 w-64 relative;
+}
+
+.card__body {
+    @apply h-16 mt-4;
+}
+
+.card__footer {
+    @apply flex flex-col gap-4 justify-between w-full items-center mt-4;
+}

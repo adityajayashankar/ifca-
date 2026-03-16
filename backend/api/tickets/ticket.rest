@@ -1,0 +1,13 @@
+###
+POST http://localhost:5000/api/v1/ticket
+Content-Type: application/json
+
+{
+ "content":"I have an idea for a session with peter thiel",
+ "domain":"Session",
+ "userId":7   
+}
+
+###
+GET http://localhost:5000/api/v1/ticket
+

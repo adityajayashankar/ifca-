@@ -1,0 +1,36 @@
+{{#> base}}
+    <h2>IFCA Event Registration Confirmation</h2>
+    <p>Dear {{name}},</p>
+    
+    <p>Your registration for the following IFCA event has been confirmed:</p>
+    
+    <div class="alert alert-success">
+        <h3>Event Details</h3>
+        <p><strong>Event:</strong> {{eventName}}<br>
+        <strong>Date:</strong> {{eventDate}}<br>
+        <strong>Time:</strong> {{eventTime}}<br>
+        <strong>Venue:</strong> {{eventVenue}}<br>
+        <strong>Registration ID:</strong> {{registrationId}}</p>
+    </div>
+
+    <p>Please keep this email for your reference. You can view the event details and add it to your calendar using the button below:</p>
+    
+    <a href="{{eventUrl}}" class="button">View Event Details</a>
+
+    <div class="metadata">
+        <p><strong>Important Information:</strong></p>
+        <ul>
+            <li>Please arrive 30 minutes before the event start time for registration</li>
+            <li>Bring your IFCA membership card and a valid photo ID</li>
+            <li>Dress code: Professional Chef's Uniform or Business Formal</li>
+            <li>Parking facilities are available at the venue</li>
+        </ul>
+    </div>
+
+    <p>For any queries regarding the event, please contact our events team:</p>
+    <p>Email: events@ifcaindia.com<br>
+    Phone: +91 00000 00000</p>
+
+    <p>Best regards,<br>
+    The IFCA Events Team</p>
+{{/base}} 

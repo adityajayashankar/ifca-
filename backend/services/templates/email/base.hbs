@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 24px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        .logo {
+            max-width: 180px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+        .content {
+            padding: 0 8px;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 28px;
+            background-color: #007bff;
+            color: #fff !important;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 18px 0;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 32px;
+            padding-top: 18px;
+            border-top: 1px solid #eee;
+            font-size: 13px;
+            color: #666;
+        }
+        .social-links {
+            margin: 12px 0;
+        }
+        .social-link {
+            display: inline-block;
+            margin: 0 8px;
+            color: #007bff !important;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .metadata {
+            background-color: #f8f9fa;
+            padding: 12px;
+            border-radius: 5px;
+            margin: 16px 0;
+        }
+        .alert-success {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 12px;
+            border-radius: 5px;
+            margin: 16px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="https://static.wixstatic.com/media/db3b3b_86383d901e49464bac1352044fe61656~mv2.png/v1/fill/w_314,h_104,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/db3b3b_86383d901e49464bac1352044fe61656~mv2.png" alt="IFCA Logo" class="logo">
+            <h2>{{title}}</h2>
+        </div>
+        <div class="content">
+            {{> @partial-block}}
+        </div>
+        <div class="footer">
+            <div class="social-links">
+                <a href="{{socialLinks.facebook}}" class="social-link">Facebook</a>
+                <a href="{{socialLinks.twitter}}" class="social-link">Twitter</a>
+                <a href="{{socialLinks.linkedin}}" class="social-link">LinkedIn</a>
+            </div>
+            <p>If you received this email by mistake, please ignore it.</p>
+            <p>© {{currentYear}} IFCA. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html> 

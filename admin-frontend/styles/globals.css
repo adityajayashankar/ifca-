@@ -1,0 +1,83 @@
+@import 'common/Form';
+@import 'common/Footer.css';
+@import 'common/Button.css';
+@import 'common/Card.css';
+@import 'common/ScrollToTop.css';
+
+@import './auth/LoginForm';
+@import url('./common//Tags.css');
+@import './session/CreateSessionForm';
+@import url('./common/loader.css');
+@import url('./common/categorycard.css');
+@import url('./underline.css');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+    padding: 0;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+        Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+
+
+* {
+    box-sizing: border-box;
+}
+
+.page {
+    @apply min-h-screen py-6 md:py-10 md:px-4 max-w-7xl mx-auto;
+}
+
+.bgimg{
+    background: linear-gradient(
+        0deg,
+        rgba(200, 200, 200, 1) 0%,
+        rgba(0, 0, 0, 1) 0%,
+        rgba(200, 200, 200, 0) 100%
+    );
+}
+
+/* Flip Card Styles */
+.transform-style-preserve-3d {
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
+}
+
+.group:hover .flip-card-inner {
+  transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
+}
+
+.ql-editor img{
+    width: 300px;
+    height: 300px;
+}
+
+.render-blog img{
+    width: 300px;
+    height: 300px;
+}
+
+.gradient_background {
+    background: #4E795E;
+}
+

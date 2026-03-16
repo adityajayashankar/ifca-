@@ -1,0 +1,18 @@
+.customCarousel .control-arrow {
+    width: 100px; /* Set arrow width */
+    height: 100px; /* Set arrow height */
+    margin-top: -50px; /* Adjust vertically centered position */
+  }
+  
+  .customCarousel .control-arrow:before {
+    font-size: 24px; /* Set arrow icon size */
+  }
+  
+  .customCarousel .control-prev {
+    left: 20px; /* Set left margin for the previous arrow */
+  }
+  
+  .customCarousel .control-next {
+    right: 20px; /* Set right margin for the next arrow */
+  }
+  

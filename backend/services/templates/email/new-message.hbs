@@ -1,0 +1,34 @@
+{{#> base}}
+{{#*inline "content"}}
+    <h2>New IFCA Message</h2>
+    <p>Dear {{recipientName}},</p>
+    
+    <p>You have received a new message{{#if metadata.senderName}} from {{metadata.senderName}}{{/if}} in the IFCA community.</p>
+    
+    <div class="alert alert-info">
+        <h3>Message Preview</h3>
+        <p>{{message}}</p>
+    </div>
+
+    <div class="metadata">
+        <p><strong>Quick Actions:</strong></p>
+        <ul>
+            <li>Reply to continue the conversation</li>
+            <li>View the full message thread</li>
+            <li>Schedule a follow-up if needed</li>
+        </ul>
+    </div>
+
+    <a href="{{actionUrl}}" class="button">View Message</a>
+
+    <div class="metadata">
+        <p><strong>Need Help?</strong></p>
+        <p>Contact IFCA support at:</p>
+        <p>Email: contact.pvlifcaindia@gmail.com<br>
+        Phone: +91 00000 00000</p>
+    </div>
+
+    <p>Best regards,<br>
+    The IFCA Team</p>
+{{/inline}}
+{{/base}} 

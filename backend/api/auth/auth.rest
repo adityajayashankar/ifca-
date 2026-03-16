@@ -1,0 +1,184 @@
+###
+@baseURL=http://localhost:5000/api/v1/auth
+@prodURL=https://pvl.ifcaindia.com/api/api/v1/auth
+
+@devURL = https://dev.ifcaindia.com/api/api/v1/auth 
+
+@contentType = application/json
+
+### Signup Example
+POST {{baseURL}}/signup
+Content-Type: {{contentType}}
+
+{
+  "email": "user140@example.com",
+  "password": "Abcd@123",
+  "name": "Rahul Sharma",
+  "phone": "9876543112",
+  "location": "Bangalore",
+  "pincode": "560004",
+  "userType": "user"
+}
+
+### Login Example (no userType, triggers role selection if multiple roles)
+POST {{baseURL}}/signin
+Content-Type: {{contentType}}
+
+{
+  "email": "anil@",
+  "password": "Abcd@123"
+}
+
+### Login Example (with userType, for users with multiple roles)
+POST {{baseURL}}/signin
+Content-Type: {{contentType}}
+{
+  "email": "user1@example.com",
+  "password": "Abcd@123",
+  "userType": "user"
+}
+
+### Login Example (with userType, for admin)
+POST {{baseURL}}/signin
+Content-Type: {{contentType}}
+{
+  "email": "admin@cp.in",
+  "password": "Abcd@123",
+  "userType": "admin"
+}
+
+### Refresh Token - Get new access token using refresh token
+POST {{prodURL}}/refresh-token
+Content-Type: {{contentType}}
+
+{
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlmaWVkVXNlcklkIjoxMDAsInVzZXJJZCI6MTEzLCJlbWFpbCI6ImtyaXNobmEuZGV2ZWxvcGVyQGdtYWlsLmNvbSIsInVzZXJUeXBlIjoidXNlciIsImlhdCI6MTc1MjE1MTU3MiwiZXhwIjoxNzUyMjM3OTcyfQ.aQyd_ZtS1v4R3vF5KMDpKM3dKX7bGYrI1TK2IBoCzCU"
+}
+
+### Regenerate Token - Generate new tokens for any user type
+POST {{}}/regenerate-token
+Content-Type: {{contentType}}
+
+{
+  "email": "krishna.developer@gmail.com",
+  "userType": "user"
+}
+
+### Regenerate Token - For user type
+POST {{baseURL}}/regenerate-token
+Content-Type: {{contentType}}
+{
+  "email": "",
+  "userType": "user"
+}
+
+### Regenerate Token - For partner type
+POST {{baseURL}}/regenerate-token
+Content-Type: {{contentType}}
+{
+  "email": "partner@example.com",
+  "userType": "partner"
+}
+
+### Regenerate Token - For expert type
+POST {{baseURL}}/regenerate-token
+Content-Type: {{contentType}}
+
+{
+  "email": "krishna.test2@gmail.com",
+  "userType": "user"
+}
+
+
+### send otp
+POST {{baseURL}}/send-otp
+Content-Type: {{contentType}}
+
+{
+  "phone": "7892655210"
+}
+
+
+
+### send otp fast2sms
+POST {{baseURL}}/send-otp
+Content-Type: {{contentType}}
+
+{
+  "phone": "7892655210"
+}
+
+
+
+### verify otp
+POST {{baseURL}}/verify-otp
+Content-Type: {{contentType}}
+
+{
+  "phone": "9000000002",
+  "otp": "892687"
+}
+
+### Example response for refresh token success
+# {
+#   "status": 200,
+#   "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+#   "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+#   "message": "Tokens refreshed successfully"
+# }
+
+### Example response for refresh token error
+# {
+#   "message": "Invalid or expired refresh token"
+# }
+
+### Example response for regenerate token success
+# {
+#   "success": true,
+#   "message": "Token regenerated successfully",
+#   "jwt": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+#   "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+#   "user": {
+#     "id": 1,
+#     "email": "admin@example.com",
+#     "name": "Admin User",
+#     "userType": "admin",
+#     "unifiedUser": {
+#       "id": 1,
+#       "email": "admin@example.com",
+#       "adminId": 1
+#     }
+#   }
+# }
+
+### Example response for regenerate token - user not found
+# {
+#   "success": false,
+#   "message": "User not found"
+# }
+
+### Example response for regenerate token - invalid userType
+# {
+#   "success": false,
+#   "message": "Invalid userType. Must be one of: user, admin, partner, expert"
+# }
+
+### Example response for regenerate token - account disabled
+# {
+#   "success": false,
+#   "message": "Your account is disabled. Please contact admin to activate your account."
+# }
+
+### Example response for regenerate token - userType mismatch
+# {
+#   "success": false,
+#   "message": "User not found or userType mismatch"
+# }
+
+### Check if email exists in database
+GET {{baseURL}}/api/v1/auth/check-email?email=user@example.com
+Content-Type: application/json
+
+### Check if phone number exists in database
+GET {{baseURL}}/api/v1/auth/check-phone?phone=1234567890
+Content-Type: application/json

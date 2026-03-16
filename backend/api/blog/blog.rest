@@ -1,0 +1,98 @@
+### API TEST METHODS FOR BLOG ENDPOINTS
+
+@baseURL=http://localhost:5000/api/v1/blog
+
+@auth_JWT=Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJ1c2VyQGdldHN1YnNwYWNlLnRlY2gzIiwibmFtZSI6InVzZXIzIiwicGhvbmUiOiIrOTEyNzY1Njc4OTMyIiwiYWRkcmVzcyI6IiIsInBpbmNvZGUiOiIiLCJwYXNzd29yZCI6IiQyYSQxMCRweHRtUW9jT1NkY2VkS2YxdlI0S1ouVU5JbmdCVHFlM3Z2djhaNk9ZWVVkTmIyN1Exd0RUeSIsInBob3RvVVJMIjoiaHR0cHM6Ly9yb2JvaGFzaC5vcmcvZG9qbyIsImRlc2MiOiJ7XCJzdGFnZVwiOjAsXCJpc0NhcmVnaXZlclwiOnRydWV9IiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0yNVQxMjowODo1NC4yODNaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0yNVQxMjowODo1NC4yODNaIiwidW5pZmllZFVzZXJJZCI6eyJpZCI6NiwiZW1haWwiOiJ1c2VyQGdldHN1YnNwYWNlLnRlY2gzIiwidXNlcklkIjoxLCJwYXJ0bmVySWQiOm51bGwsImV4cGVydElkIjpudWxsLCJhZG1pbklkIjpudWxsfSwidXNlclR5cGUiOiJ1c2VyIiwiaWF0IjoxNjcyNDU4ODE1LCJleHAiOjE2NzI1NDUyMTV9.zVfULHaUFC73fPeC0KolxfncRW7acHwca-jv_q-uloo
+
+### SIGNUP
+POST http://localhost:5000/api/v1/auth/signin
+Content-Type: application/json
+
+{
+    "userType":"user",
+    "email":"user@getsubspace.tech3",
+    "password":"subspaceuser"
+}
+
+
+
+### CREATE A BLOG (save as draft)
+POST {{baseURL}}
+Content-Type: application/json
+
+{
+    "title":"Figuring Out2",
+    "content":"<p>This is podcast turned blog, called figuring out</p>",
+    "draft":true,
+    "unifiedUserId":3
+}
+
+### CREATE A PRIVATE BLOG AND PUBLISH
+POST {{baseURL}}
+Content-Type: application/json
+
+{
+    "title":"Figuring Out-Community",
+    "content":"<p>This is podcast turned blog, called figuring out</p>",
+    "draft":false,
+    "unifiedUserId":3,
+    "isPrivate":true,
+    "communityId":1,
+    "tagsData":[
+        {
+            "name":"community-blog"
+        },
+        {
+            "id":7,
+            "name":"new-one"
+        }
+    ]
+
+}
+
+
+### GET ALL PUBLISHED BLOGS
+GET {{baseURL}}
+
+### GET BLOGS BY USER
+GET {{baseURL}}/user/3
+
+### GET BLOGS PRIVATE TO COMMUNITY
+GET {{baseURL}}/community/1
+
+### GET BLOG BY ID
+GET {{baseURL}}/c816bece-5224-4405-96fc-d16e257effbb
+authorization: {{auth_JWT}}
+
+### UPDATE BLOG BY ID
+PATCH {{baseURL}}/74a2c9cb-8ae5-4592-81bf-047989dad449
+Content-Type: application/json
+
+{
+    "draft":false,
+    "content":"<p>This is podcast turned blog, called figuring out. FINAL</p>"
+}
+
+### UPDATE TAGS FOR BLOG
+PATCH {{baseURL}}/74a2c9cb-8ae5-4592-81bf-047989dad449/tags
+Content-Type: application/json
+
+{
+    "newTags":[
+        {
+            "id":8,
+            "name":"Blog-2"
+        }
+    ]
+}
+
+### DELETE BLOG BY ID
+DELETE {{baseURL}}/9b4d29e1-ad98-4e44-9c14-4849132333df
+
+
+### SUBSCRIBE COMMUNITY TO BLOG
+PATCH {{baseURL}}/74a2c9cb-8ae5-4592-81bf-047989dad449/community/1?unsub=true
+
+
+### LIKE A BLOG
+PATCH {{baseURL}}/74a2c9cb-8ae5-4592-81bf-047989dad449/user/3

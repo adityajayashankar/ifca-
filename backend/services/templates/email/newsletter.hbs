@@ -1,0 +1,51 @@
+{{#> base}}
+    <h2>IFCA Newsletter</h2>
+    <p>Dear {{name}},</p>
+    
+    <p>Here's your latest update from the Indian Federation of Culinary Associations:</p>
+    
+    <div class="alert alert-info">
+        <h3>Upcoming IFCA Events</h3>
+        {{#each featuredEvents}}
+        <div style="margin-bottom: 20px;">
+            <h4>{{title}}</h4>
+            <p><strong>Date:</strong> {{date}}<br>
+            <strong>Time:</strong> {{time}}<br>
+            <strong>Location:</strong> {{location}}</p>
+            <a href="{{url}}" class="button">Learn More</a>
+        </div>
+        {{/each}}
+    </div>
+
+    <div class="metadata">
+        <h3>Culinary Industry Insights</h3>
+        {{#each articles}}
+        <div style="margin-bottom: 15px;">
+            <h4>{{title}}</h4>
+            <p>{{summary}}</p>
+            <a href="{{url}}" style="color: #007bff; text-decoration: none;">Read More →</a>
+        </div>
+        {{/each}}
+    </div>
+
+    <div class="alert alert-warning">
+        <h3>Important Deadlines</h3>
+        <ul>
+            {{#each deadlines}}
+            <li><strong>{{title}}:</strong> {{date}}</li>
+            {{/each}}
+        </ul>
+    </div>
+
+    <p>Stay connected with IFCA on social media:</p>
+    <div class="social-links">
+        <a href="{{socialLinks.facebook}}" class="social-link">Facebook</a>
+        <a href="{{socialLinks.twitter}}" class="social-link">Twitter</a>
+        <a href="{{socialLinks.linkedin}}" class="social-link">LinkedIn</a>
+    </div>
+
+    <p>To unsubscribe from our newsletter, please click <a href="{{unsubscribeUrl}}" style="color: #007bff;">here</a>.</p>
+
+    <p>Best regards,<br>
+    The IFCA Communications Team</p>
+{{/base}} 

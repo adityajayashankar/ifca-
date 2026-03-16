@@ -1,0 +1,37 @@
+{{#> base}}
+    <h2>IFCA Event Reminder</h2>
+    <p>Dear {{name}},</p>
+    
+    <p>This is a friendly reminder about your upcoming IFCA event:</p>
+    
+    <div class="alert alert-info">
+        <h3>Event Details</h3>
+        <p><strong>Event:</strong> {{eventName}}<br>
+        <strong>Date:</strong> {{eventDate}}<br>
+        <strong>Time:</strong> {{eventTime}}<br>
+        <strong>Venue:</strong> {{eventVenue}}<br>
+        <strong>Registration ID:</strong> {{registrationId}}</p>
+    </div>
+
+    <p>We look forward to your participation! You can view the event details and add it to your calendar using the button below:</p>
+    
+    <a href="{{eventUrl}}" class="button">View Event Details</a>
+
+    <div class="metadata">
+        <p><strong>Pre-Event Checklist:</strong></p>
+        <ul>
+            <li>✓ Confirm your attendance</li>
+            <li>✓ Prepare your IFCA membership card and photo ID</li>
+            <li>✓ Plan your route to the venue</li>
+            <li>✓ Review the event schedule and requirements</li>
+            <li>✓ Check if you need to bring any specific equipment or materials</li>
+        </ul>
+    </div>
+
+    <p>For any last-minute queries or assistance, please contact our events team:</p>
+    <p>Email: events@ifcaindia.com<br>
+    Phone: +91 00000 00000</p>
+
+    <p>Best regards,<br>
+    The IFCA Events Team</p>
+{{/base}} 

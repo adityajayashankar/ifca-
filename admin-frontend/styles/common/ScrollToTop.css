@@ -1,0 +1,7 @@
+.scrolltotop__btn {
+    @apply fixed bottom-4 right-4 p-2 bg-[#4E795E80] rounded-full transition-opacity duration-300 text-white;
+}
+
+.button-blue {
+    @apply bg-blue-500 text-white hover:bg-blue-600;
+}

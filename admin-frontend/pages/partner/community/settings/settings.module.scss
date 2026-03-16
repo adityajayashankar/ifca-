@@ -1,0 +1,159 @@
+.settings{
+    .btmPart{
+        background-color: rgba(255, 255, 255, 0.6);
+        border-radius: 10px;
+        padding: 20px 40px;
+        margin-top: 50px;
+
+        h3{
+            font-size: 21px;
+            font-weight: 600;
+        }
+
+        .topSectionWrapper{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .btmSection{
+            margin-top: 50px;
+
+            h2{
+                font-weight: 600;
+            }
+
+            .uploadThemeContainer{
+                background-color: #3554C540;
+                border-radius: 10px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding: 40px;
+                margin-bottom: 50px;
+
+                label{
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    
+                    .imageIcon{
+                        font-size: 56px;
+                        color: #595959;
+                    }
+
+                    h3,p{
+                        margin: 0;
+                    }
+
+                    h3{
+                        margin-top: 20px;
+                        margin-bottom: 5px;
+                    }
+
+                    p{
+                        color: #595959;
+                        font-weight: 500;
+                    }
+                }
+
+                input{
+                    display: none;
+                }
+            }
+
+            .textAdjust{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                font-size: 24px;
+                font-weight: 600;
+                margin-top: 20px;
+
+                select{
+                    border: none;
+                    padding: 15px 20px;
+                    font-size: 21px;
+                    font-weight: 600;
+                    border-radius: 10px;
+                    outline: none;
+                }
+            }
+
+            .themeAdjust{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-top: 20px;
+
+                .leftPart{
+                    h3{
+                        font-size: 24px;
+                        font-weight: 600;
+                    }
+
+                    p{
+                        font-weight: 500;
+                        color: #333;
+                    }
+                }
+
+                .rightPart{
+                    position: relative;
+
+                    .switch {
+                        width: 75px;
+                        height: 40px;
+                        background-color: #3554C5;
+                        display: flex;
+                        justify-content: flex-start;
+                        border-radius: 50px;
+                        cursor: pointer;
+                        padding: 2px;
+                      }
+                      
+                      .switch[data-isOn="true"] {
+                        justify-content: flex-end;
+                      }
+                      
+                      .handle {
+                        width: 36px;
+                        height: 36px;
+                        background-color: white;
+                        border-radius: 40px;
+                      }
+                }
+
+                .colorPick{
+                    background-color: white;
+                    border-radius: 10px;
+                    padding: 10px;
+                    padding-right: 15px;
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+
+                    img{
+                        cursor: pointer;
+                    }
+
+                    div{
+                        height: 30px;
+                        width: 45px;
+                        border-radius: 5px;
+                        border: 1px solid black;
+                    }
+                }
+
+                .sketchContainer{
+                    position: absolute;
+                    top: 50px;
+                    z-index: 999;
+                }
+            }
+        }
+    }
+}

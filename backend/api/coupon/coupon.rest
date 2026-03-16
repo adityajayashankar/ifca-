@@ -1,0 +1,54 @@
+####
+@baseURL=http://localhost:5000/api/v1/coupon
+
+@auth_JWT=Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbnRlc3RAZ2V0c3Vic3BhY2UudGVjaCIsIm5hbWUiOiJhZG1pbnRlc3QiLCJwaG9uZSI6IjEyMzQzMiIsImFkZHJlc3MiOiJzYyIsInBpbmNvZGUiOiIxMjMiLCJwYXNzd29yZCI6IiQyYSQxMCRtZExFaDRLLlhnbmk0VEZTLjVGbEx1L3dlUmdPNnk1TGxRT0RhY29DeC5xaDlBY1dKZ3R3UyIsImlzU3VwZXJBZG1pbiI6ZmFsc2UsImNyZWF0ZWRBdCI6IjIwMjItMTItMjRUMTg6NTY6MDEuMjUwWiIsInVwZGF0ZWRBdCI6IjIwMjItMTItMjRUMTg6NTY6MDEuMjU0WiIsInVuaWZpZWRVc2VySWQiOnsiaWQiOjEsImVtYWlsIjoiYWRtaW50ZXN0QGdldHN1YnNwYWNlLnRlY2giLCJ1c2VySWQiOm51bGwsInBhcnRuZXJJZCI6bnVsbCwiZXhwZXJ0SWQiOm51bGwsImFkbWluSWQiOjF9LCJ1c2VyVHlwZSI6ImFkbWluIiwiaWF0IjoxNjcyOTExOTk3LCJleHAiOjE2NzI5OTgzOTd9.xh1asq2QitZSGP5llXqhwDdPzG5_qvdyKol7WTByRVQ
+
+### GET JWT
+POST http://localhost:5000/api/v1/auth/signin
+Content-Type: application/json
+
+{
+    "email":"admintest@getsubspace.tech",
+    "password":"admintest",
+    "userType":"admin"
+}
+
+### GET ALL COUPONS
+GET {{baseURL}}
+
+### CREATE COUPON
+POST {{baseURL}}
+Content-Type: application/json
+authorization: {{auth_JWT}}
+
+{
+    "code":"acknashg",
+    "discountRate":12
+}
+
+### CREATE COUPON FOR A SESSION
+POST {{baseURL}}
+Content-Type: application/json
+authorization: {{auth_JWT}}
+
+{
+    "code":"acknsashg",
+    "discountRate":12,
+    "communityId":1
+}
+
+### GET COUPON BY CODE
+GET {{baseURL}}/acknsashg
+
+### UPDATE COUPON BY CODE
+PATCH {{baseURL}}/acknsashg
+Content-Type: application/json
+authorization: {{auth_JWT}}
+
+{
+    "discountRate":14
+}
+
+###
+DELETE {{baseURL}}/acknsashg
+authorization: {{auth_JWT}}

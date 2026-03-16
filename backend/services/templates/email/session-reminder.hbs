@@ -1,0 +1,43 @@
+{{#> base}}
+{{#*inline "content"}}
+    <h2>IFCA Session Reminder</h2>
+    <p>Dear {{recipientName}},</p>
+    
+    <p>This is a reminder for your upcoming IFCA session:</p>
+    
+    <div class="alert alert-info">
+        <h3>Session Details</h3>
+        <p><strong>Title:</strong> {{title}}<br>
+        {{#if metadata.startTime}}
+        <strong>Start Time:</strong> {{metadata.startTime}}<br>
+        {{/if}}
+        {{#if metadata.location}}
+        <strong>Location:</strong> {{metadata.location}}<br>
+        {{/if}}
+        <strong>Description:</strong> {{message}}</p>
+    </div>
+
+    <div class="metadata">
+        <p><strong>Pre-Session Checklist:</strong></p>
+        <ul>
+            <li>✓ Confirm your attendance</li>
+            <li>✓ Prepare your IFCA membership card</li>
+            <li>✓ Review any pre-session materials</li>
+            <li>✓ Plan your route to the venue</li>
+            <li>✓ Bring necessary equipment or materials</li>
+        </ul>
+    </div>
+
+    <a href="{{actionUrl}}" class="button">View Session Details</a>
+
+    <div class="metadata">
+        <p><strong>Need Assistance?</strong></p>
+        <p>Contact IFCA support at:</p>
+        <p>Email: contact.pvlifcaindia@gmail.com<br>
+        Phone: +91 00000 00000</p>
+    </div>
+
+    <p>Best regards,<br>
+    The IFCA Team</p>
+{{/inline}}
+{{/base}} 

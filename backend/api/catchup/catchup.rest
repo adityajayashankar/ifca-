@@ -1,0 +1,33 @@
+### Test Scheduled CatchUp Creation
+POST http://localhost:5000/api/v1/catchup/scheduled/create
+Content-Type: application/json
+
+{
+  "communityId": 6,
+  "unifiedUserId": 15,
+  "scheduledAt": "2025-08-01T13:55:00.000Z",
+  "title": "CatchUp 1",
+  "desc": "CatchUp 1 description"
+}
+
+### Test Get Scheduled CatchUps
+GET http://localhost:5000/api/v1/catchup/scheduled/6
+
+### Test Regular CatchUp Creation (for comparison)
+POST http://localhost:5000/api/v1/catchup/create
+Content-Type: application/json
+
+{
+  "roomId": "test-room-123",
+  "communityId": 6,
+  "unifiedUserId": 15
+}
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,108 @@
+# Partner methods would only be accessed
+# by the admin frontend
+###
+@baseURL=http://localhost:5000/api/v1/partner
+@auth_JWT=Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJwYXJ0bmVyQHNlbmlvci5pbiIsIm5hbWUiOiJwYXJ0bmVyMCIsInBob25lIjoiNDY1MTUzMjEiLCJhZGRyZXNzIjoiYWJjZGVmZyIsInBpbmNvZGUiOiIxMjEyMjEiLCJwYXNzd29yZCI6IiQyYSQxMCRHMGYuUW5pR1lFV1BJUWlJcXdqU2dleDdxY3B5WWRKQ2tuUjBaMC5zVWVUaVI4aXkveTYweSIsImNyZWRpdHMiOjAsImNyZWF0ZWRBdCI6IjIwMjItMDYtMjRUMTI6MTc6NDIuNDYyWiIsInVwZGF0ZWRBdCI6IjIwMjItMTAtMTNUMTA6MjM6NDUuOTgwWiIsInBob3RvVVJMIjoiaHR0cHM6Ly9yb2JvaGFzaC5vcmcvZG9qbyIsImRlc2MiOiJIZXkgdGhlcmUhIEkgYW0gY29tbXVuaXR5IG1hbmFnZXIiLCJhZG1pbklkIjoxLCJ1c2VyVHlwZSI6InBhcnRuZXIiLCJpYXQiOjE2Njc3MjM0NjMsImV4cCI6MTY2NzgwOTg2M30.A3Jf4rwCnLDsb6IsrSRhKjc1pV6vEVbCGzcM1y8nlhY
+
+### Signup with a partner credentials
+POST http://localhost:5000/api/v1/auth/signin 
+Content-Type: application/json
+
+{
+    "userType":"partner",
+    "email":"partner@cp.in",
+    "password":"Abcd@123"
+}
+
+### To fetch all the partners: need admin credentials
+# Returns activePartners and inactivePartners with statistics
+# Each partner includes:
+# - Basic partner info
+# - unifiedUserId (with isActive status)
+# - statistics: { sessions: { total }, communities: { created, subscribed }, resources: { total } }
+GET {{baseURL}}
+authorization: {{auth_JWT}}
+
+### Create single partner (admin only)
+POST {{baseURL}}
+authorization: {{auth_JWT}}
+Content-Type: application/json
+
+{
+    "email": "newpartner@example.com",
+    "name": "New Partner",
+    "phone": "9876543210",
+    "address": "123 Partner Street, City",
+    "pincode": "123456",
+    "photoURL": "https://example.com/photo.jpg",
+    "desc": "A new partner for testing",
+    "password": "Abcd@123"
+}
+
+### Bulk upload partners (admin only)
+POST {{baseURL}}/bulk-upload
+authorization: {{auth_JWT}}
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="partners.xlsx"
+Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+
+< ./partners.xlsx
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+### Get all sessions purchased/participated by the authenticated partner
+# Returns:
+# - sessions: Active sessions with upcoming slots that the partner has purchased/participated in
+# - completedSessions: Sessions where all slots have ended that the partner has purchased/participated in
+# - statistics: { totalSessions, activeSessions, completedSessions, totalSlots, totalAttendees }
+# Security: Requires partner authentication token
+GET {{baseURL}}/sessions
+authorization: {{auth_JWT}}
+
+### Get specific session by ID that the authenticated partner has purchased/participated in
+# Returns:
+# - session: Complete session details with statistics
+# - statistics: { totalSlots, completedSlots, upcomingSlots, liveSlots, totalAttendees, totalRevenue }
+# Security: Requires partner authentication token, only returns sessions the partner has purchased/participated in
+GET {{baseURL}}/sessions/123
+authorization: {{auth_JWT}}
+
+### To fetch partner details with comprehensive data
+# Returns:
+# - partner: Basic partner info with unifiedUserId
+# - communities: Communities created by this partner
+# - resources: Resources created by this partner
+# - subscribedCommunities: Communities this partner is subscribed to
+# - partnerSessions: Partner's session participation
+GET {{baseURL}}/22
+authorization: {{auth_JWT}}
+
+### To update partner:{phone,address,pincode,credits}
+PATCH {{baseURL}}/22
+authorization: {{auth_JWT}}
+Content-Type: application/json
+
+{
+    "phone":"46515321"
+}
+
+### To disable partner (sets isActive to false in unifiedUser)
+DELETE {{baseURL}}/3
+authorization: {{auth_JWT}}
+
+### To enable partner (sets isActive to true in unifiedUser)
+PATCH {{baseURL}}/3/enable
+authorization: {{auth_JWT}}
+
+### To fetch all communities request for a partner
+GET {{baseURL}}/81/communitiesRequests
+authorization: {{auth_JWT}}
+
+### To fetch partner communities
+GET {{baseURL}}/81/communities
+authorization: {{auth_JWT}}
+
+### To fetch partner sessions
+GET {{baseURL}}/81/sessions
+authorization: {{auth_JWT}}

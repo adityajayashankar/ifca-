@@ -1,0 +1,110 @@
+@base_URL=http://localhost:5000/api/v1/admin
+@auth_JWT=Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJhZG1pbkBjcC5pbiIsIm5hbWUiOiJBZG1pbiBVc2VyIiwicGhvbmUiOiIrMTEyMjMzNDQ1NSIsImFkZHJlc3MiOiI3ODkgQWRtaW4gU3QsIEFkbWludmlsbGUsIEluZGlhIiwicGluY29kZSI6IjU0MzIxIiwicGFzc3dvcmQiOiIkMmEkMTAkeFVzTWJyZ2NLSkt3d0ZKOFFvU0lTdUVnMVhTNmZTTHdTUXM5MUtEWWhrZXIubzBaYy5vVXEiLCJpc1N1cGVyQWRtaW4iOmZhbHNlLCJjcmVhdGVkQXQiOiIyMDI1LTAzLTEwVDEwOjIzOjQ0LjM3OVoiLCJ1cGRhdGVkQXQiOiIyMDI1LTAzLTEwVDEwOjIzOjQ0LjM3OVoiLCJwaG90b1VSTCI6Imh0dHBzOi8vcm9ib2hhc2gub3JnL2Rvam8iLCJ1c2VySWQiOm51bGwsInBhcnRuZXJJZCI6bnVsbCwiZXhwZXJ0SWQiOm51bGwsImFkbWluSWQiOjEsImZvbGxvd2VycyI6W10sImZvbGxvd2luZyI6W10sInByaXZhY3lUeXBlIjoiYWxsIiwic2VsZWN0ZWRWaWV3ZXJzIjpbXSwidXNlclR5cGUiOiJhZG1pbiIsImlhdCI6MTc0ODY3MTc0MywiZXhwIjoxNzQ4NzU4MTQzfQ.UR-GORUvtHzuRZDHdYwsJjdR-5_SSXLt0QOQphv2fTo
+
+### GET JWT
+POST http://localhost:5000/api/v1/auth/signin
+Content-Type: application/json
+
+{
+    "email":"admin@cp.in",
+    "password":"adminCP",
+    "userType":"admin"
+}
+
+
+# To get all admins: only by superadmin
+### 
+GET {{base_URL}}
+Content-Type: application/json
+authorization: {{auth_JWT}}
+
+
+# To Create an array of users; used by csv creator
+###
+POST {{base_URL}}/create/user
+Content-Type: application/json
+
+{
+    "users":[
+        {
+            "email":"sam@tgif.co",
+            "name":"sam mohammod",
+            "phone":"978267143",
+            "address":"1u2ye1ghd",
+            "pincode":"r1r134"
+        }
+    ]
+}
+
+## pass: QekOGkk092
+
+
+# Fetch One admin by ID
+### 
+GET {{base_URL}}/1
+authorization: {{auth_JWT}}
+
+# Update One admin by ID
+###
+PATCH  {{base_URL}}/1
+Content-Type: application/json
+authorization: {{auth_JWT}}
+
+{
+    "isSuperAdmin":true
+}
+
+
+# Add One admin
+# If password passed, creates with the password
+# Else creates a custom password
+###
+POST {{base_URL}}
+Content-Type: application/json
+authorization: {{auth_JWT}}
+
+{
+    "admin":{
+        "email":"admin@cp.in",
+        "name":"Abcd@123",
+        "phone":"1213412312",
+        "address":"saxkjncjsacbjk",
+        "pincode":"12123412",
+        "password":"adminCP"
+    }
+}
+
+# pass: q6HQ0ETb01
+
+###
+GET {{base_URL}}/1/session
+authorization: {{auth_JWT}}
+
+# Get community users (subscribers and non-subscribers)
+###
+GET {{base_URL}}/community/64/users
+authorization: {{auth_JWT}}
+
+# Add users to community subscription
+###
+POST {{base_URL}}/community/64/subscriptions
+Content-Type: application/json
+authorization: {{auth_JWT}}
+
+{
+    "action": "add",
+    "userIds": [43, 1, 15],
+    "durationInMonths": 3
+}
+
+# Remove users from community subscription
+###
+POST {{base_URL}}/community/123/subscriptions
+Content-Type: application/json
+authorization: {{auth_JWT}}
+
+{
+    "action": "remove",
+    "userIds": [1, 2, 3]
+}
+

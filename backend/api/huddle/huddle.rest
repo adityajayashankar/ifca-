@@ -1,0 +1,332 @@
+### Huddle API Endpoints
+### Base URL
+@baseUrl = http://localhost:5000/api/v1/huddle
+
+### Variables
+@communityId = 1
+@userId = 2
+@huddleId = 3
+
+# ==================== HUDDLE CRUD ====================
+
+### Create a new huddle
+POST {{baseUrl}}/create
+Content-Type: application/json
+
+{
+    "title": "Weekly Team Standup",
+    "description": "Weekly huddle for team sync and updates",
+    "communityId": {{communityId}},
+    "creatorId": {{userId}},
+    "frequency": "WEEKLY",
+    "scheduledTime": "2025-12-20T10:00:00.000Z",
+    "timezone": "Asia/Kolkata",
+    "selectedActivities": ["DISCUSSION_TOPIC", "VOTING_SURVEY", "ANNOUNCEMENT"],
+    "audienceType": "ALL_MEMBERS",
+    "selectedMemberIds": [],
+    "locationType": "DIGITAL",
+    "offlineLocation": null,
+    "leaderId": {{userId}},
+    "leaderSelectionType": "USER"
+}
+
+###
+
+### Create huddle with AI activities
+POST {{baseUrl}}/create
+Content-Type: application/json
+
+{
+    "title": "Innovation Showcase",
+    "description": "Monthly huddle featuring AI-generated content",
+    "communityId": {{communityId}},
+    "creatorId": {{userId}},
+    "frequency": "FORTNIGHTLY",
+    "scheduledTime": "2025-12-25T14:00:00.000Z",
+    "timezone": "UTC",
+    "selectedActivities": ["AI_SLIDESHOW", "AI_VIDEO_MESSAGE", "QUIZ", "REFLECTION"],
+    "audienceType": "ALL_MEMBERS",
+    "locationType": "DIGITAL",
+    "leaderSelectionType": "RANDOM"
+}
+
+###
+
+### Create huddle for selected members only
+POST {{baseUrl}}/create
+Content-Type: application/json
+
+{
+    "title": "Leadership Circle",
+    "description": "Exclusive huddle for selected team leads",
+    "communityId": {{communityId}},
+    "creatorId": {{userId}},
+    "frequency": "WEEKLY",
+    "scheduledTime": "2025-12-22T09:00:00.000Z",
+    "timezone": "UTC",
+    "selectedActivities": ["DISCUSSION_TOPIC", "DEBATE", "STORY_SPOTLIGHT"],
+    "audienceType": "SELECTED_MEMBERS",
+    "selectedMemberIds": [1, 2, 3],
+    "locationType": "OFFLINE",
+    "offlineLocation": "Conference Room A",
+    "leaderSelectionType": "ROUNDROBIN"
+}
+
+###
+
+### Get huddle by ID
+GET {{baseUrl}}/{{huddleId}}
+
+###
+
+### Update huddle
+PUT {{baseUrl}}/{{huddleId}}
+Content-Type: application/json
+
+{
+    "title": "Updated Weekly Standup",
+    "description": "Updated description for the huddle",
+    "scheduledTime": "2025-12-21T11:00:00.000Z"
+}
+
+###
+
+### Delete huddle
+DELETE {{baseUrl}}/{{huddleId}}
+
+###
+
+# ==================== HUDDLE EXECUTION ====================
+
+### Launch/Start a huddle
+POST {{baseUrl}}/{{huddleId}}/launch
+Content-Type: application/json
+
+{
+    "userId": {{userId}}
+}
+
+###
+
+### End a huddle
+POST {{baseUrl}}/{{huddleId}}/end
+Content-Type: application/json
+
+{}
+
+###
+
+### Join a huddle
+POST {{baseUrl}}/{{huddleId}}/join
+Content-Type: application/json
+
+{
+    "userId": {{userId}}
+}
+
+###
+
+### Leave a huddle
+POST {{baseUrl}}/{{huddleId}}/leave
+Content-Type: application/json
+
+{
+    "userId": {{userId}}
+}
+
+###
+
+### Get huddle attendees
+GET {{baseUrl}}/{{huddleId}}/attendees
+
+###
+
+### Get huddle activities
+GET {{baseUrl}}/{{huddleId}}/activities
+
+###
+
+# ==================== HUDDLE MANAGEMENT ====================
+
+### Get all huddles for a community
+GET {{baseUrl}}/community/{{communityId}}
+
+###
+
+### Get upcoming huddles for a community
+GET {{baseUrl}}/community/{{communityId}}?status=upcoming
+
+###
+
+### Get live huddles for a community
+GET {{baseUrl}}/community/{{communityId}}?status=live
+
+###
+
+### Get completed huddles for a community
+GET {{baseUrl}}/community/{{communityId}}?status=completed
+
+###
+
+### Get user's upcoming huddles
+GET {{baseUrl}}/user/{{userId}}/upcoming
+
+###
+
+### Generate AI summary for huddle
+POST {{baseUrl}}/{{huddleId}}/generate-summary
+Content-Type: application/json
+
+{}
+
+###
+
+# ==================== ENGAGEMENT & ANALYTICS ====================
+
+### Get huddle statistics
+GET {{baseUrl}}/{{huddleId}}/stats
+
+###
+
+### Get community huddle leaderboard
+GET {{baseUrl}}/community/{{communityId}}/leaderboard
+
+###
+
+### Get community huddle leaderboard with limit
+GET {{baseUrl}}/community/{{communityId}}/leaderboard?limit=5
+
+###
+
+### Get user's huddle streaks
+GET {{baseUrl}}/user/{{userId}}/streaks
+
+###
+
+# ==================== FULL FLOW TEST ====================
+
+### Step 1: Create a test huddle
+# @name createHuddle
+POST {{baseUrl}}/create
+Content-Type: application/json
+
+{
+    "title": "Test Huddle Flow",
+    "description": "Testing the complete huddle flow",
+    "communityId": 1,
+    "creatorId": 1,
+    "frequency": "DAILY",
+    "scheduledTime": "2025-12-17T16:00:00.000Z",
+    "timezone": "UTC",
+    "selectedActivities": ["DISCUSSION_TOPIC", "VOTING_SURVEY"],
+    "audienceType": "ALL_MEMBERS",
+    "locationType": "DIGITAL",
+    "leaderSelectionType": "USER",
+    "leaderId": 1
+}
+
+###
+
+### Step 2: Get the created huddle
+# Use the huddle ID from step 1
+GET {{baseUrl}}/1
+
+###
+
+### Step 3: Launch the huddle
+POST {{baseUrl}}/1/launch
+Content-Type: application/json
+
+{
+    "userId": 1
+}
+
+###
+
+### Step 4: Join the huddle as another user
+POST {{baseUrl}}/1/join
+Content-Type: application/json
+
+{
+    "userId": 2
+}
+
+###
+
+### Step 5: Get attendees
+GET {{baseUrl}}/1/attendees
+
+###
+
+### Step 6: Get activities
+GET {{baseUrl}}/1/activities
+
+###
+
+### Step 7: Get stats
+GET {{baseUrl}}/1/stats
+
+###
+
+### Step 8: End the huddle
+POST {{baseUrl}}/1/end
+Content-Type: application/json
+
+{}
+
+###
+
+### Step 9: Generate summary
+POST {{baseUrl}}/1/generate-summary
+Content-Type: application/json
+
+{}
+
+###
+
+### Step 10: Check leaderboard
+GET {{baseUrl}}/community/1/leaderboard
+
+###
+
+### Step 11: Check user streaks
+GET {{baseUrl}}/user/1/streaks
+
+###
+
+# ==================== ACTIVITY TYPES REFERENCE ====================
+# 
+# AI_SLIDESHOW      - ChatGPT API generates slideshow
+# AI_VIDEO_MESSAGE  - Gemini API generates 30 sec video
+# DISCUSSION_TOPIC  - Reuses Thread/Post
+# QUIZ              - New quiz interface
+# DEBATE            - New debate interface
+# CONTEST           - New contest interface
+# VOTING_SURVEY     - Reuses Poll (Post with isPoll=true)
+# REFLECTION        - Reuses Form (1-minute reflection)
+# GUIDED_SESSION    - Reuses Session (breathing/silence)
+# STORY_SPOTLIGHT   - Reuses Resource
+# ANNOUNCEMENT      - Reuses Post (announcement type)
+#
+# ==================== FREQUENCY OPTIONS ====================
+#
+# DAILY
+# WEEKLY
+# FORTNIGHTLY
+#
+# ==================== AUDIENCE TYPES ====================
+#
+# ALL_MEMBERS
+# SELECTED_MEMBERS
+#
+# ==================== LOCATION TYPES ====================
+#
+# DIGITAL
+# OFFLINE
+#
+# ==================== LEADER SELECTION TYPES ====================
+#
+# USER       - Specified user is the leader
+# RANDOM     - Random selection from attendees
+# FIRST_LOGIN - First person to join becomes leader
+# ROUNDROBIN  - Rotate through community members

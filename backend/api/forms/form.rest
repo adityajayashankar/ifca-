@@ -1,0 +1,333 @@
+@baseUrl = http://localhost:5000/api/v1
+@authToken = Bearer your_jwt_token_here
+@adminToken = Bearer your_admin_jwt_token_here
+
+# ========================================
+# FORM MANAGEMENT ENDPOINTS (Admin Only)
+# ========================================
+
+### Create a new form (Admin Only)
+POST {{baseUrl}}/forms
+Content-Type: application/json
+Authorization: {{adminToken}}
+
+{
+  "formName": "Event RSVP Form",
+  "creatorId": 1,
+  "questions": [
+    {
+      "question": "What is your name?",
+      "answerType": "text",
+      "description": "Enter your full name",
+      "isRequired": true,
+      "options": []
+    },
+    {
+      "question": "Will you attend the event?",
+      "answerType": "radio",
+      "description": "Please select your attendance",
+      "isRequired": true,
+      "options": ["Yes", "No", "Maybe"]
+    },
+    {
+      "question": "Dietary preferences",
+      "answerType": "checkbox",
+      "description": "Select all that apply",
+      "isRequired": false,
+      "options": ["Vegetarian", "Vegan", "Gluten-free", "Dairy-free", "No restrictions"]
+    }
+  ],
+  "isGlobal": false,
+  "communityIds": [1, 2]
+}
+
+### Edit a form (Admin Only)
+PUT {{baseUrl}}/forms/1
+Content-Type: application/json
+Authorization: {{adminToken}}
+
+{
+  "formName": "Updated Event RSVP Form",
+  "adminId": 1,
+  "formLink": "https://forms.gle/updated-form-link",
+  "formImg": "https://example.com/updated-image.jpg",
+  "formDesc": "This is an updated event RSVP form"
+}
+
+### Delete a form (Admin Only)
+DELETE {{baseUrl}}/forms/1
+Authorization: {{adminToken}}
+
+### Update form by creator (Admin Only)
+PUT {{baseUrl}}/forms/1/update
+Content-Type: application/json
+Authorization: {{adminToken}}
+
+{
+  "formName": "Updated Form Name",
+  "formFields": {
+    "description": "Updated form description",
+    "settings": {
+      "allowMultipleResponses": false,
+      "requireAuthentication": true
+    }
+  }
+}
+
+# ========================================
+# FORM RETRIEVAL ENDPOINTS (Optimized)
+# ========================================
+
+### Get form by ID
+GET {{baseUrl}}/forms/1
+
+### Get all forms (with pagination and search)
+GET {{baseUrl}}/forms?page=1&limit=10&search=event&creatorId=1&isGlobal=false&sortBy=createdAt&sortOrder=desc
+
+### Get all forms (with pagination and search)
+GET {{baseUrl}}/forms
+
+### Get forms by user ID (with pagination)
+GET {{baseUrl}}/forms/user/3?page=1&limit=10
+
+### Get forms by community ID (with pagination)
+GET {{baseUrl}}/forms/community/1?page=1&limit=10
+
+### Get all users (with pagination and search)
+GET {{baseUrl}}/forms/users?page=1&limit=20&search=john
+Authorization: {{adminToken}}
+
+# ========================================
+# FORM RESPONSE ENDPOINTS
+# ========================================
+
+### Submit form response (Authenticated)
+POST {{baseUrl}}/forms/1/submit
+Content-Type: application/json
+Authorization: {{authToken}}
+
+{
+  "responses": {
+    "1": "John Doe",
+    "2": "Yes",
+    "3": ["Vegetarian", "Gluten-free"]
+  },
+  "communityId": 1
+}
+
+### Get user's form response status (Authenticated)
+GET {{baseUrl}}/forms/user-response-status?formId=38&communityId=131
+Authorization: {{authToken}}
+
+### Get form responses for specific user
+GET {{baseUrl}}/forms/form/form-responses?formId=39&userId=38&communityId=131
+
+### Get form responses by creator ID (with pagination)
+GET {{baseUrl}}/forms/responses/1?page=1&limit=10
+Authorization: {{adminToken}}
+
+### Get questions by creator ID (with pagination)
+GET {{baseUrl}}/forms/questions/1?page=1&limit=10
+Authorization: {{adminToken}}
+
+### Get form responses by form ID (with pagination)
+GET {{baseUrl}}/forms/responseByFormId/1?page=1&limit=10
+Authorization: {{adminToken}}
+
+# ========================================
+# GOOGLE INTEGRATION ENDPOINTS (Commented)
+# ========================================
+
+### Fetch Google Form responses (Commented)
+# GET {{baseUrl}}/forms/form-responses?formId=google_form_id_here
+
+### Fetch Google Sheets data (Commented)
+# GET {{baseUrl}}/forms/sheet-data?spreadsheetId=your_spreadsheet_id&range=Sheet1!A1:Z1000
+
+### Google OAuth authorization (Commented)
+# GET {{baseUrl}}/forms/authorize
+
+### Google OAuth callback (Commented)
+# GET {{baseUrl}}/forms/oauth2callback?code=authorization_code_here
+
+# ========================================
+# RESPONSE EXAMPLES
+# ========================================
+
+### Example: Paginated forms response
+# {
+#   "data": [
+#     {
+#       "id": 1,
+#       "formName": "Event RSVP Form",
+#       "creatorId": 1,
+#       "isGlobal": false,
+#       "createdAt": "2024-01-15T10:30:00Z",
+#       "updatedAt": "2024-01-15T10:30:00Z",
+#       "_count": {
+#         "Question": 3,
+#         "FormResponse": 25,
+#         "FormCommunity": 2
+#       },
+#       "unifiedUser": {
+#         "user": { "name": "John Doe" },
+#         "partner": null,
+#         "admin": null,
+#         "expert": null
+#       }
+#     }
+#   ],
+#   "pagination": {
+#     "page": 1,
+#     "limit": 10,
+#     "total": 50,
+#     "totalPages": 5,
+#     "hasNext": true,
+#     "hasPrev": false
+#   }
+# }
+
+### Example: Form by ID response
+# {
+#   "form": {
+#     "id": 1,
+#     "formName": "Event RSVP Form",
+#     "creatorId": 1,
+#     "isGlobal": false,
+#     "createdAt": "2024-01-15T10:30:00Z",
+#     "updatedAt": "2024-01-15T10:30:00Z",
+#     "Question": [
+#       {
+#         "id": 1,
+#         "question": "What is your name?",
+#         "answerType": "text",
+#         "description": "Enter your full name",
+#         "isRequired": true,
+#         "options": [],
+#         "createdAt": "2024-01-15T10:30:00Z"
+#       }
+#     ],
+#     "FormCommunity": [
+#       {
+#         "Community": {
+#           "id": 1,
+#           "title": "Tech Community",
+#           "desc": "Technology enthusiasts community"
+#         }
+#       }
+#     ],
+#     "communityData": [
+#       {
+#         "communityId": 1,
+#         "communityName": "Tech Community",
+#         "communityDesc": "Technology enthusiasts community"
+#       }
+#     ],
+#     "isCommunitySpecific": true,
+#     "_count": {
+#       "FormResponse": 25,
+#       "Question": 3
+#     },
+#     "unifiedUser": {
+#       "user": { "name": "John Doe", "email": "john@example.com" },
+#       "partner": null,
+#       "admin": null,
+#       "expert": null
+#     }
+#   }
+# }
+
+### Example: User response status response
+# {
+#   "success": true,
+#   "hasResponded": true,
+#   "responses": [
+#     {
+#       "questionId": 1,
+#       "answer": "John Doe",
+#       "question": {
+#         "id": 1,
+#         "question": "What is your name?",
+#         "answerType": "text",
+#         "description": "Enter your full name",
+#         "options": []
+#       }
+#     }
+#   ],
+#   "submittedAt": "2024-01-15T10:30:00Z"
+# }
+
+### Example: Form responses with pagination
+# {
+#   "data": [
+#     {
+#       "userName": "John Doe",
+#       "userEmail": "john@example.com",
+#       "answers": [
+#         {
+#           "questionId": 1,
+#           "question": "What is your name?",
+#           "answer": "John Doe",
+#           "answerType": "text",
+#           "options": []
+#         }
+#       ],
+#       "submittedAt": "2024-01-15T10:30:00Z"
+#     }
+#   ],
+#   "pagination": {
+#     "page": 1,
+#     "limit": 10,
+#     "total": 25,
+#     "totalPages": 3,
+#     "hasNext": true,
+#     "hasPrev": false
+#   }
+# }
+
+### Example: Form not found response
+# {
+#   "error": "Form not found"
+# }
+
+### Example: User already responded response
+# {
+#   "error": "User has already responded to this form",
+#   "message": "You have already submitted a response for this form in this community",
+#   "hasResponded": true
+# }
+
+### Example: Authentication error response
+# {
+#   "message": "Not Authorized"
+# }
+
+### Example: Validation error response
+# {
+#   "error": "Form ID and responses are required"
+# }
+
+# ========================================
+# QUERY PARAMETERS REFERENCE
+# ========================================
+
+### Pagination Parameters
+# page: Page number (default: 1)
+# limit: Items per page (default: 10, max: 100)
+# 
+# Example: ?page=2&limit=20
+
+### Search and Filter Parameters
+# search: Search in form names (case-insensitive)
+# creatorId: Filter by creator ID
+# isGlobal: Filter by global status (true/false)
+# sortBy: Sort field (createdAt, updatedAt, formName, creatorId)
+# sortOrder: Sort order (asc, desc)
+#
+# Example: ?search=event&creatorId=1&isGlobal=false&sortBy=createdAt&sortOrder=desc
+
+### Community Response Logic
+# - Forms mapped to communities: Users can respond once per community
+# - Forms not mapped to communities: Users can respond only once globally
+# - communityId parameter is optional (defaults to 1)
+

@@ -1,0 +1,11 @@
+###
+@baseURL=http://localhost:5000/api/v1/event
+
+### AUTH
+### GET ALL EVENTS
+### CREATE EVENT
+### GET ARCHIVED EVENTS
+### GET EVENT BY ID
+### UPDATE EVENT BY ID
+### DELETE EVENT BY ID
+### 

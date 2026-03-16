@@ -1,0 +1,90 @@
+@baseURL=http://localhost:5000/api/v1/analytics
+
+// SESSION --------------------------------------------------
+###
+GET {{baseURL}}/session/7/people/summary
+
+### NUM SESSIONS 
+GET {{baseURL}}/session/
+
+### NUM SESSIONS WITH TIME
+GET {{baseURL}}/session/time 
+
+// USERS  --------------------------------------------------
+
+### GET TOTAL USERS
+GET {{baseURL}}/users/
+
+#### GET USERS WITH TIME 
+GET {{baseURL}}/users/time
+
+// COMMUNITY --------------------------------------------------
+
+
+### COMMUNITY
+GET {{baseURL}}/community
+
+### COMMUNITY WITH TIME
+GET {{baseURL}}/community/time
+
+### PEOPLE GROUPED BY COMMUNITY
+GET {{baseURL}}/community/people
+
+// revenue ------------------------------------
+
+### REVENUE 
+GET {{baseURL}}/revenue
+### REVENUE WITH TIME
+GET {{baseURL}}/revenue/time
+
+### REVENUE BY SESSION
+GET {{baseURL}}/revenue/session/1
+
+
+### WASTE ------------------------------------------------
+
+###
+GET {{baseURL}}/session/1/people/num/RSVP
+
+###
+GET {{baseURL}}/session/1/people/num
+
+###
+GET {{baseURL}}/session/1/people/
+
+###
+GET {{baseURL}}/slot/1/people/num/RSVP
+
+
+###
+GET {{baseURL}}/slot/1/people/num
+
+###
+GET {{baseURL}}/slot/1/people/
+
+###
+GET {{baseURL}}/communities/active
+
+###
+GET {{baseURL}}/sessions/active
+
+###
+GET {{baseURL}}/experts/total
+
+###
+GET {{baseURL}}/users/active
+
+###
+GET {{baseURL}}/dashboard
+
+###
+GET {{baseURL}}/recent-activities
+###
+
+GET {{baseURL}}/partner/dashboard
+
+
+###
+GET {{baseURL}}/partner/recent-activities
+
+

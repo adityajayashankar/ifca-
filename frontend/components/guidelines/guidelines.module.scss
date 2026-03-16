@@ -1,0 +1,34 @@
+.guidelineItem{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    border: 2px solid #3554C5;
+    border-radius: 10px;
+    width: 22.5%;
+    background-color: white;
+    height: 275px;
+    padding: 10px 20px;
+
+    span{
+
+        background-color: #3554C566;
+        border-radius: 50%;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        img{
+            width: 32px;
+            height: 32px;
+        }
+    }
+
+    p{
+        color: #3554C5;
+        font-weight: 600;
+        font-size: 21px;
+        text-align: center;
+    }
+}

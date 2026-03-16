@@ -1,0 +1,7 @@
+.createsessionform__container {
+    @apply p-2 xl:p-6 border-2 border-[#4E795E80] border-opacity-30 w-full lg:w-3/4 rounded-md;
+}
+
+.createsessionform__form {
+    @apply flex flex-col gap-6;
+}

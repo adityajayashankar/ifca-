@@ -1,0 +1,23 @@
+{{#> base}}
+  <div class="content">
+    <h1>New Like on Your Post</h1>
+    
+    <p>Hello {{recipientName}},</p>
+    
+    <p>Someone liked your post "{{postTitle}}".</p>
+    
+    {{#if likerName}}
+      {{#unless (eq likerName "Someone")}}
+        <p><strong>{{likerName}}</strong> liked your post.</p>
+      {{/unless}}
+    {{/if}}
+    
+    <div class="action-button">
+      <a href="{{actionUrl}}" class="btn">View Post</a>
+    </div>
+    
+    <p>If you have any questions, feel free to reach out to our support team.</p>
+    
+    <p>Best regards,<br>The IFCA Team</p>
+  </div>
+{{/base}} 

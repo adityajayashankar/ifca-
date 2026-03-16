@@ -1,0 +1,61 @@
+.navbar {
+    @apply w-full sticky top-0 left-0 z-[1000] shadow-lg py-4 px-2 bg-white;
+}
+
+.navbar__container {
+    @apply relative flex flex-col gap-8 md:flex-row justify-between items-center w-full;
+}
+
+.navbar__items {
+    @apply flex flex-col md:flex-row items-center lg:gap-6 gap-4 font-bold text-lg md:text-sm;
+}
+
+.navbar__items__visible {
+    @apply visible;
+}
+.navbar__items__hidden {
+    @apply hidden;
+}
+
+/* Mobile drawer slide-in animation */
+@keyframes slide-in-left {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.animateSlideInLeft {
+    animation: slide-in-left 0.3s ease-out;
+}
+
+/* Fade-in animation for dropdowns */
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animateFadeIn {
+    animation: fade-in 0.2s ease-out;
+}
+
+/* Hide scrollbar for horizontal scroll */
+.scrollbarHide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.scrollbarHide::-webkit-scrollbar {
+    display: none;
+}
+

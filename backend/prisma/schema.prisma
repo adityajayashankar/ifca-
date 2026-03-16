@@ -1,0 +1,1559 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
+  binaryTargets   = ["native", "debian-openssl-1.1.x", "debian-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                     Int           @id @default(autoincrement())
+  email                  String?       @unique
+  name                   String?
+  phone                  String        @unique
+  pincode                String?
+  password               String?
+  photoURL               String        @default("")
+  createdAt              DateTime      @default(now())
+  updatedAt              DateTime      @updatedAt
+  moodlePassword         String?
+  moodleUserId           Int?          @unique
+  moodleUsername         String?       @unique
+  desc                   String?       @default("Hey there! I am using subspace")
+  availability           String?
+  careerHistory          Json?
+  certifications         Json?
+  collaborations         Json?
+  culinaryPhilosophy     String?
+  currentPosition        String?
+  employer               String?
+  eventsParticipation    Json?
+  expertise              String?
+  languageProficiency    Json?
+  lastMoodleSync         DateTime?     @default(now())
+  location               String?
+  nationality            String?
+  onlinePortfolios       Json?
+  otp                    String?
+  otpExpiresAt           DateTime?
+  preferredContact       String?
+  preferredName          String?
+  professionalNetworks   Json?
+  publications           Json?
+  resetToken             String?
+  resetTokenExpires      DateTime?
+  roleDescription        String?
+  socialMediaLinks       Json?
+  state                  String?
+  sustainability         String?
+  tutorials              Json?
+  vision                 String?
+  website                String?
+  awards                 String[]
+  ifcaInvolvement        String[]
+  industryContributions  String[]
+  interests              String[]
+  mentorship             String[]
+  mentorshipAvailability Boolean?
+  recipes                String[]
+  specializations        String[]
+  technologySkills       String[]
+  Attendance             Attendance[]
+  tickets                Tickets[]
+  transactions           Transaction[]
+  UserDetails            UserDetails[]
+  wallet                 Wallet?
+  unifiedUserId          unifiedUser?
+}
+
+model Partner {
+  id                Int              @id @default(autoincrement())
+  email             String           @unique
+  name              String
+  phone             String           @unique
+  address           String
+  pincode           String
+  password          String
+  credits           Int              @default(0)
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+  photoURL          String           @default("https://robohash.org/dojo")
+  desc              String           @default("Hey there! I am community manager")
+  adminId           Int              @default(1)
+  followers         Int[]            @default([])
+  following         Int[]            @default([])
+  resetToken        String?
+  resetTokenExpires DateTime?
+  admin             Admin            @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  PartnerSession    PartnerSession[]
+  unifiedUserId     unifiedUser?
+}
+
+model Admin {
+  id                Int          @id @default(autoincrement())
+  email             String       @unique
+  name              String
+  phone             String       @unique
+  address           String
+  pincode           String
+  password          String
+  isSuperAdmin      Boolean      @default(false)
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+  photoURL          String       @default("https://robohash.org/dojo")
+  followers         Int[]        @default([])
+  following         Int[]        @default([])
+  resetToken        String?
+  resetTokenExpires DateTime?
+  partners          Partner[]
+  unifiedUserId     unifiedUser?
+}
+
+model Expert {
+  id                     Int                     @id @default(autoincrement())
+  email                  String                  @unique
+  name                   String?
+  phone                  String?                 @unique
+  address                String?
+  pincode                String?
+  password               String?
+  photoURL               String?                 @default("https://robohash.org/dojo")
+  desc                   String?                 @default("Hey there! I am an expert manager")
+  createdAt              DateTime                @default(now())
+  updatedAt              DateTime                @updatedAt
+  isActive               Boolean?                @default(true)
+  isClubHead             Boolean?
+  followers              Int[]                   @default([])
+  following              Int[]                   @default([])
+  resetToken             String?
+  resetTokenExpires      DateTime?
+  SpeakerRecommendations SpeakerRecommendation[]
+  Transaction            Transaction[]
+  unifiedUserId          unifiedUser?
+}
+
+model UserQuestions {
+  id          Int           @id @default(autoincrement())
+  question    String
+  isEnable    Boolean       @default(true)
+  UserDetails UserDetails[]
+}
+
+model UserDetails {
+  id       Int            @id @default(autoincrement())
+  userId   Int?
+  q_id     Int?
+  answer   String?
+  question UserQuestions? @relation(fields: [q_id], references: [id])
+  user     User?          @relation(fields: [userId], references: [id])
+}
+
+model Community {
+  id                 Int                @id @default(autoincrement())
+  title              String
+  desc               String
+  price              Int                @default(500)
+  gold_price         Int                @default(0)
+  silver_price       Int                @default(0)
+  platinum_price     Int                @default(0)
+  bannerImg          String
+  infoImgs           String[]
+  discountForCourses Int                @default(0)
+  isArchived         Boolean            @default(false)
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  creatorId          Int
+  welcomeMsg         String             @default("Hey there!! Welcome!!")
+  communityType      String?
+  isApproved         Boolean            @default(false)
+  isCatchupLive      Boolean            @default(false)
+  questions          String[]           @default(["why you joined community", "Your contribution to community", "Where you heard about this community"])
+  catchupRoomId      String?            @unique
+  initialCommunity   Boolean            @default(false)
+  visibility         String             @default("PUBLIC")
+  Blog               Blog[]
+  CatchUp            CatchUp[]
+  channels           Channels[]
+  creator            unifiedUser        @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  CommunityBlog      CommunityBlog[]
+  childCommunities   CommunityMapping[] @relation("ChildCommunity")
+  parentCommunities  CommunityMapping[] @relation("ParentCommunity")
+  CommunityTags      CommunityTags[]
+  CouponCode         CouponCode[]
+  FormCommunity      FormCommunity[]
+  FormResponse       FormResponse[]
+  Notification       Notification[]
+  PartnerSession     PartnerSession[]
+  post               Post[]
+  services           Service[]
+  SessionTier        SessionTier[]
+  subCommunity       SubCommunity[]
+  subscriptions      Subscription[]
+  requests           requests[]
+  resource           Resource[]         @relation("CommunityToResource")
+  courses            Course[]           @relation("CourseToCommunity")
+  huddles            Huddle[]
+  huddleStreaks      HuddleStreak[]
+}
+
+model CommunityMapping {
+  id                Int       @id @default(autoincrement())
+  childCommunityId  Int
+  parentCommunityId Int
+  childCommunity    Community @relation("ChildCommunity", fields: [childCommunityId], references: [id])
+  parentCommunity   Community @relation("ParentCommunity", fields: [parentCommunityId], references: [id])
+
+  @@unique([parentCommunityId, childCommunityId])
+}
+
+model Resource {
+  id               Int              @id @default(autoincrement())
+  name             String
+  link             String
+  authorId         Int
+  uploadedAt       DateTime         @default(now())
+  isApproved       Boolean          @default(false)
+  isPostSession    Boolean          @default(false)
+  isPreSession     Boolean          @default(false)
+  Notification     Notification[]
+  author           unifiedUser      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  community        Community[]      @relation("CommunityToResource")
+  session          Session[]        @relation("ResourceToSession")
+  huddleActivities HuddleActivity[]
+}
+
+model Session {
+  id                  Int                   @id @default(autoincrement())
+  title               String
+  desc                String
+  bannerImgs          String[]
+  infoImgs            String[]
+  creatorId           Int?
+  isCourse            Boolean               @default(false)
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+  eventId             Int?
+  isArchived          Boolean               @default(false)
+  isRecurring         String                @default("none")
+  communityId         Int?
+  isExclusive         Boolean               @default(false)
+  roomId              String?               @unique
+  sessionType         String?
+  isVideoChannel      Boolean               @default(false)
+  speakerRequests     Json[]
+  videoUrl            String                @default("")
+  isActive            Boolean?              @default(true)
+  isApproved          Boolean               @default(false)
+  attendence          Attendance[]
+  CouponCode          CouponCode[]
+  Notification        Notification[]
+  post                Post[]
+  creator             unifiedUser?          @relation(fields: [creatorId], references: [id])
+  event               Event?                @relation(fields: [eventId], references: [id])
+  SessionOrderMapping SessionOrderMapping[]
+  SessionSlot         SessionSlot[]
+  tags                SessionTags[]
+  resource            Resource[]            @relation("ResourceToSession")
+  huddleActivities    HuddleActivity[]      @relation("HuddleActivitySession")
+}
+
+model CatchUp {
+  id              Int          @id @default(autoincrement())
+  title           String       @default("CatchUp")
+  desc            String       @default("CatchUp for community members")
+  bannerImgs      String[]
+  infoImgs        String[]
+  roomId          String?      @unique
+  creatorId       Int?
+  sessionType     String?
+  isCourse        Boolean      @default(false)
+  isRecurring     String       @default("none")
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  eventId         Int?
+  communityId     Int?
+  isVideoChannel  Boolean      @default(false)
+  speakerRequests Json[]
+  videoUrl        String       @default("")
+  isLive          Boolean      @default(true)
+  attendees       Int[]        @default([])
+  endTime         DateTime?
+  isScheduled     Boolean      @default(false)
+  reminderSent    Boolean      @default(false)
+  startTime       DateTime?
+  scheduledAt     DateTime?
+  community       Community?   @relation(fields: [communityId], references: [id])
+  creator         unifiedUser? @relation(fields: [creatorId], references: [id])
+  event           Event?       @relation(fields: [eventId], references: [id])
+}
+
+model SpeakerRecommendation {
+  id               Int    @id @default(autoincrement())
+  expertId         Int
+  recommendedTitle String @default("Session Title")
+  recommendedDesc  String @default("Session desc")
+  speakerDetails   Expert @relation(fields: [expertId], references: [id])
+}
+
+model SessionTags {
+  id        Int     @id @default(autoincrement())
+  tagId     Int
+  sessionId Int
+  session   Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  tag       Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@unique([sessionId, tagId])
+}
+
+model TopSessionTags {
+  id    Int @id @default(autoincrement())
+  tagId Int @unique
+  tag   Tag @relation(fields: [tagId], references: [id], onDelete: Cascade)
+}
+
+model SessionSlot {
+  id                  Int                   @id @default(autoincrement())
+  startTime           String
+  endTime             String
+  isOnline            Boolean               @default(false)
+  participantLimit    Int
+  price               Int                   @default(99)
+  credits             Int                   @default(0)
+  location            String?
+  isArchived          Boolean               @default(false)
+  speakerId           Int?
+  sessionId           Int
+  expert_link         String?
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+  topicName           String                @default("")
+  isRecorded          Boolean               @default(false)
+  videoId             Int?
+  isLive              Boolean
+  videoUrl            String                @default("")
+  isActive            Boolean               @default(true)
+  Attendance          Attendance[]
+  PartnerSession      PartnerSession[]
+  SessionOrderMapping SessionOrderMapping[]
+  session             Session               @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  speakers            unifiedUser?          @relation(fields: [speakerId], references: [id])
+  Video               Video?                @relation(fields: [videoId], references: [id])
+  SessionTier         SessionTier[]
+  threads             Thread[]
+}
+
+model SessionTier {
+  id                Int         @id @default(autoincrement())
+  communityId       Int
+  sessionSlotId     Int         @default(0)
+  numParticipants   Int         @default(0)
+  discount          Int         @default(0)
+  gold_discount     Int         @default(0)
+  silver_discount   Int         @default(0)
+  platinum_discount Int         @default(0)
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  community         Community   @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  sessionSlot       SessionSlot @relation(fields: [sessionSlotId], references: [id], onDelete: Cascade)
+}
+
+model Attendance {
+  id               Int          @id @default(autoincrement())
+  userId           Int
+  sessionId        Int
+  sessionSlotId    Int
+  transactionId    Int?
+  rsvp             Boolean      @default(false)
+  link             String       @default("")
+  price            Int
+  paymentCompleted Boolean      @default(false)
+  createdAt        DateTime     @default(now())
+  session          Session      @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  sessionSlot      SessionSlot  @relation(fields: [sessionSlotId], references: [id], onDelete: Cascade)
+  transaction      Transaction? @relation(fields: [transactionId], references: [id])
+  user             User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model PartnerSession {
+  id            Int         @id @default(autoincrement())
+  partnerId     Int
+  communityId   Int
+  sessionSlotId Int
+  isPaid        Boolean     @default(false)
+  paymentMethod String
+  createdAt     DateTime    @default(now())
+  community     Community   @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  partner       Partner     @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+  sessionSlot   SessionSlot @relation(fields: [sessionSlotId], references: [id], onDelete: Cascade)
+}
+
+model RefreshToken {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  userId    Int
+  userType  String
+  createdAt DateTime @default(now())
+}
+
+model Transaction {
+  id                     Int                 @id @default(autoincrement())
+  userId                 Int?
+  expertId               Int?
+  amount                 Int                 @default(0)
+  transactionId          String?
+  paymentId              String?
+  createdAt              DateTime            @default(now())
+  paymentProvider        String?
+  paymentProviderOrderId String?
+  status                 String?
+  attendance             Attendance[]
+  courseSubscription     CourseSubscription?
+  eventAttendance        EventAttendance?
+  subscription           Subscription?
+  expert                 Expert?             @relation(fields: [expertId], references: [id], onDelete: Cascade)
+  user                   User?               @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Subscription {
+  id               Int                @id @default(autoincrement())
+  transactionId    Int?               @unique
+  communityId      Int
+  category         String?            @default("weekly")
+  startsAt         DateTime?          @default(now())
+  expiresAt        DateTime?          @default(now())
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  unifiedUserId    Int
+  role             CommunityRole      @default(MEMBER)
+  community        Community          @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  transaction      Transaction?       @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+  unifiedUser      unifiedUser        @relation(fields: [unifiedUserId], references: [id], onDelete: Cascade)
+  userChannels     UserChannels[]
+  userSubCommunity userSubCommunity[]
+  Message          Message[]          @relation("recv")
+
+  @@unique([unifiedUserId, communityId])
+}
+
+model Video {
+  id           Int           @id @default(autoincrement())
+  title        String
+  videoURL     String
+  desc         String
+  thumbnailURL String
+  isArchived   Boolean       @default(false)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  sessionId    Int?
+  SessionSlot  SessionSlot[]
+}
+
+model Wallet {
+  id          Int      @id @default(autoincrement())
+  userId      Int      @unique
+  amount      Int
+  isActivated Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Tickets {
+  id         Int      @id @default(autoincrement())
+  content    String
+  domain     String
+  userId     Int
+  isResolved Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  raisedBy   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model SubCommunity {
+  id               Int                @id @default(autoincrement())
+  communityId      Int
+  name             String
+  photoURL         String
+  desc             String
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @default(now())
+  isArchived       Boolean            @default(false)
+  post             Post[]
+  community        Community          @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  userSubCommunity userSubCommunity[]
+}
+
+model userSubCommunity {
+  id             Int          @id @default(autoincrement())
+  subscriptionId Int
+  subCommunityId Int
+  role           String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @default(now())
+  subCommunity   SubCommunity @relation(fields: [subCommunityId], references: [id], onDelete: Cascade)
+  subscription   Subscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+}
+
+model Message {
+  id                                        Int               @id @default(autoincrement())
+  senderId                                  Int
+  recvId                                    Int?
+  content                                   String?
+  channelId                                 Int
+  sendTime                                  DateTime          @default(now())
+  deletedAt                                 DateTime?
+  editedAt                                  DateTime?
+  isDeleted                                 Boolean           @default(false)
+  isEdited                                  Boolean           @default(false)
+  mediaUrl                                  String?
+  messageType                               String?           @default("text")
+  replyToId                                 Int?
+  channel                                   Channels          @relation(fields: [channelId], references: [id], onDelete: Cascade)
+  recv                                      unifiedUser?      @relation("recv", fields: [recvId], references: [id], onDelete: Cascade)
+  Message                                   Message?          @relation("MessageToMessage", fields: [replyToId], references: [id])
+  other_Message                             Message[]         @relation("MessageToMessage")
+  unifiedUser_Message_senderIdTounifiedUser unifiedUser       @relation("Message_senderIdTounifiedUser", fields: [senderId], references: [id], onDelete: Cascade)
+  MessageReaction                           MessageReaction[]
+  MessageRead                               MessageRead[]
+  Notification                              Notification[]
+  Subscription                              Subscription[]    @relation("recv")
+}
+
+model UserChannels {
+  id         Int          @id @default(autoincrement())
+  userId     Int
+  channelId  Int
+  joinedAt   DateTime     @default(now())
+  lastReadAt DateTime?
+  role       String       @default("member")
+  channel    Channels     @relation(fields: [channelId], references: [id], onDelete: Cascade)
+  user       Subscription @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, channelId])
+}
+
+model Channels {
+  id                                           Int            @id @default(autoincrement())
+  name                                         String
+  communityId                                  Int
+  isDm                                         Boolean        @default(false)
+  photoURL                                     String         @default("https://robohash.org/001")
+  createdBy                                    Int?
+  description                                  String?
+  lastMessageAt                                DateTime?
+  memberCount                                  Int            @default(0)
+  community                                    Community      @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  unifiedUser_Channels_createdByTounifiedUser  unifiedUser?   @relation("Channels_createdByTounifiedUser", fields: [createdBy], references: [id])
+  messages                                     Message[]
+  userChannels                                 UserChannels[]
+  unifiedUser_unifiedUser_channelsIdToChannels unifiedUser[]  @relation("unifiedUser_channelsIdToChannels")
+}
+
+model unifiedUser {
+  id                                                       Int                        @id @default(autoincrement())
+  email                                                    String                     @unique
+  userId                                                   Int?                       @unique
+  partnerId                                                Int?                       @unique
+  expertId                                                 Int?                       @unique
+  adminId                                                  Int?                       @unique
+  followers                                                Int[]                      @default([])
+  following                                                Int[]                      @default([])
+  privacyType                                              String                     @default("none")
+  selectedViewers                                          Int[]                      @default([])
+  channelsId                                               Int?
+  isActive                                                 Boolean?                   @default(true)
+  Blog                                                     Blog[]
+  BlogLikes                                                BlogLikes[]
+  CatchUp                                                  CatchUp[]
+  Channels_Channels_createdByTounifiedUser                 Channels[]                 @relation("Channels_createdByTounifiedUser")
+  Community                                                Community[]
+  Competition                                              Competition[]
+  Connection_Connection_receiverIdTounifiedUser            Connection[]               @relation("Connection_receiverIdTounifiedUser")
+  Connection_Connection_senderIdTounifiedUser              Connection[]               @relation("Connection_senderIdTounifiedUser")
+  CouponCode                                               CouponCode[]
+  courses                                                  Course[]                   @relation("Course_creator")
+  courseSubscriptions                                      CourseSubscription[]
+  EvaluatorResult_EvaluatorResult_evaluatorIdTounifiedUser EvaluatorResult[]          @relation("EvaluatorResult_evaluatorIdTounifiedUser")
+  EvaluatorResult_EvaluatorResult_userIdTounifiedUser      EvaluatorResult[]          @relation("EvaluatorResult_userIdTounifiedUser")
+  eventAttendance                                          EventAttendance[]
+  FieldResponse                                            FieldResponse[]
+  Form                                                     Form[]
+  FormResponse                                             FormResponse[]
+  recvdMessages                                            Message[]                  @relation("recv")
+  Message_Message_senderIdTounifiedUser                    Message[]                  @relation("Message_senderIdTounifiedUser")
+  MessageReaction                                          MessageReaction[]
+  MessageRead                                              MessageRead[]
+  Notification_Notification_recipientIdTounifiedUser       Notification[]             @relation("Notification_recipientIdTounifiedUser")
+  Notification_Notification_senderIdTounifiedUser          Notification[]             @relation("Notification_senderIdTounifiedUser")
+  Order                                                    Order[]
+  post                                                     Post[]
+  postLikes                                                PostLikes[]
+  resource                                                 Resource[]
+  services                                                 Service[]
+  responses                                                ServiceResponse[]
+  Session                                                  Session[]
+  SessionOrderMapping                                      SessionOrderMapping[]
+  sessionSlots                                             SessionSlot[]
+  Stage                                                    Stage[]
+  SubmittedProjects                                        SubmittedProjects[]
+  subscriptions                                            Subscription[]
+  thread                                                   Thread[]
+  activities                                               UserActivity[]
+  UserPollOptionSelect                                     UserPollOptionSelect[]
+  rewards                                                  UserReward?
+  projects                                                 project[]
+  requests                                                 requests[]
+  admin                                                    Admin?                     @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  Channels_unifiedUser_channelsIdToChannels                Channels?                  @relation("unifiedUser_channelsIdToChannels", fields: [channelsId], references: [id])
+  expert                                                   Expert?                    @relation(fields: [expertId], references: [id], onDelete: Cascade)
+  partner                                                  Partner?                   @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+  user                                                     User?                      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdHuddles                                           Huddle[]                   @relation("HuddleCreator")
+  ledHuddles                                               Huddle[]                   @relation("HuddleLeader")
+  huddleAttendances                                        HuddleAttendance[]
+  huddleStreaks                                            HuddleStreak[]
+  huddleInvitations                                        HuddleInvitation[]
+  huddleActivityCompletions                                HuddleActivityCompletion[]
+}
+
+model Post {
+  id                   Int                    @id @default(autoincrement())
+  content              String
+  parentPostId         Int?
+  creatorId            Int
+  eventId              Int?
+  communityId          Int?
+  sessionId            Int?
+  subcommunityId       Int?
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
+  isArchived           Boolean                @default(false)
+  isApproved           Boolean                @default(false)
+  title                String?
+  blogId               String?
+  isPoll               Boolean                @default(false)
+  pollExpiresAt        DateTime?
+  isAsk                Boolean                @default(false)
+  isGreeting           Boolean                @default(false)
+  Notification         Notification[]
+  PollOptions          PollOptions[]
+  blog                 Blog?                  @relation(fields: [blogId], references: [id], onDelete: Cascade)
+  community            Community?             @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  creator              unifiedUser            @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  event                Event?                 @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  parentPost           Post?                  @relation("parent", fields: [parentPostId], references: [id], onDelete: Cascade)
+  childrenPosts        Post[]                 @relation("parent")
+  session              Session?               @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  subcommunity         SubCommunity?          @relation(fields: [subcommunityId], references: [id], onDelete: Cascade)
+  likes                PostLikes[]
+  tags                 PostTag[]
+  UserPollOptionSelect UserPollOptionSelect[]
+  assets               mediaAssets[]
+  huddleActivities     HuddleActivity[]       @relation("HuddleActivityPost")
+  huddlePollActivities HuddleActivity[]       @relation("HuddleActivityPoll")
+}
+
+model project {
+  id                Int                 @id @default(autoincrement())
+  name              String
+  description       String
+  focusArea         String
+  lastSubmitDate    DateTime
+  attachedFiles     String[]
+  creatorId         Int
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  submittedProjects SubmittedProjects[]
+  creator           unifiedUser         @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+}
+
+model SubmittedProjects {
+  id          Int         @id @default(autoincrement())
+  projectId   Int
+  submittedBy Int
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @default(now())
+  project     project     @relation(fields: [projectId], references: [id])
+  unifiedUser unifiedUser @relation(fields: [submittedBy], references: [id])
+}
+
+model PostLikes {
+  id        String      @id @default(uuid())
+  like      Int         @default(1)
+  userId    Int
+  postId    Int
+  createdAt DateTime    @default(now())
+  post      Post        @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      unifiedUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, postId])
+}
+
+model mediaAssets {
+  id        Int      @id @default(autoincrement())
+  type      String
+  url       String
+  index     Int      @default(0)
+  postId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+}
+
+model PollOptions {
+  id                   Int                    @id @default(autoincrement())
+  option               String
+  postId               Int
+  post                 Post                   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  UserPollOptionSelect UserPollOptionSelect[]
+}
+
+model UserPollOptionSelect {
+  id            Int         @id @default(autoincrement())
+  unifiedUserId Int
+  pollOptionsId Int
+  createdAt     DateTime    @default(now())
+  postId        Int
+  option        PollOptions @relation(fields: [pollOptionsId], references: [id], onDelete: Cascade)
+  post          Post        @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user          unifiedUser @relation(fields: [unifiedUserId], references: [id], onDelete: Cascade)
+}
+
+model Order {
+  id                  Int                   @id @default(autoincrement())
+  paymentId           String
+  userId              Int
+  createdAt           DateTime              @default(now())
+  unifiedUser         unifiedUser           @relation(fields: [userId], references: [id])
+  SessionOrderMapping SessionOrderMapping[]
+}
+
+model SessionOrderMapping {
+  id            Int         @id @default(autoincrement())
+  sessionId     Int
+  userId        Int
+  orderId       Int
+  sessionSlotId Int
+  order         Order       @relation(fields: [orderId], references: [id])
+  session       Session     @relation(fields: [sessionId], references: [id])
+  sessionSlot   SessionSlot @relation(fields: [sessionSlotId], references: [id])
+  unifiedUser   unifiedUser @relation(fields: [userId], references: [id])
+}
+
+model Tag {
+  id             Int             @id @default(autoincrement())
+  name           String          @unique
+  createdAt      DateTime        @default(now())
+  description    String?
+  isArchived     Boolean         @default(false)
+  tagType        String?
+  updatedAt      DateTime        @default(now())
+  BlogTags       BlogTags[]
+  CommunityTags  CommunityTags[]
+  postTag        PostTag[]
+  sessionTags    SessionTags[]
+  TopSessionTags TopSessionTags?
+}
+
+model PostTag {
+  id     Int  @id @default(autoincrement())
+  tagId  Int
+  postId Int
+  post   Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  tag    Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@unique([tagId, postId])
+}
+
+model Event {
+  id              Int               @id @default(autoincrement())
+  name            String
+  desc            String
+  price           Int               @default(99)
+  bannerImgs      String[]
+  infoImgs        String[]
+  startsAt        DateTime
+  endsAt          DateTime
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  isArchived      Boolean           @default(false)
+  location        String?
+  CatchUp         CatchUp[]
+  eventAttendance EventAttendance[]
+  Notification    Notification[]
+  post            Post[]
+  sessions        Session[]
+}
+
+model EventAttendance {
+  id               Int          @id @default(autoincrement())
+  unifiedUserId    Int
+  eventId          Int
+  transactionId    Int?         @unique
+  rsvp             Boolean      @default(false)
+  location         String       @default("")
+  paymentCompleted Boolean      @default(false)
+  createdAt        DateTime     @default(now())
+  event            Event        @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  transaction      Transaction? @relation(fields: [transactionId], references: [id])
+  unifiedUser      unifiedUser  @relation(fields: [unifiedUserId], references: [id], onDelete: Cascade)
+
+  @@unique([unifiedUserId, eventId])
+}
+
+model Blog {
+  id            String          @id @default(uuid())
+  title         String
+  content       String
+  draft         Boolean         @default(true)
+  unifiedUserId Int
+  createdAt     DateTime        @default(now())
+  isArchived    Boolean         @default(false)
+  communityId   Int?
+  isPrivate     Boolean         @default(false)
+  glance        String          @default("")
+  community     Community?      @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  author        unifiedUser     @relation(fields: [unifiedUserId], references: [id], onDelete: Cascade)
+  BlogLikes     BlogLikes[]
+  BlogTags      BlogTags[]
+  CommunityBlog CommunityBlog[]
+  Notification  Notification[]
+  Post          Post[]
+}
+
+model CommunityBlog {
+  id          Int       @id @default(autoincrement())
+  blogId      String
+  communityId Int
+  blog        Blog      @relation(fields: [blogId], references: [id], onDelete: Cascade)
+  community   Community @relation(fields: [communityId], references: [id], onDelete: Cascade)
+
+  @@unique([blogId, communityId])
+}
+
+model BlogTags {
+  id     Int    @id @default(autoincrement())
+  tagId  Int
+  blogId String
+  blog   Blog   @relation(fields: [blogId], references: [id], onDelete: Cascade)
+  tag    Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@unique([blogId, tagId])
+}
+
+model BlogLikes {
+  id        String      @id @default(uuid())
+  like      Int         @default(1)
+  userId    Int
+  blogId    String
+  createdAt DateTime    @default(now())
+  blog      Blog        @relation(fields: [blogId], references: [id], onDelete: Cascade)
+  user      unifiedUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, blogId])
+}
+
+model CouponCode {
+  id            String       @id @default(uuid())
+  code          String       @unique
+  unifiedUserId Int?
+  discountRate  Int          @default(0)
+  sessionId     Int?
+  communityId   Int?
+  createdAt     DateTime     @default(now())
+  isExpired     Boolean      @default(false)
+  updatedAt     DateTime     @updatedAt
+  community     Community?   @relation(fields: [communityId], references: [id])
+  session       Session?     @relation(fields: [sessionId], references: [id])
+  creator       unifiedUser? @relation(fields: [unifiedUserId], references: [id])
+}
+
+model Thread {
+  id               Int              @id @default(autoincrement())
+  title            String?
+  content          String?
+  creatorId        Int
+  sessionSlotId    Int
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  creator          unifiedUser      @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  sessionSlot      SessionSlot      @relation(fields: [sessionSlotId], references: [id], onDelete: Cascade)
+  assets           threadAssets[]
+  huddleActivities HuddleActivity[]
+}
+
+model threadAssets {
+  id        Int      @id @default(autoincrement())
+  type      String?
+  url       String?
+  index     Int      @default(0)
+  threadId  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  thread    Thread   @relation(fields: [threadId], references: [id], onDelete: Cascade)
+}
+
+model requests {
+  id          Int          @id @default(autoincrement())
+  name        String
+  email       String
+  phone       String
+  q1          String?
+  q2          String?
+  q3          String?
+  status      Boolean      @default(false)
+  communityId Int?
+  userId      Int?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  Community   Community?   @relation(fields: [communityId], references: [id])
+  unifiedUser unifiedUser? @relation(fields: [userId], references: [id])
+}
+
+model customForm {
+  id        Int      @id @default(autoincrement())
+  formName  String
+  adminId   Int
+  formLink  String
+  formImg   String?
+  formDesc  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Course {
+  id             Int                  @id @default(autoincrement())
+  moodleCourseId Int                  @unique
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
+  description    String?
+  name           String?
+  status         String?
+  creatorId      Int
+  discount       Int                  @default(0)
+  image          String?
+  price          Int                  @default(0)
+  creator        unifiedUser          @relation("Course_creator", fields: [creatorId], references: [id], onDelete: Cascade)
+  subscriptions  CourseSubscription[]
+  Notification   Notification[]
+  communities    Community[]          @relation("CourseToCommunity")
+}
+
+model CourseSubscription {
+  id            Int          @id @default(autoincrement())
+  transactionId Int?         @unique
+  courseId      Int
+  unifiedUserId Int
+  startsAt      DateTime?    @default(now())
+  expiresAt     DateTime?    @default(now())
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  course        Course       @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  transaction   Transaction? @relation(fields: [transactionId], references: [id])
+  unifiedUser   unifiedUser  @relation(fields: [unifiedUserId], references: [id], onDelete: Cascade)
+
+  @@unique([unifiedUserId, courseId])
+}
+
+model Competition {
+  id                Int               @id @default(autoincrement())
+  title             String
+  description       String
+  startDate         DateTime
+  endDate           DateTime
+  applicationEndsOn DateTime
+  bannerUrl         String?
+  creatorId         Int
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  unifiedUser       unifiedUser       @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  EvaluatorResult   EvaluatorResult[]
+  Notification      Notification[]
+  Stage             Stage[]
+}
+
+model EvaluatorQuestion {
+  id            Int      @id @default(autoincrement())
+  question      String?
+  answerOptions String?
+  stageId       Int
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  Stage         Stage    @relation(fields: [stageId], references: [id], onDelete: Cascade)
+}
+
+model EvaluatorResult {
+  id                                                   Int               @id @default(autoincrement())
+  evaluatorId                                          Int
+  userId                                               Int
+  score                                                Int?
+  feedback                                             String?
+  createdAt                                            DateTime          @default(now())
+  updatedAt                                            DateTime          @updatedAt
+  stageId                                              Int
+  status                                               EvaluationStatus?
+  competitionId                                        Int?
+  Competition                                          Competition?      @relation(fields: [competitionId], references: [id], onDelete: Cascade)
+  unifiedUser_EvaluatorResult_evaluatorIdTounifiedUser unifiedUser       @relation("EvaluatorResult_evaluatorIdTounifiedUser", fields: [evaluatorId], references: [id], onDelete: Cascade)
+  Stage                                                Stage             @relation(fields: [stageId], references: [id], onDelete: Cascade)
+  unifiedUser_EvaluatorResult_userIdTounifiedUser      unifiedUser       @relation("EvaluatorResult_userIdTounifiedUser", fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Field {
+  id            Int             @id @default(autoincrement())
+  question      String
+  type          String
+  stageId       Int
+  options       Json?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  Stage         Stage           @relation(fields: [stageId], references: [id], onDelete: Cascade)
+  FieldResponse FieldResponse[]
+}
+
+model FieldResponse {
+  id          Int          @id @default(autoincrement())
+  fieldId     Int
+  fileType    String?
+  answer      Json
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  submittedBy Int?
+  Field       Field        @relation(fields: [fieldId], references: [id], onDelete: Cascade)
+  unifiedUser unifiedUser? @relation(fields: [submittedBy], references: [id], onDelete: Cascade)
+}
+
+model Form {
+  id               Int              @id @default(autoincrement())
+  formName         String
+  creatorId        Int
+  isGlobal         Boolean          @default(false)
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  unifiedUser      unifiedUser      @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  FormCommunity    FormCommunity[]
+  FormResponse     FormResponse[]
+  Notification     Notification[]
+  Question         Question[]
+  huddleActivities HuddleActivity[]
+}
+
+model FormCommunity {
+  id          Int       @id @default(autoincrement())
+  formId      Int
+  communityId Int
+  Community   Community @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  Form        Form      @relation(fields: [formId], references: [id])
+
+  @@unique([formId, communityId])
+}
+
+model FormResponse {
+  id          Int         @id @default(autoincrement())
+  formId      Int
+  userId      Int
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  communityId Int
+  Community   Community   @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  Form        Form        @relation(fields: [formId], references: [id], onDelete: Cascade)
+  unifiedUser unifiedUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Response    Response[]
+}
+
+model Question {
+  id          Int        @id @default(autoincrement())
+  question    String
+  answerType  String
+  description String?
+  isRequired  Boolean
+  formId      Int
+  options     String[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  Form        Form       @relation(fields: [formId], references: [id], onDelete: Cascade)
+  Response    Response[]
+}
+
+model Response {
+  id           Int          @id @default(autoincrement())
+  responseId   Int
+  questionId   Int
+  answer       String
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  Question     Question     @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  FormResponse FormResponse @relation(fields: [responseId], references: [id], onDelete: Cascade)
+}
+
+model Stage {
+  id                Int                 @id @default(autoincrement())
+  name              String?
+  competitionId     Int
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  stageNumber       Int
+  evaluatorId       Int?
+  EvaluatorQuestion EvaluatorQuestion[]
+  EvaluatorResult   EvaluatorResult[]
+  Field             Field[]
+  Competition       Competition         @relation(fields: [competitionId], references: [id], onDelete: Cascade)
+  unifiedUser       unifiedUser?        @relation(fields: [evaluatorId], references: [id])
+}
+
+model Service {
+  id          Int               @id @default(autoincrement())
+  title       String
+  description String
+  imageUrl    String?
+  videoUrl    String?
+  communityId Int
+  creatorId   Int
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  community   Community         @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  creator     unifiedUser       @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  responses   ServiceResponse[]
+}
+
+model ServiceResponse {
+  id        Int         @id @default(autoincrement())
+  userId    Int
+  serviceId Int
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  service   Service     @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  user      unifiedUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model RewardRule {
+  id         Int            @id @default(autoincrement())
+  action     RewardAction   @unique
+  name       String?
+  points     Int
+  frequency  Frequency
+  limit      Int
+  isActive   Boolean        @default(true)
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+  expiryDays Int?
+  activities UserActivity[]
+}
+
+model UserActivity {
+  id           Int          @id @default(autoincrement())
+  userId       Int
+  rewardAction RewardAction
+  timestamp    DateTime     @default(now())
+  type         RewardType
+  points       Int
+  expiryDate   DateTime?
+  isExpired    Boolean      @default(false)
+  rewardRule   RewardRule   @relation(fields: [rewardAction], references: [action])
+  user         unifiedUser  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([rewardAction])
+  @@index([timestamp])
+  @@index([userId, rewardAction, timestamp])
+}
+
+model UserReward {
+  id          Int         @id @default(autoincrement())
+  userId      Int         @unique
+  totalPoints Int         @default(0)
+  credit      Int         @default(0)
+  debit       Int         @default(0)
+  updatedAt   DateTime    @updatedAt
+  createdAt   DateTime    @default(now())
+  user        unifiedUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model CommunityTags {
+  id          Int       @id @default(autoincrement())
+  tagId       Int
+  communityId Int
+  Community   Community @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  Tag         Tag       @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@unique([tagId, communityId])
+}
+
+model Connection {
+  id                                             Int            @id @default(autoincrement())
+  senderId                                       Int
+  receiverId                                     Int
+  status                                         String         @default("pending")
+  message                                        String?
+  createdAt                                      DateTime       @default(now())
+  updatedAt                                      DateTime
+  unifiedUser_Connection_receiverIdTounifiedUser unifiedUser    @relation("Connection_receiverIdTounifiedUser", fields: [receiverId], references: [id])
+  unifiedUser_Connection_senderIdTounifiedUser   unifiedUser    @relation("Connection_senderIdTounifiedUser", fields: [senderId], references: [id])
+  Notification                                   Notification[]
+
+  @@index([receiverId])
+  @@index([senderId])
+}
+
+model MessageReaction {
+  id          Int         @id @default(autoincrement())
+  messageId   Int
+  userId      Int
+  reaction    String
+  createdAt   DateTime    @default(now())
+  Message     Message     @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  unifiedUser unifiedUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([messageId, userId, reaction])
+}
+
+model MessageRead {
+  id          Int         @id @default(autoincrement())
+  messageId   Int
+  userId      Int
+  readAt      DateTime    @default(now())
+  Message     Message     @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  unifiedUser unifiedUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([messageId, userId])
+}
+
+model Notification {
+  id                                                Int                @id @default(autoincrement())
+  recipientId                                       Int
+  senderId                                          Int?
+  type                                              NotificationType
+  title                                             String
+  message                                           String
+  status                                            NotificationStatus @default(UNREAD)
+  isRead                                            Boolean            @default(false)
+  createdAt                                         DateTime           @default(now())
+  updatedAt                                         DateTime           @updatedAt
+  communityId                                       Int?
+  sessionId                                         Int?
+  postId                                            Int?
+  blogId                                            String?
+  eventId                                           Int?
+  competitionId                                     Int?
+  messageId                                         Int?
+  connectionId                                      Int?
+  formId                                            Int?
+  courseId                                          Int?
+  metadata                                          Json?
+  resourceId                                        Int?
+  huddleId                                          Int?
+  Blog                                              Blog?              @relation(fields: [blogId], references: [id])
+  Community                                         Community?         @relation(fields: [communityId], references: [id])
+  Competition                                       Competition?       @relation(fields: [competitionId], references: [id])
+  Connection                                        Connection?        @relation(fields: [connectionId], references: [id])
+  Course                                            Course?            @relation(fields: [courseId], references: [id])
+  Event                                             Event?             @relation(fields: [eventId], references: [id])
+  Form                                              Form?              @relation(fields: [formId], references: [id])
+  Huddle                                            Huddle?            @relation(fields: [huddleId], references: [id])
+  Message                                           Message?           @relation(fields: [messageId], references: [id])
+  Post                                              Post?              @relation(fields: [postId], references: [id])
+  unifiedUser_Notification_recipientIdTounifiedUser unifiedUser        @relation("Notification_recipientIdTounifiedUser", fields: [recipientId], references: [id], onDelete: Cascade)
+  Resource                                          Resource?          @relation(fields: [resourceId], references: [id])
+  unifiedUser_Notification_senderIdTounifiedUser    unifiedUser?       @relation("Notification_senderIdTounifiedUser", fields: [senderId], references: [id], onDelete: Cascade)
+  Session                                           Session?           @relation(fields: [sessionId], references: [id])
+
+  @@index([createdAt])
+  @@index([recipientId])
+  @@index([status])
+  @@index([type])
+}
+
+enum EvaluationStatus {
+  QUALIFIED
+  NOT_QUALIFIED
+  PENDING
+}
+
+enum RewardAction {
+  SIGN_UP
+  LOGIN
+  PROFILE_COMPLETION
+  JOIN_COMMUNITY
+  REGISTER_SESSION
+  ATTEND_SESSION
+  CREATE_ANNOUNCEMENT
+  REPLY_ANNOUNCEMENT
+  CREATE_GREETING
+  REPLY_GREETING
+  CREATE_ASK
+  REPLY_TO_POST
+  CREATE_THREAD
+  REPLY_THREAD
+  CREATE_POLL
+  ANSWER_POLL
+  ATTEND_COMPETITION
+  CREATE_SERVICE
+  JOIN_COURSE
+  OPT_FOR_SERVICE
+  COMPLETE_COURSE
+  REACT_TO_THREADS
+  START_CATCHUP
+  JOIN_CATCHUP
+  CREATE_FORM
+  REPLY_TO_FORM
+  REDEEMED
+  CREATE_HUDDLE
+  JOIN_HUDDLE
+  ATTEND_HUDDLE
+  COMPLETE_HUDDLE_ACTIVITY
+}
+
+enum Frequency {
+  ONCE
+  DAILY
+  WEEKLY
+  MONTHLY
+  PER_ACTION
+}
+
+enum RewardType {
+  CREDIT
+  DEBIT
+}
+
+enum CommunityRole {
+  MEMBER
+  ADMIN
+  MODERATOR
+}
+
+enum NotificationStatus {
+  UNREAD
+  READ
+  ARCHIVED
+}
+
+enum NotificationType {
+  SESSION_REMINDER
+  NEW_MESSAGE
+  CONNECTION_REQUEST
+  CONNECTION_ACCEPTED
+  NEW_POST
+  POST_COMMENT
+  BLOG_PUBLISHED
+  EVENT_REMINDER
+  COMPETITION_UPDATE
+  FORM_SUBMISSION
+  EVALUATION_RESULT
+  THREAD_MENTION
+  COMMUNITY_INVITATION
+  PAYMENT_CONFIRMATION
+  COURSE_UPDATE
+  SYSTEM_ANNOUNCEMENT
+  SESSION_REGISTRATION
+  SECURITY
+  ROLE_CHANGE
+  POST_LIKE
+  COMMUNITY_UPDATE
+  PURCHASE_COMPLETE
+  RESOURCE_UPDATE
+  CATCHUP_STARTED
+  CATCHUP_SCHEDULED
+  CATCHUP_ENDED
+  CATCHUP_REMINDER
+  POST_ARCHIVED
+  POST_DELETED
+  COMMENT_ARCHIVED
+  COMMENT_DELETED
+  CATCHUP_USER_LEFT
+  CATCHUP_USER_JOINED
+  HUDDLE_CREATED
+  HUDDLE_REMINDER_1_DAY
+  HUDDLE_REMINDER_2_HOURS
+  HUDDLE_REMINDER_10_MIN
+  HUDDLE_STARTED
+  HUDDLE_ENDED
+  HUDDLE_AI_HOOK
+  HUDDLE_USER_JOINED
+  HUDDLE_USER_LEFT
+  STREAK_AT_RISK
+}
+
+// ==================== HUDDLE SYSTEM ====================
+
+enum HuddleFrequency {
+  DAILY
+  WEEKLY
+  FORTNIGHTLY
+}
+
+enum AudienceType {
+  ALL_MEMBERS
+  SELECTED_MEMBERS
+}
+
+enum LocationType {
+  DIGITAL
+  OFFLINE
+}
+
+enum LeaderSelectionType {
+  USER
+  RANDOM
+  FIRST_LOGIN
+  ROUNDROBIN
+}
+
+enum HuddleActivityType {
+  AI_SLIDESHOW
+  AI_VIDEO_MESSAGE
+  DISCUSSION_TOPIC
+  QUIZ
+  DEBATE
+  CONTEST
+  VOTING_SURVEY
+  REFLECTION
+  GUIDED_SESSION
+  STORY_SPOTLIGHT
+  ANNOUNCEMENT
+}
+
+model Huddle {
+  id                  Int                 @id @default(autoincrement())
+  title               String
+  description         String?
+  communityId         Int
+  creatorId           Int
+  frequency           HuddleFrequency
+  scheduledTime       DateTime
+  timezone            String              @default("UTC")
+  selectedActivities  String[]
+  audienceType        AudienceType        @default(ALL_MEMBERS)
+  selectedMemberIds   Int[]               @default([])
+  locationType        LocationType        @default(DIGITAL)
+  offlineLocation     String?
+  roomId              String?             @unique
+  leaderId            Int?
+  leaderSelectionType LeaderSelectionType @default(USER)
+  isLive              Boolean             @default(false)
+  isScheduled         Boolean             @default(true)
+  startTime           DateTime?
+  endTime             DateTime?
+  currentActivityIndex Int?                @default(0)
+  notificationSent    Json?
+  aiHook              String?
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+
+  community           Community                  @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  creator             unifiedUser                @relation("HuddleCreator", fields: [creatorId], references: [id], onDelete: Cascade)
+  leader              unifiedUser?               @relation("HuddleLeader", fields: [leaderId], references: [id])
+  activities          HuddleActivity[]
+  attendances         HuddleAttendance[]
+  summaries           HuddleSummary[]
+  notifications       Notification[]
+  invitations         HuddleInvitation[]
+  activityCompletions HuddleActivityCompletion[]
+}
+
+model HuddleActivity {
+  id           Int                @id @default(autoincrement())
+  huddleId     Int
+  activityType HuddleActivityType
+  activityData Json?
+  linkUrl      String?
+  postId       Int?
+  pollId       Int?
+  threadId     Int?
+  formId       Int?
+  sessionId    Int?
+  resourceId   Int?
+  isGenerated  Boolean            @default(false)
+  isActive     Boolean            @default(true)
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+
+  huddle      Huddle                     @relation(fields: [huddleId], references: [id], onDelete: Cascade)
+  post        Post?                      @relation("HuddleActivityPost", fields: [postId], references: [id])
+  poll        Post?                      @relation("HuddleActivityPoll", fields: [pollId], references: [id])
+  thread      Thread?                    @relation(fields: [threadId], references: [id])
+  form        Form?                      @relation(fields: [formId], references: [id])
+  session     Session?                   @relation("HuddleActivitySession", fields: [sessionId], references: [id])
+  resource    Resource?                  @relation(fields: [resourceId], references: [id])
+  completions HuddleActivityCompletion[]
+}
+
+model HuddleAttendance {
+  id           Int       @id @default(autoincrement())
+  huddleId     Int
+  userId       Int
+  joinedAt     DateTime  @default(now())
+  leftAt       DateTime?
+  pointsEarned Int       @default(0)
+
+  huddle Huddle      @relation(fields: [huddleId], references: [id], onDelete: Cascade)
+  user   unifiedUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([huddleId, userId])
+}
+
+model HuddleSummary {
+  id          Int      @id @default(autoincrement())
+  huddleId    Int
+  summaryText String
+  highlights  String[]
+  aiGenerated Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  huddle Huddle @relation(fields: [huddleId], references: [id], onDelete: Cascade)
+}
+
+model HuddleActivityCompletion {
+  id          Int      @id @default(autoincrement())
+  huddleId    Int
+  activityId  Int
+  userId      Int
+  completedAt DateTime @default(now())
+
+  huddle   Huddle         @relation(fields: [huddleId], references: [id], onDelete: Cascade)
+  activity HuddleActivity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  user     unifiedUser    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([huddleId, activityId, userId])
+}
+
+model HuddleStreak {
+  id             Int       @id @default(autoincrement())
+  userId         Int
+  communityId    Int
+  currentStreak  Int       @default(0)
+  longestStreak  Int       @default(0)
+  lastHuddleDate DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  user      unifiedUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+  community Community   @relation(fields: [communityId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, communityId])
+}
+
+enum InvitationStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+}
+
+model HuddleInvitation {
+  id          Int              @id @default(autoincrement())
+  huddleId    Int
+  userId      Int
+  status      InvitationStatus @default(PENDING)
+  invitedAt   DateTime         @default(now())
+  respondedAt DateTime?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  huddle Huddle      @relation(fields: [huddleId], references: [id], onDelete: Cascade)
+  user   unifiedUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([huddleId, userId])
+}

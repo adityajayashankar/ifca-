@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .header {
+      background-color: #f8f9fa;
+      padding: 20px;
+      text-align: center;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+
+    .logo {
+      max-width: 300px;
+      height: 104px;
+      margin-bottom: 15px;
+      object-fit: contain;
+    }
+
+    .content {
+      padding: 20px;
+    }
+
+    .session-card {
+      background-color: #ffffff;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+
+    .session-image {
+      width: 100%;
+      max-height: 200px;
+      object-fit: cover;
+      border-radius: 8px 8px 0 0;
+      margin-bottom: 15px;
+    }
+
+    .button {
+      display: inline-block;
+      padding: 12px 24px;
+      background-color: #0C74D4;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      margin: 10px;
+      font-weight: bold;
+    }
+
+    .button:hover {
+      background-color: #0a5db3;
+    }
+
+    .button--secondary {
+      background-color: #4B5563;
+    }
+
+    .button--secondary:hover {
+      background-color: #374151;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
+      font-size: 12px;
+      color: #666;
+    }
+
+    .social-links {
+      margin: 15px 0;
+    }
+
+    .social-link {
+      display: inline-block;
+      margin: 0 10px;
+      color: #0C74D4;
+      text-decoration: none;
+    }
+
+    .session-details {
+      background-color: #f8f9fa;
+      padding: 15px;
+      border-radius: 5px;
+      margin: 15px 0;
+    }
+
+    .session-slot {
+      padding: 8px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .session-slot:last-child {
+      border-bottom: none;
+    }
+
+    .important-notes {
+      background-color: #fff3cd;
+      border: 1px solid #ffeeba;
+      color: #856404;
+      padding: 15px;
+      border-radius: 5px;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <img
+        src="https://static.wixstatic.com/media/db3b3b_86383d901e49464bac1352044fe61656~mv2.png/v1/fill/w_314,h_104,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/db3b3b_86383d901e49464bac1352044fe61656~mv2.png"
+        alt="IFCA Logo" class="logo">
+      <h2>{{title}}</h2>
+    </div>
+
+    <div class="content">
+      <p>Dear {{recipientName}},</p>
+      <p>{{message}}</p>
+
+      <div class="session-card">
+        {{#if metadata.sessionImage}}
+        <img src="{{metadata.sessionImage}}" alt="Session Banner" class="session-image">
+        {{/if}}
+
+        <h3 style="color: #0C74D4; margin: 0 0 15px 0;">{{metadata.sessionName}}</h3>
+
+        <div class="session-details">
+          <h4 style="margin: 0 0 10px 0;">Session Schedule:</h4>
+          {{#each metadata.slots}}
+          <div class="session-slot">
+            <h4 style="color: #0C74D4; margin: 0 0 8px 0;">{{this.topicName}}</h4>
+            <p style="margin: 0 0 5px 0;"><strong>Date:</strong> {{this.date}}</p>
+            <p style="margin: 0 0 5px 0;"><strong>Time:</strong> {{this.startTime}} - {{this.endTime}}</p>
+            <hr style="border: none; border-top: 1px solid #eee; margin: 10px 0;">
+          </div>
+          {{/each}}
+        </div>
+      </div>
+
+      <div style="text-align: center;">
+        <a href="{{metadata.joinLink}}" class="button" target="_blank">Join Session</a>
+        <a href="{{metadata.sessionPageLink}}" class="button button--secondary" target="_blank">View Details</a>
+      </div>
+
+      <div class="important-notes">
+        <h4 style="margin: 0 0 10px 0;">Important Notes:</h4>
+        <ul style="margin: 0; padding-left: 20px;">
+          <li>Please join the session 5 minutes before the scheduled time</li>
+          <li>Ensure you have a stable internet connection</li>
+          <li>Keep your microphone muted when not speaking</li>
+          <li>Have your camera ready for better interaction</li>
+        </ul>
+      </div>
+
+      <p>If you have any questions or need assistance, please don't hesitate to contact our support team.</p>
+    </div>
+
+    <div class="footer">
+      <p>This email was sent by IFCA</p>
+      <div class="social-links">
+        <a href="{{socialLinks.facebook}}" class="social-link">Facebook</a>
+        <a href="{{socialLinks.twitter}}" class="social-link">Twitter</a>
+        <a href="{{socialLinks.linkedin}}" class="social-link">LinkedIn</a>
+      </div>
+      <p>If you received this email by mistake, please ignore it.</p>
+      <p>© {{currentYear}} IFCA. All rights reserved.</p>
+    </div>
+  </div>
+</body>
+
+</html>

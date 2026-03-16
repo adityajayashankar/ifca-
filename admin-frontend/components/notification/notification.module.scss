@@ -1,0 +1,44 @@
+.notification{
+    background-color: #F6F6F6;
+    border: 2px solid lightgray;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    padding: 20px;
+    
+    p{
+        margin: 0;
+    }
+
+    .notTop{
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 10px;
+        gap: 15px;
+        
+
+        .left{
+            
+        }
+
+        .right{
+            p{
+                line-height: 1.5;
+                span{
+                    color: #3554C5;
+                    font-weight: bold;
+                }
+
+                &.timing{
+                    font-weight: 500;
+                    color: gray;
+
+                }
+            }
+        }
+    }
+
+    .notBtm{
+        font-weight: 500;
+        line-height: 1.5;
+    }
+}

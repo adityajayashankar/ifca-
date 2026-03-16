@@ -1,0 +1,16 @@
+{
+    "apps":[
+        {
+            "name":"nextjsv1.2",
+            "script":"yarn",
+            "args":"start",
+            "watch":false,
+            "cwd":"/home/ubuntu/senior-central",
+            "out_file":"/home/ubuntu/nextjsf.out.log",
+            "err_file":"/home/ubuntu/nextjsf.err.log",
+            "merge_logs":true,
+            "instances":1,
+            "exec_mode":"cluster"
+        }
+    ]
+}

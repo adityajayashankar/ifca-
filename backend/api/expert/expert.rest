@@ -1,0 +1,160 @@
+###
+@baseURL=http://localhost:5000/api/v1/expert
+@auth_JWT=Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJhZG1pbkBjcC5pbiIsIm5hbWUiOiJBZG1pbiBVc2VyIiwicGhvbmUiOiIrMTEyMjMzNDQ1NSIsImFkZHJlc3MiOiI3ODkgQWRtaW4gU3QsIEFkbWludmlsbGUsIEluZGlhIiwicGluY29kZSI6IjU0MzIxIiwicGFzc3dvcmQiOiIkMmEkMTAkeFVzTWJyZ2NLSkt3d0ZKOFFvU0lTdUVnMVhTNmZTTHdTUXM5MUtEWWhrZXIubzBaYy5vVXEiLCJpc1N1cGVyQWRtaW4iOmZhbHNlLCJjcmVhdGVkQXQiOiIyMDI1LTAzLTEwVDEwOjIzOjQ0LjM3OVoiLCJ1cGRhdGVkQXQiOiIyMDI1LTA3LTAyVDA0OjAyOjU4LjExMVoiLCJwaG90b1VSTCI6Imh0dHBzOi8vcm9ib2hhc2gub3JnL2Rvam8iLCJyZXNldFRva2VuIjoiMjQ5MDkyZTYyYTA1OWUxNDc5Mjk2ZmM2MGMxNzU4MTM1NGQ0ODk3NWI0OWMzNWM4MWMzNGRjYjcyYmI0MDZlNyIsInJlc2V0VG9rZW5FeHBpcmVzIjoiMjAyNS0wNy0wMlQwNTowMjo1OC4xMDNaIiwidXNlcklkIjpudWxsLCJwYXJ0bmVySWQiOm51bGwsImV4cGVydElkIjpudWxsLCJhZG1pbklkIjoxLCJmb2xsb3dlcnMiOltdLCJmb2xsb3dpbmciOltdLCJwcml2YWN5VHlwZSI6ImFsbCIsInNlbGVjdGVkVmlld2VycyI6W10sImlzQWN0aXZlIjp0cnVlLCJ1c2VyVHlwZSI6ImFkbWluIiwiaWF0IjoxNzUxODU5ODQ1LCJleHAiOjE3NTE5NDYyNDV9.iIt847-IEsoSzFQIAGMZpjmjsixkW0PUQBuYsJBxRKw
+
+###
+POST http://localhost:5000/api/v1/auth/signin 
+Content-Type: application/json
+
+{
+    "userType":"partner",
+    "email":"partner@senior.in",
+    "password":"12345"
+}
+
+###
+# CREATE SINGLE EXPERT (Admin/Partner only)
+POST {{baseURL}}
+authorization: {{auth_JWT}}
+Content-Type: application/json
+
+{
+    "email": "expert1@example.com",
+    "name": "John Doe",
+    "phone": "9876543210",
+    "address": "123 Expert Street, Tech City, TC 12345",
+    "pincode": "12345",
+    "photoURL": "https://s3.amazonaws.com/your-bucket/expert1.jpg",
+    "desc": "Experienced software engineer with 10+ years in web development"
+}
+
+###
+# CREATE EXPERT WITH GENERATED PASSWORD
+POST {{baseURL}}
+authorization: {{auth_JWT}}
+Content-Type: application/json
+
+{
+    "email": "expert2@example.com",
+    "name": "Jane Smith",
+    "phone": "9876543211",
+    "address": "456 Expert Avenue, Tech City, TC 12346",
+    "pincode": "12346",
+    "desc": "Senior data scientist specializing in machine learning"
+}
+
+###
+# BULK UPLOAD EXPERTS (Excel file)
+POST {{baseURL}}/bulk-upload
+authorization: {{auth_JWT}}
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="experts.xlsx"
+Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+
+< ./experts.xlsx
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###
+# GET ALL EXPERTS
+GET {{baseURL}}
+
+###
+# GET EXPERT BY ID
+GET {{baseURL}}/1
+
+###
+# UPDATE EXPERT BY ID
+PATCH {{baseURL}}/3
+authorization: {{auth_JWT}}
+Content-Type: application/json
+
+{
+    "name": "John Doe Updated",
+    "desc": "Updated description for the expert",
+    "photoURL": "https://s3.amazonaws.com/your-bucket/expert1-updated.jpg"
+}
+
+###
+# DELETE EXPERT BY ID (Soft delete - sets isActive to false)
+DELETE {{baseURL}}/1
+authorization: {{auth_JWT}}
+
+###
+# ENABLE EXPERT BY ID
+PATCH {{baseURL}}/3/enable
+authorization: {{auth_JWT}}
+
+###
+# GET EXPERT SESSIONS WITH COUNTS
+GET {{baseURL}}/3/sessions
+
+###
+# GET EXPERT STATISTICS (SESSIONS & COMMUNITIES COUNT)
+GET {{baseURL}}/3/stats
+
+###
+# GET EXPERT COMMUNITIES WITH COUNTS
+GET {{baseURL}}/3/community
+authorization: {{auth_JWT}}
+
+###
+# SEARCH EXPERTS BY TAG
+GET {{baseURL}}/search?tag=software
+
+###
+# ADD EXPERT TO COMMUNITY (Subscription)
+POST {{baseURL}}/3/subscription
+Content-Type: application/json
+
+{
+    "expertId": 3,
+    "communityId": 4,
+    "amount": 500,
+    "paymentId": "pay_123456789",
+    "transactionId": "txn_123456789",
+    "expiresAt": "2024-12-31T23:59:59.000Z",
+    "category": "monthly"
+}
+
+###
+# VALIDATION ERROR TEST - Missing required fields
+POST {{baseURL}}
+authorization: {{auth_JWT}}
+Content-Type: application/json
+
+{
+    "email": "invalid-email",
+    "name": "A",
+    "phone": "123"
+}
+
+###
+# VALIDATION ERROR TEST - Duplicate email
+POST {{baseURL}}
+authorization: {{auth_JWT}}
+Content-Type: application/json
+
+{
+    "email": "expert1@example.com",
+    "name": "Duplicate Expert",
+    "phone": "9876543212",
+    "address": "789 Duplicate Street, Tech City, TC 12347",
+    "pincode": "12347"
+}
+
+###
+# VALIDATION ERROR TEST - Invalid photoURL
+POST {{baseURL}}
+authorization: {{auth_JWT}}
+Content-Type: application/json
+
+{
+    "email": "expert3@example.com",
+    "name": "Invalid Photo Expert",
+    "phone": "9876543213",
+    "address": "789 Invalid Street, Tech City, TC 12348",
+    "pincode": "12348",
+    "photoURL": "not-a-valid-url"
+}

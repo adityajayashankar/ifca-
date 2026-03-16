@@ -1,0 +1,8 @@
+
+.loading__container{
+    @apply flex bg-white min-h-screen w-full z-30 items-center justify-center sticky left-0 top-0;
+}
+
+.loading__balls{
+    @apply h-8 w-8 bg-[#4E795E80] rounded-full mr-2 animate-bounce;
+}

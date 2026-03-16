@@ -1,0 +1,81 @@
+@baseURL=http://localhost:5000/api/v1/subcommunity
+@auth_JWT=Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJwYXJ0ZXJAZ2V0c3Vic3BhY2UudGVjaCIsIm5hbWUiOiJNYWluUGFydG5lciIsInBob25lIjoiOTg3NjU0NTY3ODkiLCJhZGRyZXNzIjoic2FqaGdjc21sayw7IiwicGluY29kZSI6IjEyMzQzMiIsInBhc3N3b3JkIjoiJDJhJDEwJDdaeE9pYXRsSEtFcUVkbFpIeW9ISWUyV05vRmNJeUg0dmhCSHBNYnBMcVU5RUguMDMuMUhPIiwiY3JlZGl0cyI6MCwiY3JlYXRlZEF0IjoiMjAyMi0xMi0wMVQwOTo1ODo1NC4xOTNaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0wMVQwOTo1ODo1NC4xOTRaIiwicGhvdG9VUkwiOiJodHRwczovL3JvYm9oYXNoLm9yZy9kb2pvIiwiZGVzYyI6IkhleSB0aGVyZSEgSSBhbSBjb21tdW5pdHkgbWFuYWdlciIsImFkbWluSWQiOjEsInVuaWZpZWRVc2VySWQiOnsiaWQiOjMsImVtYWlsIjoicGFydGVyQGdldHN1YnNwYWNlLnRlY2giLCJ1c2VySWQiOm51bGwsInBhcnRuZXJJZCI6MSwiZXhwZXJ0SWQiOm51bGwsImFkbWluSWQiOm51bGx9LCJ1c2VyVHlwZSI6InBhcnRuZXIiLCJpYXQiOjE2Njk5ODQwNDQsImV4cCI6MTY3MDA3MDQ0NH0.SVQazacqDDHAdx6abs9miZaCLquG-wpLU8qNxp-xvk4
+
+### Signup with a partner credentials
+POST http://localhost:5000/api/v1/auth/signin 
+Content-Type: application/json
+
+{
+    "userType":"partner",
+    "email":"parter@getsubspace.tech",
+    "password":"partner"
+}
+
+
+###
+POST {{baseURL}}
+authorization: {{auth_JWT}}
+Content-Type: application/json
+
+{
+    "communityId":1,
+    "name":"DAO",
+    "desc":"DAO- Decentralized autonomous organization",
+    "photoURL":"https://subspace-test0.s3.ap-south-1.amazonaws.com/dao.jpeg"
+}
+
+### SEARCHES CONTENT OF TAG EITHER IN NAME OR DESC
+GET {{baseURL}}/search?tag=music
+
+### GET A SUBCOMMUNITY BY ID
+GET {{baseURL}}/266
+
+### UPDATE A SUBCOMMUNITY BY ID
+PATCH  {{baseURL}}/2
+authorization: {{auth_JWT}}
+Content-Type: application/json
+
+{
+    "desc":"We are audiophiles of Adarsh Vista. We periodically conduct concerts and all. We encourage all kinds of music, traditional 90s hip hop and many more!"
+}
+
+### DELETE A SUBCOMMUNITY BY ID
+DELETE {{baseURL}}/4
+authorization: {{auth_JWT}}
+
+### ADD PEOPLE TO A SUBCOMMUNITY
+PATCH  {{baseURL}}/4/people
+authorization: {{auth_JWT}}
+Content-Type: application/json
+
+{
+    "userId":3,
+    "role":"expert",
+    "userType":"expert"
+}
+
+### ADD PEOPLE TO SUBCOMMUNITY IN BULK
+POST {{baseURL}}/14/people
+authorization: {{auth_JWT}}
+Content-Type: application/json
+
+{
+    "users":[
+        {
+            "email":"user3@senior.in",
+            "role":"lead",
+            "userType":"user"
+        },
+        {
+            "email":"userx@senior.in",
+            "role":"member",
+            "userType":"user"
+        }
+    ]
+}
+### GET PEOPLE IN A SUBCOMMUNITY
+### LISTS PEOPLE :[{role,subscription:{user:{}}}]
+GET {{baseURL}}/4/people
+
+### GET SUBCOMMUNITIES IN A COMMUNITY
+GET {{baseURL}}/community/4

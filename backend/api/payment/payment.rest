@@ -1,0 +1,105 @@
+@base_URL=http://localhost:5000/api/v1/pay
+###
+POST http://localhost:5000/api/v1/pay/
+Content-Type: application/json
+
+{
+    "userId":7,
+    "communityId":6,
+    "amount":4000,
+    "paymentId":"xacsacs",
+    "transactionId":"12e2efwv"
+}
+
+
+###
+GET http://localhost:5000/api/v1/user
+
+###
+
+# subscription: 14
+# TransactionId: 51
+
+
+###
+GET {{base_URL}}/subscription/
+
+## TRANSACTION
+
+### CREATE TRANSACTION: GENERATES ID
+POST {{base_URL}}/transaction
+Content-Type: application/json
+
+{
+    "userId":7,
+    "amount":812,
+    "transactionId":"scmajkcab",
+    "paymentId":"qkcnashvhac"
+}
+
+### VIEW ALL TRANSACTION
+GET {{base_URL}}/transaction
+
+### VIEW TRANSACTION BY ID
+GET {{base_URL}}/transaction/51
+
+### DELETE TRANSACTION BY ID
+DELETE {{base_URL}}/transaction/52
+
+
+## SUBSCRIPTIONS
+
+## CREATE SUBSCRIPTIONS: GENERATES ID
+POST {{base_URL}}/subscription
+Content-Type: application/json
+
+{
+    "userId":7,
+    "amount":812,
+    "transactionId":"scmajkcab",
+    "paymentId":"qkcnashvhac"
+}
+
+### CREATE BULK SUBSCRIPTIONS
+POST {{base_URL}}/subscription/bulk
+Content-Type: application/json
+
+{
+    "transactionId":"scmajkcab",
+    "paymentId":"qkcnashvhac",
+    "communityId":10,
+    "amount":200,
+    "users":[
+        {
+            "email":"user3@senior.in"
+        },
+        {
+            "email":"ananyamungara@pesu.pes.edu"
+        },
+        {
+            "email":"userx@senior.in"
+        }
+    ]
+}
+
+### VIEW ALL SUBSCRIPTIONS
+GET {{base_URL}}/subscription
+
+### VIEW SUBSCRIPTION BY ID
+GET {{base_URL}}/subscription/51
+
+### DELETE SUBSCRIPTION BY ID
+DELETE {{base_URL}}/subscription/52
+
+
+POST http://localhost:5000/api/v1/expert/
+Content-Type: application/json
+
+{
+    "userId":7,
+    "communityId":6,
+    "amount":4000,
+    "paymentId":"xacsacs",
+    "transactionId":"12e2efwv"
+}
+
