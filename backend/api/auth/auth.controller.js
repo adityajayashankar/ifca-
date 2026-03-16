@@ -13,7 +13,7 @@ authController.post('/login', async (req, res) => {
     if (!isValidPassword) {
       return res.status(401).send({ message: 'Invalid email or password' });
     }
-    const token = jwt.sign({ userId: user._id }, secretKey, { expiresIn: '1h' });
+    const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, { expiresIn: '1h' });
     res.send({ token });
   } catch (error) {
     console.error(error);
