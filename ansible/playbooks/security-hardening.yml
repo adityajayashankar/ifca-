@@ -1,0 +1,45 @@
+---
+- name: Baseline security hardening
+  hosts: all
+  become: true
+  tasks:
+    - name: Ensure unattended upgrades package is present (Debian/Ubuntu)
+      apt:
+        name: unattended-upgrades
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: Disable root SSH login
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?PermitRootLogin'
+        line: 'PermitRootLogin no'
+      notify: restart ssh
+
+    - name: Ensure UFW is enabled
+      ufw:
+        state: enabled
+        policy: deny
+
+    - name: Allow SSH through UFW
+      ufw:
+        rule: allow
+        name: OpenSSH
+
+    - name: Allow HTTP through UFW
+      ufw:
+        rule: allow
+        port: '80'
+        proto: tcp
+
+    - name: Allow HTTPS through UFW
+      ufw:
+        rule: allow
+        port: '443'
+        proto: tcp
+
+  handlers:
+    - name: restart ssh
+      service:
+        name: ssh
+        state: restarted
