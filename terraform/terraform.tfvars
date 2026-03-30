@@ -1,0 +1,49 @@
+project_name = "ifca"
+aws_region = "eu-north-1"
+environment = "dev"
+instance_type = "t3.micro"
+enable_ec2 = true
+existing_ec2_key_pair_name = ""
+ingress_cidr_blocks = ["0.0.0.0/0"]
+ssh_ingress_cidr_blocks = []
+preferred_availability_zones = ["eu-north-1a", "eu-north-1b", "eu-north-1c"]
+use_default_vpc = true
+vpc_cidr_block = "10.42.0.0/16"
+public_subnet_cidr = "10.42.1.0/24"
+force_destroy_site_bucket = true
+ec2_root_volume_size = 8
+bootstrap_index_html_base64 = "PCFET0NUWVBFIGh0bWw+DQo8aHRtbCBsYW5nPSJlbiI+DQogIDxoZWFkPg0KICAgIDxtZXRhIGNoYXJzZXQ9InV0Zi04IiAvPg0KICAgIDxsaW5rIHJlbD0iaWNvbiIgaHJlZj0iJVBVQkxJQ19VUkwlL2Zhdmljb24uaWNvIiAvPg0KICAgIDxtZXRhIG5hbWU9InZpZXdwb3J0IiBjb250ZW50PSJ3aWR0aD1kZXZpY2Utd2lkdGgsIGluaXRpYWwtc2NhbGU9MSIgLz4NCiAgICA8bGluayByZWw9InByZWNvbm5lY3QiIGhyZWY9Imh0dHBzOi8vZm9udHMuZ29vZ2xlYXBpcy5jb20iPjxsaW5rIHJlbD0icHJlY29ubmVjdCIgaHJlZj0iaHR0cHM6Ly9mb250cy5nc3RhdGljLmNvbSIgY3Jvc3NvcmlnaW4+DQogICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly9mb250cy5nb29nbGVhcGlzLmNvbS9jc3MyP2ZhbWlseT1NYXZlbitQcm86d2dodEA0MDA7NTAwOzYwMDs3MDA7ODAwOzkwMCZkaXNwbGF5PXN3YXAiIHJlbD0ic3R5bGVzaGVldCI+DQogICAgPHRpdGxlPklGQ0E8L3RpdGxlPg0KICAgIDxzdHlsZT4NCiAgICAgIEBpbXBvcnQgdXJsKCdodHRwczovL2ZvbnRzLmdvb2dsZWFwaXMuY29tL2NzczI/ZmFtaWx5PU1hdmVuK1Bybzp3Z2h0QDQwMDs1MDA7NjAwOzcwMDs4MDA7OTAwJmRpc3BsYXk9c3dhcCcpOw0KDQogICAgICAqew0KICAgICAgICBmb250LWZhbWlseTogJ01hdmVuIFBybycsIHNhbnMtc2VyaWY7DQogICAgICB9DQogICAgPC9zdHlsZT4NCiAgPC9oZWFkPg0KICA8Ym9keT4NCiAgICA8bm9zY3JpcHQ+WW91IG5lZWQgdG8gZW5hYmxlIEphdmFTY3JpcHQgdG8gcnVuIHRoaXMgYXBwLjwvbm9zY3JpcHQ+DQogICAgPGRpdiBpZD0icm9vdCI+PC9kaXY+DQogIDwvYm9keT4NCiAgDQo8L2h0bWw+"
+context_summary = <<-EOT
+Q/A Summary: Q: What AWS region should this deploy to, and do you need multi-AZ resilience?
+A: eu-north-1 - single AZ, Free Tier mode.
+
+Q: What runtime stack powers this service? (e.g. Python + uvicorn, Node + pm2)
+A: Python 3.11 + uvicorn, 2 workers per instance.
+
+Q: Expected baseline traffic - RPS, concurrent users, peak load pattern?
+A: ~500 RPS peak, ~50 concurrent users, mostly read traffic.
+
+Q: Which EC2 instance family is appropriate? (general-purpose, compute-optimised, memory-optimised)
+A: t3.micro (Free Tier safe) - general-purpose.
+
+Q: Should internet traffic route through CloudFront, or direct to ALB?
+A: CloudFront -> ALB - no custom domain required yet.
+Architecture Context: Q: What AWS region should this deploy to, and do you need multi-AZ resilience?
+A: eu-north-1 - single AZ, Free Tier mode.
+
+Q: What runtime stack powers this service? (e.g. Python + uvicorn, Node + pm2)
+A: Python 3.11 + uvicorn, 2 workers per instance.
+
+Q: Expected baseline traffic - RPS, concurrent users, peak load pattern?
+A: ~500 RPS peak, ~50 concurrent users, mostly read traffic.
+
+Q: Which EC2 instance family is appropriate? (general-purpose, compute-optimised, memory-optimised)
+A: t3.micro (Free Tier safe) - general-purpose.
+
+Q: Should internet traffic route through CloudFront, or direct to ALB?
+A: CloudFront -> ALB - no custom domain required yet.
+Code Findings: 2874
+Supply Findings: 235
+Critical/High Supply: 116
+High-impact CWE IDs: 798, 943, 134, 79, 918
+EOT
