@@ -1,0 +1,11 @@
+region = "us-west-2"
+vpc_cidr = "10.0.0.0/16"
+subnet_cidr = "10.0.1.0/24"
+availability_zone = "us-west-2a"
+db_instance_class = "db.t3.small"
+db_engine_version = "14.3"
+db_allocated_storage = 20
+db_username = "ifca-"
+db_password = "ifca-"
+redis_node_type = "cache.t3.small"
+redis_engine_version = "7.0"
