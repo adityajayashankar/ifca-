@@ -1,0 +1,10 @@
+---
+- name: Baseline security hardening
+  hosts: all
+  become: true
+  tasks:
+    - name: Ensure unattended upgrades package is present (Debian/Ubuntu)
+      apt:
+        name: unattended-upgrades
+        state: present
+      when: ansible_os_family == "Debian"
