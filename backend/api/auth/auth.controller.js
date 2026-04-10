@@ -235,8 +235,8 @@ exports.signup = async (req, res) => {
       state
     } = req.body;
 
-    console.log(`🔐 Signup initiated for: ${email} (${userType})`);
-    console.log("📨 Desc received in signup:", req.body.desc);
+    console.log('🔐 Signup initiated');
+    console.log("📨 Desc received in signup");
 
 
     // Validate required fields
@@ -258,7 +258,7 @@ exports.signup = async (req, res) => {
     // 1. Check if email already exists
     const existingUser = await prisma.unifiedUser.findUnique({ where: { email } });
     if (existingUser) {
-      console.error(`❌ Email already registered (unified): ${email}`);
+      console.error('❌ Email already registered (unified)');
       return res.status(409).json({ message: 'Email already registered.' });
     }
 
