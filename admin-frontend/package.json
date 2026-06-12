@@ -30,7 +30,7 @@
     "framer-motion": "^6.3.11",
     "hls.js": "^1.4.10",
     "moment": "^2.29.4",
-    "next": "^12.1.0",
+    "next": "^15.5.16",
     "object-assign": "^4.1.1",
     "papaparse": "^5.3.2",
     "postcss-import": "^14.1.0",
