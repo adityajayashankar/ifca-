@@ -1034,6 +1034,11 @@ exports.setSessionTopTags = async function (req, res, next) {
 };
 
 // Check if a meeting is still in progress in 100ms
+const HMS_API_BASE_URL = "https://api.100ms.live/v2/rooms";
+// Strict allowlist for room identifiers: alphanumeric, hyphen, underscore only.
+// Prevents path traversal, URL-encoding tricks, and injection of alternate hosts (CWE-918).
+const ROOM_ID_PATTERN = /^[a-zA-Z0-9-_]{1,128}$/;
+
 exports.checkMeetingStatus = async function (req, res, next) {
   try {
     const { roomId } = req.params;
@@ -1041,6 +1046,13 @@ exports.checkMeetingStatus = async function (req, res, next) {
     if (!roomId) {
       return res.status(400).json({ 
         error: "Missing roomId parameter" 
+      });
+    }
+
+    // Strict allowlist validation BEFORE any outbound HTTP request or token generation.
+    if (typeof roomId !== "string" || !ROOM_ID_PATTERN.test(roomId)) {
+      return res.status(400).json({ 
+        error: "Invalid roomId parameter" 
       });
     }
 
@@ -1068,8 +1080,8 @@ exports.checkMeetingStatus = async function (req, res, next) {
       jwtid: uuid4(),
     });
 
-    // Check room status
-    const response = await axios.get(`https://api.100ms.live/v2/rooms/${roomId}`, {
+    // Check room status using the validated and encoded roomId only
+    const response = await axios.get(`${HMS_API_BASE_URL}/${encodeURIComponent(roomId)}`, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
