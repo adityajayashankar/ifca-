@@ -1044,6 +1044,14 @@ exports.checkMeetingStatus = async function (req, res, next) {
       });
     }
 
+    // Strict allowlist validation to prevent SSRF (CWE-918):
+    // only alphanumeric, dash, and underscore room IDs are permitted.
+    if (!/^[a-zA-Z0-9-_]+$/.test(roomId)) {
+      return res.status(400).json({
+        error: "Invalid roomId parameter"
+      });
+    }
+
     const app_access_key = process.env.MS_APP_ACCESS_KEY;
     const app_secret_key = process.env.MS_APP_SECRET_KEY;
 
@@ -1069,7 +1077,20 @@ exports.checkMeetingStatus = async function (req, res, next) {
     });
 
     // Check room status
-    const response = await axios.get(`https://api.100ms.live/v2/rooms/${roomId}`, {
+    // Build URL against a fixed base with the roomId URL-encoded so
+    // user input cannot alter the host, scheme, or path prefix.
+    const HMS_ROOMS_BASE_URL = "https://api.100ms.live/v2/rooms/";
+    const requestUrl = HMS_ROOMS_BASE_URL + encodeURIComponent(roomId);
+
+    // Defense-in-depth: verify the resolved URL targets the expected host.
+    const parsedUrl = new URL(requestUrl);
+    if (parsedUrl.hostname !== "api.100ms.live" || parsedUrl.protocol !== "https:") {
+      return res.status(400).json({
+        error: "Invalid roomId parameter"
+      });
+    }
+
+    const response = await axios.get(requestUrl, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
