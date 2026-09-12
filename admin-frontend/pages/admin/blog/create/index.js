@@ -11,7 +11,8 @@ import {
 } from "@/store/features/userSlice";
 import api from "@/utils/apiSetup";
 import { useRouter } from "next/router";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import DOMPurify from "dompurify";
 import { GiConfirmed } from "react-icons/gi";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -29,7 +30,6 @@ const BlogCreatePage = () => {
   const loggedUser = useSelector(selectUser);
   const globalTags = useSelector(selectGlobalTags);
   const communities = useSelector(selectAllCommunities);
-  const divRef = useRef();
   const router = useRouter();
   useEffect(() => {
     dispatch(setAllTags());
@@ -40,12 +40,15 @@ const BlogCreatePage = () => {
       setPrivateCommunity(communities[0]);
     }
   }, [communities]);
-  useEffect(() => {
-    console.log("divRef", divRef.current);
-    if (divRef.current) {
-      divRef.current.innerHTML = content;
-    }
-  }, [preview, divRef.current, content]);
+  const sanitizedContent = DOMPurify.sanitize(content, {
+    ALLOWED_TAGS: [
+      "h1", "h2", "h3", "h4", "h5", "h6", "p", "a", "b", "strong",
+      "i", "em", "u", "s", "blockquote", "ul", "ol", "li", "br",
+      "hr", "img", "code", "pre", "span", "div", "table", "thead",
+      "tbody", "tr", "th", "td",
+    ],
+    ALLOWED_ATTR: ["href", "src", "alt", "title", "target", "rel", "class"],
+  });
 
   const viewPreview = () => {
     setPreview((prev) => !prev);
@@ -209,7 +212,10 @@ const BlogCreatePage = () => {
           <div className="my-8">
             <h2 className="font-light my-4">Content</h2>
             <hr />
-            <div ref={divRef} className="render-blog"></div>
+            <div
+              className="render-blog"
+              dangerouslySetInnerHTML={{ __html: sanitizedContent }}
+            ></div>
             <div className="flex flex-col md:flex-row items-center justify-center">
               <button
                 className="btn btn-pink my-4 mx-3"

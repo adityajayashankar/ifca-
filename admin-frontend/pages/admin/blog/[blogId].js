@@ -2,6 +2,7 @@ import BlogRender from "@/components/blog/BlogRender";
 import LHS from "@/components/blog/LHS";
 import RHS from "@/components/blog/RHS";
 import { selectOneBlog, setSelectedBlog } from "@/store/features/blogSlice";
+import DOMPurify from "dompurify";
 import { resolveUnifiedUser } from "@/utils/resolveUser";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef } from "react";
@@ -21,8 +22,17 @@ const ViewBlogPage = ({}) => {
   }, [router]);
   const divRef = useRef();
   useEffect(() => {
-    if (divRef.current) {
-      divRef.current.innerHTML = blogData.content;
+    if (divRef.current && blogData?.content) {
+      divRef.current.innerHTML = DOMPurify.sanitize(blogData.content, {
+        ALLOWED_TAGS: [
+          "p", "br", "b", "i", "em", "strong", "u", "s", "h1", "h2", "h3",
+          "h4", "h5", "h6", "ul", "ol", "li", "blockquote", "a", "img",
+          "code", "pre", "hr", "span", "div", "table", "thead", "tbody",
+          "tr", "th", "td",
+        ],
+        ALLOWED_ATTR: ["href", "src", "alt", "title", "target", "rel", "class"],
+        ALLOW_DATA_ATTR: false,
+      });
     }
   }, [blogData, divRef]);
   const handleRouteBack = (e) => {

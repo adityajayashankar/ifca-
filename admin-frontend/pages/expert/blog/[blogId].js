@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useRef } from "react";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
+import DOMPurify from "dompurify";
 const ViewBlogPage = ({}) => {
   //   const [content, setContent] = useState("");
   // console.log(blogData);
@@ -22,7 +23,7 @@ const ViewBlogPage = ({}) => {
   const divRef = useRef();
   useEffect(() => {
     if (divRef.current) {
-      divRef.current.innerHTML = blogData.content;
+      divRef.current.innerHTML = DOMPurify.sanitize(blogData.content || "");
     }
   }, [blogData, divRef]);
   const handleRouteBack = (e) => {

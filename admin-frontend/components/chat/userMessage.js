@@ -2,6 +2,27 @@
 import ReactDOM from "react-dom";
 import dynamic from "next/dynamic";
 import { useEffect, useRef } from "react";
+import DOMPurify from "dompurify";
+
+// Restrict protocols to safe schemes and enforce secure link targets.
+DOMPurify.addHook("afterSanitizeAttributes", (node) => {
+  if (node.tagName === "A") {
+    node.setAttribute("target", "_blank");
+    node.setAttribute("rel", "noopener noreferrer");
+  }
+});
+
+const SANITIZE_CONFIG = {
+  ALLOWED_TAGS: [
+    "p", "br", "b", "i", "em", "strong", "u", "s",
+    "ul", "ol", "li", "a", "span", "img", "blockquote", "h1",
+    "h2", "h3", "h4", "h5", "h6", "pre", "code",
+  ],
+  ALLOWED_ATTR: ["href", "src", "alt", "class", "target", "rel"],
+  ALLOWED_URI_REGEXP: /^(?:(?:https?|mailto):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i,
+};
+
+const sanitizeContent = (raw) => DOMPurify.sanitize(raw || "", SANITIZE_CONFIG);
 
 const QuillNoSSRWrapper = dynamic(import("react-quill"), {
   ssr: false,
@@ -39,7 +60,8 @@ const UserMesssage = ({
   let dateTimeStr = `${dateStr} ${time}`;
   const divRef = useRef();
   useEffect(() => {
-    divRef.current.innerHTML = content;
+    // Sanitize user-controlled content before inserting as HTML (CWE-79 fix).
+    divRef.current.innerHTML = sanitizeContent(content);
   }, [content]);
 
   if (isExpert) {

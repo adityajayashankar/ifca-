@@ -25,9 +25,20 @@ const { rewardsManagement } = require('../../services/rewards/rewards.service');
 const { RewardType, RewardAction } = require('@prisma/client');
 const generateDefaultPhotoURL = require('../../utils/generateDefaultPhotoURL');
 const axios = require('axios');
+const crypto = require('crypto');
 
-const MOODLE_API_URL = process.env.MOODLE_API_URL || 'https://ifcaifcalms.cocreate.ventures/webservice/rest/server.php';
+// Secrets/config must come from the environment. Fail fast if missing instead of
+// falling back to hard-coded literals (CWE-798).
+const MOODLE_API_URL = process.env.MOODLE_API_URL;
 const MOODLE_API_TOKEN = process.env.MOODLE_API_TOKEN;
+if (!MOODLE_API_URL || !MOODLE_API_TOKEN) {
+  throw new Error('Missing required environment variables: MOODLE_API_URL and MOODLE_API_TOKEN must be set.');
+}
+
+// Generates a cryptographically secure random password (never hard-coded).
+function generateSecureRandomPassword() {
+  return crypto.randomBytes(12).toString('base64url');
+}
 
 exports.getUserById = async function (req, res, next) {
   const { id } = req.params;
@@ -117,7 +128,8 @@ exports.updateUserById = async function (req, res, next) {
       let passwordToUse = user.password;
       let setPassword = false;
       if (!passwordToUse) {
-        passwordToUse = 'Abcd@123';
+        // No hard-coded default: generate a secure random password (CWE-798 fix).
+        passwordToUse = generateSecureRandomPassword();
         setPassword = true;
       }
       // If password needs to be set or updated, hash it and update DB
@@ -306,7 +318,8 @@ exports.updateUserById = async function (req, res, next) {
                 data: {
                   moodleUserId: moodleUser.id,
                   moodleUsername: moodleUser.username,
-                  moodlePassword: passwordToUse,
+                  // Never persist the plaintext password (CWE-798 fix).
+                  moodlePassword: null,
                 },
               });
               createdMoodle = true;
@@ -346,7 +359,8 @@ exports.updateUserById = async function (req, res, next) {
               email: user.email,
               recipientName: user.name,
               username: user.phone,
-              password: passwordToUse,
+              // Never email the plaintext password; direct the user to the
+              // onboarding/password-reset flow instead (CWE-798 fix).
               actionUrl: `https://pvl.ifcaindia.com/onBoard`,
             },
           });
@@ -403,8 +417,9 @@ exports.updateUserById = async function (req, res, next) {
     }
     // --- END UNIFIEDUSER EMAIL SYNC LOGIC ---
 
-    // Return the updated user
-    return res.status(200).json({ message: 'User Details Updated Successfully', user: user });
+    // Return the updated user without exposing credential material
+    const { password, moodlePassword, ...safeUser } = user;
+    return res.status(200).json({ message: 'User Details Updated Successfully', user: safeUser });
   } catch (err) {
     console.error("Error while updating user:", id);
     console.error(err);

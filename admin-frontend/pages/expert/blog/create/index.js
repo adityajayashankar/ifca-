@@ -15,6 +15,21 @@ import React, { useState, useRef, useEffect } from "react";
 import { GiConfirmed } from "react-icons/gi";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import DOMPurify from "dompurify";
+
+const SANITIZE_OPTIONS = {
+  ALLOWED_TAGS: [
+    "p", "br", "b", "i", "em", "strong", "u", "s", "h1", "h2", "h3", "h4",
+    "h5", "h6", "blockquote", "ul", "ol", "li", "a", "img", "code", "pre",
+    "span", "div", "hr", "table", "thead", "tbody", "tr", "th", "td",
+  ],
+  FORBID_TAGS: ["script", "style", "iframe", "object", "embed", "form"],
+  FORBID_ATTR: ["onerror", "onclick", "onload", "onmouseover", "onfocus"],
+  ALLOWED_ATTR: ["href", "src", "alt", "title", "target", "rel", "class"],
+};
+
+const sanitizeContent = (raw) => DOMPurify.sanitize(raw || "", SANITIZE_OPTIONS);
+
 const BlogCreatePage = () => {
   const [content, setContent] = useState("");
   const [status, setStatus] = useState(true);
@@ -41,11 +56,10 @@ const BlogCreatePage = () => {
     }
   }, [communities]);
   useEffect(() => {
-    console.log("divRef", divRef.current);
     if (divRef.current) {
-      divRef.current.innerHTML = content;
+      divRef.current.innerHTML = sanitizeContent(content);
     }
-  }, [preview, divRef.current, content]);
+  }, [preview, content]);
 
   const viewPreview = () => {
     setPreview((prev) => !prev);
@@ -56,7 +70,7 @@ const BlogCreatePage = () => {
     e.preventDefault();
     let obj = {
       title,
-      content,
+      content: sanitizeContent(content),
       draft: true,
       unifiedUserId: loggedUser.unifiedUserId.id,
     };
@@ -76,7 +90,7 @@ const BlogCreatePage = () => {
       });
       let obj = {
         title,
-        content,
+        content: sanitizeContent(content),
         draft: false,
         glance,
         isPrivate: privatex,

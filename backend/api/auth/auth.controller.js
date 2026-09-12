@@ -315,7 +315,11 @@ exports.signup = async (req, res) => {
 
     // 5. Create Moodle user (userType === 'user') - Optional, won't break signup
     let moodleUser = null;
-    const defaultMoodlePassword = "Abcd@1234";
+    const defaultMoodlePassword = process.env.DEFAULT_MOODLE_PASSWORD;
+    if (!defaultMoodlePassword) {
+      console.warn("⚠️ DEFAULT_MOODLE_PASSWORD is not set — Moodle account creation will be skipped");
+    }
+    const moodlePasswordHash = defaultMoodlePassword ? await bcrypt.hash(defaultMoodlePassword, 10) : null;
 
     if (userType === 'user') {
       try {
@@ -328,6 +332,9 @@ exports.signup = async (req, res) => {
           email
         });
 
+        if (!defaultMoodlePassword) {
+          throw new Error("DEFAULT_MOODLE_PASSWORD is not configured");
+        }
         moodleUser = await moodleService.createUser({
           username: phone,
           password: defaultMoodlePassword,
@@ -365,10 +372,10 @@ exports.signup = async (req, res) => {
             location,
             
             state,
-            ...(moodleUser && {
+            ...(moodleUser && moodlePasswordHash && {
               moodleUserId: moodleUser.id,
               moodleUsername: moodleUser.username,
-              moodlePassword: defaultMoodlePassword, // ✅ Not hashed
+              moodlePassword: moodlePasswordHash, // stored hashed, never plaintext
             }),
           },
         });
@@ -428,7 +435,6 @@ exports.signup = async (req, res) => {
           email: user.email,
           recipientName: name,
           username: moodleUser?.username || null,
-          password: moodleUser ? defaultMoodlePassword : password,
           actionUrl: `${process.env.RESET_DOMAIN || 'https://pvl.ifcaindia.com'}/onBoard`,
         },
       });
@@ -448,7 +454,6 @@ exports.signup = async (req, res) => {
         ? {
             moodleUserId: moodleUser.id,
             username: moodleUser.username,
-            password: defaultMoodlePassword,
           }
         : null,
     });
@@ -1308,20 +1313,18 @@ exports.changePasswordUser = async (req, res) => {
   }
 };
 
-const fast2smsApiUrl = "https://www.fast2sms.com/dev/bulkV2";
-const fast2smsApiKey = "xBl4RbUHJAcNoEdeQVharzIDuPXZOSMgf5i8TqCynkWtL6ps30WrqMyphflQPeo0BIScCdmTanRZt16D";
+const fast2smsApiUrl = process.env.FAST2SMS_API_URL || "https://www.fast2sms.com/dev/bulkV2";
+const fast2smsApiKey = process.env.FAST2SMS_API_KEY;
+if (!fast2smsApiKey) {
+  console.warn("⚠️ FAST2SMS_API_KEY is not set — OTP sending will be disabled");
+}
 
 
 
 exports.sendOTP = async (req, res) => {
   const { phone } = req.body;
 
-  let otp;
-  if (phone === '7506627003') {
-    otp = '123456';
-  } else {
-    otp = generateOTP(phone);
-  }
+  const otp = generateOTP(phone);
 
   try {
     // Only allow OTP for existing users
@@ -1350,9 +1353,9 @@ exports.sendOTP = async (req, res) => {
       });
     }
 
-    // Bypass SMS sending for test number
-    if (phone === '7506627003') {
-      return res.json({ message: "OTP sent successfully (test number)" });
+    if (!fast2smsApiKey) {
+      console.error("❌ Cannot send OTP: FAST2SMS_API_KEY is not configured");
+      return res.status(500).json({ message: "OTP sending is not configured" });
     }
 
     const response = await axios.get(
@@ -1476,12 +1479,7 @@ exports.verifyOTP = async (req, res) => {
 // }
 
 function generateOTP(phone) {
-  if (phone === '7506627003') {
-    return '123456';
-  }
-
-  const randomOtp = Math.floor(100000 + Math.random() * 900000).toString();
-  return randomOtp;
+  return Math.floor(100000 + Math.random() * 900000).toString();
 }
 
 
@@ -1640,7 +1638,10 @@ exports.googleComplete = async (req, res) => {
     let unifiedUser = await prisma.unifiedUser.findUnique({ where: { email } });
     if (unifiedUser) return res.status(409).json({ message: 'User already exists' });
     // Create user
-    const defaultPassword = "Abcd@1234";
+    const defaultPassword = process.env.DEFAULT_MOODLE_PASSWORD;
+    if (!defaultPassword) {
+      return res.status(500).json({ message: 'Server password configuration missing' });
+    }
     const hashedPassword = await bcrypt.hash(defaultPassword, 10);
     let user = await prisma.user.create({
       data: {
@@ -1674,8 +1675,7 @@ exports.googleComplete = async (req, res) => {
           email: user.email,
           recipientName: name,
           username: null,
-          password: defaultPassword,
-          actionUrl: `https://pvl.ifcaindia.com/onBoard`,
+          actionUrl: `${process.env.RESET_DOMAIN || 'https://pvl.ifcaindia.com'}/onBoard`,
         },
       });
     } catch (emailError) {
