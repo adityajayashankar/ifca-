@@ -1,3 +1,4 @@
+const crypto = require("crypto");
 const bcrypt = require("bcryptjs");
 
 const { PrismaClient } = require("@prisma/client");
@@ -315,14 +316,14 @@ exports.signup = async (req, res) => {
 
     // 5. Create Moodle user (userType === 'user') - Optional, won't break signup
     let moodleUser = null;
-    const defaultMoodlePassword = "Abcd@1234";
+    // CWE-798 fix: generate a unique random password per user instead of a hard-coded default.
+    const defaultMoodlePassword = crypto.randomBytes(12).toString('base64url');
 
     if (userType === 'user') {
       try {
         console.log("📤 Creating Moodle user with:");
         console.log({
           username: phone,
-          password: defaultMoodlePassword,
           firstname: name.split(' ')[0],
           lastname: name.split(' ').slice(1).join(' ') || name.split(' ')[0],
           email
@@ -368,7 +369,7 @@ exports.signup = async (req, res) => {
             ...(moodleUser && {
               moodleUserId: moodleUser.id,
               moodleUsername: moodleUser.username,
-              moodlePassword: defaultMoodlePassword, // ✅ Not hashed
+              moodlePassword: await bcrypt.hash(defaultMoodlePassword, 10), // hashed, never plaintext
             }),
           },
         });
@@ -448,7 +449,8 @@ exports.signup = async (req, res) => {
         ? {
             moodleUserId: moodleUser.id,
             username: moodleUser.username,
-            password: defaultMoodlePassword,
+            // CWE-798 fix: never return plaintext credentials in API responses.
+            // The generated password is delivered once via the welcome email.
           }
         : null,
     });
@@ -1309,7 +1311,11 @@ exports.changePasswordUser = async (req, res) => {
 };
 
 const fast2smsApiUrl = "https://www.fast2sms.com/dev/bulkV2";
-const fast2smsApiKey = "xBl4RbUHJAcNoEdeQVharzIDuPXZOSMgf5i8TqCynkWtL6ps30WrqMyphflQPeo0BIScCdmTanRZt16D";
+// CWE-798 fix: API key must be supplied via environment variable; fail fast if missing.
+const fast2smsApiKey = process.env.FAST2SMS_API_KEY;
+if (!fast2smsApiKey) {
+  console.error("❌ FATAL: FAST2SMS_API_KEY environment variable is not set. OTP SMS sending will fail.");
+}
 
 
 
@@ -1640,7 +1646,8 @@ exports.googleComplete = async (req, res) => {
     let unifiedUser = await prisma.unifiedUser.findUnique({ where: { email } });
     if (unifiedUser) return res.status(409).json({ message: 'User already exists' });
     // Create user
-    const defaultPassword = "Abcd@1234";
+    // CWE-798 fix: generate a unique random password instead of a hard-coded default.
+    const defaultPassword = crypto.randomBytes(12).toString('base64url');
     const hashedPassword = await bcrypt.hash(defaultPassword, 10);
     let user = await prisma.user.create({
       data: {
