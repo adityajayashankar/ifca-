@@ -10,6 +10,17 @@ const emailService = require("../../services/email.service.js");
 const XLSX = require("xlsx");
 const generateDefaultPhotoURL = require('../../utils/generateDefaultPhotoURL');
 
+// Helper function to generate a cryptographically random, unique password per expert
+const generateSecurePassword = () =>
+  generatePassword.generate({
+    length: 16,
+    numbers: true,
+    symbols: true,
+    uppercase: true,
+    lowercase: true,
+    strict: true,
+  });
+
 // Helper function to send welcome email to expert
 const sendExpertWelcomeEmail = async (expert, password) => {
   try {
@@ -116,8 +127,8 @@ exports.createExpert = async function (req, res, next) {
       return res.status(409).json({ message: 'Phone number already registered.' });
     }
 
-    // Generate password if not provided
-    const password = providedPassword || "Abcd@123"
+    // Always generate a cryptographically random password (client-supplied passwords are ignored)
+    const password = generateSecurePassword();
 
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -167,10 +178,8 @@ exports.createExpert = async function (req, res, next) {
         photoURL: expert.photoURL,
         isActive: expert.isActive,
       },
-      credentials: {
-        email: expert.email,
-        password: password, // Return plain password for admin reference
-      }
+      // Note: plain-text credentials are no longer returned in API responses.
+      // Initial credentials are delivered once via the welcome email.
     });
 
   } catch (error) {
@@ -258,8 +267,8 @@ exports.bulkUploadExperts = async function (req, res, next) {
           continue;
         }
 
-        // Generate password
-        const password = "Abcd@123"
+        // Generate a unique, cryptographically random password per expert
+        const password = generateSecurePassword();
 
         // Hash password
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -308,10 +317,7 @@ exports.bulkUploadExperts = async function (req, res, next) {
             name: result.expert.name,
             phone: result.expert.phone,
           },
-          credentials: {
-            email: result.expert.email,
-            password: password,
-          }
+          // Note: plain-text credentials are no longer returned; delivered via welcome email.
         });
 
         console.log(`✅ Expert ${i + 1}/${expertsData.length} created: ${email}`);
