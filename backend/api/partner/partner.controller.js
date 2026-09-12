@@ -1,3 +1,4 @@
+const crypto = require('crypto');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const { createCustomError } = require('../../middleware/errorHandling');
@@ -7,6 +8,30 @@ const bcrypt = require("bcryptjs");
 const emailService = require("../../services/email.service.js");
 const XLSX = require("xlsx");
 const generateDefaultPhotoURL = require('../../utils/generateDefaultPhotoURL');
+
+// Helper function to generate a cryptographically secure random password (>=16 chars)
+const generateSecurePassword = () => {
+  const length = 16;
+  const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
+  let password = '';
+  const randomBytes = crypto.randomBytes(length);
+  for (let i = 0; i < length; i++) {
+    password += charset[randomBytes[i] % charset.length];
+  }
+  // Ensure at least one of each required class
+  const classes = [
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+    'abcdefghijklmnopqrstuvwxyz',
+    '0123456789',
+    '!@#$%^&*',
+  ];
+  classes.forEach((cls, idx) => {
+    const bytes = crypto.randomBytes(4);
+    const pos = idx * 4;
+    password = password.substring(0, pos) + cls[bytes[0] % cls.length] + password.substring(pos + 1);
+  });
+  return password;
+};
 
 // Helper function to send welcome email to partner
 const sendPartnerWelcomeEmail = async (partner, password) => {
@@ -113,8 +138,8 @@ exports.createPartner = async function (req, res, next) {
       return res.status(409).json({ message: 'Phone number already registered.' });
     }
 
-    // Generate password if not provided
-    const password = providedPassword || "Abcd@123"
+    // Generate secure password if not provided
+    const password = providedPassword || generateSecurePassword();
 
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -164,7 +189,7 @@ exports.createPartner = async function (req, res, next) {
       },
       credentials: {
         email: partner.email,
-        password: password, // Return plain password for admin reference
+        message: 'Password has been securely generated and sent to the partner via email.'
       }
     });
 
@@ -253,8 +278,8 @@ exports.bulkUploadPartners = async function (req, res, next) {
           continue;
         }
 
-        // Generate password
-        const password = "Abcd@123"
+        // Generate secure password
+        const password = generateSecurePassword();
 
         // Hash password
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -307,7 +332,7 @@ exports.bulkUploadPartners = async function (req, res, next) {
           },
           credentials: {
             email: result.partner.email,
-            password: password,
+            message: 'Password has been securely generated and sent to the partner via email.'
           }
         });
 
