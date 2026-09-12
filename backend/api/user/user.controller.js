@@ -25,9 +25,23 @@ const { rewardsManagement } = require('../../services/rewards/rewards.service');
 const { RewardType, RewardAction } = require('@prisma/client');
 const generateDefaultPhotoURL = require('../../utils/generateDefaultPhotoURL');
 const axios = require('axios');
+const crypto = require('crypto');
 
-const MOODLE_API_URL = process.env.MOODLE_API_URL || 'https://ifcaifcalms.cocreate.ventures/webservice/rest/server.php';
+// Secrets must be provided via environment variables. No hard-coded fallbacks (CWE-798).
+const MOODLE_API_URL = process.env.MOODLE_API_URL;
 const MOODLE_API_TOKEN = process.env.MOODLE_API_TOKEN;
+
+function getMoodleConfig() {
+  if (!MOODLE_API_URL || !MOODLE_API_TOKEN) {
+    throw new Error('Missing required Moodle configuration: MOODLE_API_URL and MOODLE_API_TOKEN must be set in the environment.');
+  }
+  return { MOODLE_API_URL, MOODLE_API_TOKEN };
+}
+
+function generateTemporaryPassword() {
+  // Cryptographically random temporary password; user must reset it on first login.
+  return crypto.randomBytes(12).toString('base64url');
+}
 
 exports.getUserById = async function (req, res, next) {
   const { id } = req.params;
@@ -117,7 +131,8 @@ exports.updateUserById = async function (req, res, next) {
       let passwordToUse = user.password;
       let setPassword = false;
       if (!passwordToUse) {
-        passwordToUse = 'Abcd@123';
+        // No hard-coded default: generate a secure random temporary password.
+        passwordToUse = generateTemporaryPassword();
         setPassword = true;
       }
       // If password needs to be set or updated, hash it and update DB
@@ -143,9 +158,9 @@ exports.updateUserById = async function (req, res, next) {
       }
       // 3. Check Moodle for email/phone (username) - but don't break the flow
       try {
-        const axios = require('axios');
+        const { MOODLE_API_URL: moodleUrl } = getMoodleConfig();
         // Check Moodle by email
-        const moodleEmailRes = await axios.get(MOODLE_API_URL, {
+        const moodleEmailRes = await axios.get(moodleUrl, {
           params: {
             wstoken: MOODLE_API_TOKEN,
             wsfunction: 'core_user_get_users_by_field',
@@ -171,7 +186,7 @@ exports.updateUserById = async function (req, res, next) {
           }
         }
         // Check Moodle by username (phone)
-        const moodlePhoneRes = await axios.get(MOODLE_API_URL, {
+        const moodlePhoneRes = await axios.get(moodleUrl, {
           params: {
             wstoken: MOODLE_API_TOKEN,
             wsfunction: 'core_user_get_users_by_field',
@@ -229,8 +244,9 @@ exports.updateUserById = async function (req, res, next) {
         createdMoodle = true;
       } else {
         try {
+          const { MOODLE_API_URL: moodleUrl } = getMoodleConfig();
           // Check Moodle by email
-          const moodleEmailRes = await axios.get(MOODLE_API_URL, {
+          const moodleEmailRes = await axios.get(moodleUrl, {
             params: {
               wstoken: MOODLE_API_TOKEN,
               wsfunction: 'core_user_get_users_by_field',
@@ -250,7 +266,7 @@ exports.updateUserById = async function (req, res, next) {
           }
           // Check Moodle by username (phone)
           if (!moodleUserFound) {
-            const moodlePhoneRes = await axios.get(MOODLE_API_URL, {
+            const moodlePhoneRes = await axios.get(moodleUrl, {
               params: {
                 wstoken: MOODLE_API_TOKEN,
                 wsfunction: 'core_user_get_users_by_field',
@@ -306,7 +322,6 @@ exports.updateUserById = async function (req, res, next) {
                 data: {
                   moodleUserId: moodleUser.id,
                   moodleUsername: moodleUser.username,
-                  moodlePassword: passwordToUse,
                 },
               });
               createdMoodle = true;
@@ -346,7 +361,6 @@ exports.updateUserById = async function (req, res, next) {
               email: user.email,
               recipientName: user.name,
               username: user.phone,
-              password: passwordToUse,
               actionUrl: `https://pvl.ifcaindia.com/onBoard`,
             },
           });
