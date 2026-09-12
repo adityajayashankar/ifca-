@@ -1044,6 +1044,14 @@ exports.checkMeetingStatus = async function (req, res, next) {
       });
     }
 
+    // Strict allowlist validation to prevent SSRF/path traversal via roomId
+    const ROOM_ID_PATTERN = /^[a-zA-Z0-9-_]{1,128}$/;
+    if (typeof roomId !== "string" || !ROOM_ID_PATTERN.test(roomId)) {
+      return res.status(400).json({
+        error: "Invalid roomId"
+      });
+    }
+
     const app_access_key = process.env.MS_APP_ACCESS_KEY;
     const app_secret_key = process.env.MS_APP_SECRET_KEY;
 
@@ -1068,8 +1076,8 @@ exports.checkMeetingStatus = async function (req, res, next) {
       jwtid: uuid4(),
     });
 
-    // Check room status
-    const response = await axios.get(`https://api.100ms.live/v2/rooms/${roomId}`, {
+    // Check room status (roomId is validated and URL-encoded)
+    const response = await axios.get(`https://api.100ms.live/v2/rooms/${encodeURIComponent(roomId)}`, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
