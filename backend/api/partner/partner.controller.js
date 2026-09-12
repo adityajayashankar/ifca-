@@ -4,6 +4,36 @@ const { createCustomError } = require('../../middleware/errorHandling');
 const { findPartnerByIdHelper } = require('../services/getById');
 const { getUserCommunitiesHelper } = require('../community/community');
 const bcrypt = require("bcryptjs");
+const crypto = require("crypto");
+
+// Cryptographically secure password generator (letters, digits, special chars)
+const generateSecurePassword = (length = 16) => {
+  const upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const lower = 'abcdefghijklmnopqrstuvwxyz';
+  const digits = '0123456789';
+  const special = '@#$!%*?&';
+  const all = upper + lower + digits + special;
+
+  // Guarantee at least one character from each class
+  let password = [
+    upper[crypto.randomInt(upper.length)],
+    lower[crypto.randomInt(lower.length)],
+    digits[crypto.randomInt(digits.length)],
+    special[crypto.randomInt(special.length)],
+  ];
+
+  for (let i = password.length; i < length; i++) {
+    password.push(all[crypto.randomInt(all.length)]);
+  }
+
+  // Fisher-Yates shuffle using crypto randomness
+  for (let i = password.length - 1; i > 0; i--) {
+    const j = crypto.randomInt(i + 1);
+    [password[i], password[j]] = [password[j], password[i]];
+  }
+
+  return password.join('');
+};
 const emailService = require("../../services/email.service.js");
 const XLSX = require("xlsx");
 const generateDefaultPhotoURL = require('../../utils/generateDefaultPhotoURL');
@@ -113,8 +143,8 @@ exports.createPartner = async function (req, res, next) {
       return res.status(409).json({ message: 'Phone number already registered.' });
     }
 
-    // Generate password if not provided
-    const password = providedPassword || "Abcd@123"
+    // Generate a cryptographically secure password if not provided
+    const password = providedPassword || generateSecurePassword();
 
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -164,7 +194,8 @@ exports.createPartner = async function (req, res, next) {
       },
       credentials: {
         email: partner.email,
-        password: password, // Return plain password for admin reference
+        // Plain-text password intentionally not returned; it is delivered
+        // once via the welcome email (CWE-798 remediation)
       }
     });
 
@@ -253,8 +284,8 @@ exports.bulkUploadPartners = async function (req, res, next) {
           continue;
         }
 
-        // Generate password
-        const password = "Abcd@123"
+        // Generate a cryptographically secure password for this partner
+        const password = generateSecurePassword();
 
         // Hash password
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -307,7 +338,8 @@ exports.bulkUploadPartners = async function (req, res, next) {
           },
           credentials: {
             email: result.partner.email,
-            password: password,
+            // Plain-text password intentionally not returned; it is delivered
+            // once via the welcome email (CWE-798 remediation)
           }
         });
 

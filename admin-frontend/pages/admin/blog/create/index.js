@@ -10,6 +10,7 @@ import {
   setAllTags,
 } from "@/store/features/userSlice";
 import api from "@/utils/apiSetup";
+import DOMPurify from "dompurify";
 import { useRouter } from "next/router";
 import React, { useState, useRef, useEffect } from "react";
 import { GiConfirmed } from "react-icons/gi";
@@ -41,11 +42,18 @@ const BlogCreatePage = () => {
     }
   }, [communities]);
   useEffect(() => {
-    console.log("divRef", divRef.current);
     if (divRef.current) {
-      divRef.current.innerHTML = content;
+      divRef.current.innerHTML = DOMPurify.sanitize(content, {
+        ALLOWED_TAGS: [
+          "h1", "h2", "h3", "h4", "h5", "h6",
+          "p", "a", "img", "ul", "ol", "li",
+          "blockquote", "pre", "code", "strong", "em",
+          "b", "i", "u", "s", "br", "hr", "span", "div", "table", "thead", "tbody", "tr", "th", "td",
+        ],
+        ALLOWED_ATTR: ["href", "src", "alt", "title", "target", "rel", "class"],
+      });
     }
-  }, [preview, divRef.current, content]);
+  }, [preview, content]);
 
   const viewPreview = () => {
     setPreview((prev) => !prev);

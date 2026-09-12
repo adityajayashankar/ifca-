@@ -12,6 +12,23 @@ import {
 import api from "@/utils/apiSetup";
 import { useRouter } from "next/router";
 import React, { useState, useRef, useEffect } from "react";
+import DOMPurify from "isomorphic-dompurify";
+
+const SANITIZE_CONFIG = {
+  ALLOWED_TAGS: [
+    "h1", "h2", "h3", "h4", "h5", "h6",
+    "p", "br", "hr", "blockquote", "pre", "code",
+    "b", "strong", "i", "em", "u", "s", "span", "div",
+    "ul", "ol", "li",
+    "a", "img",
+    "table", "thead", "tbody", "tr", "th", "td",
+  ],
+  ALLOWED_ATTR: ["href", "src", "alt", "title", "target", "rel", "class"],
+  ALLOWED_URI_REGEXP: /^(?:(?:https?|mailto|tel):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i,
+  FORBID_ATTR: ["style", "onerror", "onload", "onclick"],
+};
+
+const sanitizeContent = (html) => DOMPurify.sanitize(html || "", SANITIZE_CONFIG);
 import { GiConfirmed } from "react-icons/gi";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -41,11 +58,10 @@ const BlogCreatePage = () => {
     }
   }, [communities]);
   useEffect(() => {
-    console.log("divRef", divRef.current);
     if (divRef.current) {
-      divRef.current.innerHTML = content;
+      divRef.current.innerHTML = sanitizeContent(content);
     }
-  }, [preview, divRef.current, content]);
+  }, [preview, content]);
 
   const viewPreview = () => {
     setPreview((prev) => !prev);

@@ -21,8 +21,8 @@ const sendExpertWelcomeEmail = async (expert, password) => {
         email: expert.email,
         recipientName: expert.name,
         password: password,
-        actionUrl: `https://pvl.ifcaindia.com/expert/login`,
-        expertDashboardUrl: `https://pvl.ifcaindia.com/expert/dashboard`,
+        actionUrl: process.env.EXPERT_LOGIN_URL || '',
+        expertDashboardUrl: process.env.EXPERT_DASHBOARD_URL || '',
       },
     });
     console.log(`📧 Welcome email sent to expert: ${expert.email}`);
@@ -116,8 +116,15 @@ exports.createExpert = async function (req, res, next) {
       return res.status(409).json({ message: 'Phone number already registered.' });
     }
 
-    // Generate password if not provided
-    const password = providedPassword || "Abcd@123"
+    // Generate password if not provided (never use a hard-coded default)
+    const password = providedPassword || generatePassword.generate({
+      length: 12,
+      numbers: true,
+      symbols: true,
+      uppercase: true,
+      lowercase: true,
+      strict: true,
+    });
 
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -167,10 +174,6 @@ exports.createExpert = async function (req, res, next) {
         photoURL: expert.photoURL,
         isActive: expert.isActive,
       },
-      credentials: {
-        email: expert.email,
-        password: password, // Return plain password for admin reference
-      }
     });
 
   } catch (error) {
@@ -258,8 +261,15 @@ exports.bulkUploadExperts = async function (req, res, next) {
           continue;
         }
 
-        // Generate password
-        const password = "Abcd@123"
+        // Generate a unique random password per expert (no hard-coded default)
+        const password = generatePassword.generate({
+          length: 12,
+          numbers: true,
+          symbols: true,
+          uppercase: true,
+          lowercase: true,
+          strict: true,
+        });
 
         // Hash password
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -308,10 +318,6 @@ exports.bulkUploadExperts = async function (req, res, next) {
             name: result.expert.name,
             phone: result.expert.phone,
           },
-          credentials: {
-            email: result.expert.email,
-            password: password,
-          }
         });
 
         console.log(`✅ Expert ${i + 1}/${expertsData.length} created: ${email}`);

@@ -3,6 +3,7 @@ import LHS from "@/components/blog/LHS";
 import RHS from "@/components/blog/RHS";
 import { selectOneBlog, setSelectedBlog } from "@/store/features/blogSlice";
 import { resolveUnifiedUser } from "@/utils/resolveUser";
+import DOMPurify from "dompurify";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef } from "react";
 import { AiOutlineArrowLeft } from "react-icons/ai";
@@ -22,9 +23,44 @@ const ViewBlogPage = ({}) => {
   const divRef = useRef();
   useEffect(() => {
     if (divRef.current) {
-      divRef.current.innerHTML = blogData.content;
+      divRef.current.innerHTML = DOMPurify.sanitize(blogData.content || "", {
+        ALLOWED_TAGS: [
+          "p",
+          "h1",
+          "h2",
+          "h3",
+          "h4",
+          "h5",
+          "h6",
+          "strong",
+          "em",
+          "b",
+          "i",
+          "u",
+          "s",
+          "code",
+          "pre",
+          "blockquote",
+          "ul",
+          "ol",
+          "li",
+          "a",
+          "img",
+          "br",
+          "hr",
+          "span",
+          "div",
+          "table",
+          "thead",
+          "tbody",
+          "tr",
+          "th",
+          "td",
+        ],
+        ALLOWED_ATTR: ["href", "src", "alt", "title", "target", "rel", "class"],
+      });
     }
-  }, [blogData, divRef]);
+  }, [blogData]);
   const handleRouteBack = (e) => {
     e.preventDefault();
     router.push(`/expert/blog`);

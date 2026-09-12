@@ -4,7 +4,17 @@ const axios = require('axios');
 async function testMoodleAPI() {
     try {
         console.log('Testing Moodle API connection...');
-        console.log('MOODLE_URL:', process.env.MOODLE_URL);
+
+        // Fail fast if required environment variables are not configured.
+        const requiredEnv = ['MOODLE_URL', 'MOODLE_API_TOKEN', 'MOODLE_DEFAULT_PASSWORD'];
+        const missing = requiredEnv.filter((name) => !process.env[name]);
+        if (missing.length > 0) {
+            throw new Error(
+                `Missing required environment variable(s): ${missing.join(', ')}. ` +
+                'Set them in your environment or .env file. No default credentials are allowed.'
+            );
+        }
+
         console.log('MOODLE_API_TOKEN:', process.env.MOODLE_API_TOKEN ? 'SET' : 'NOT SET');
         
         // Test 1: Check if we can connect to Moodle
@@ -54,7 +64,7 @@ async function testMoodleAPI() {
             const tokenResponse = await axios.post(`${process.env.MOODLE_URL}/login/token.php`, null, {
                 params: {
                     username: 'admin',
-                    password: process.env.MOODLE_DEFAULT_PASSWORD || 'admin',
+                    password: process.env.MOODLE_DEFAULT_PASSWORD,
                     service: 'moodle_mobile_app'
                 }
             });

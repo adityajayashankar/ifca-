@@ -11,7 +11,8 @@ import {
 } from "@/store/features/userSlice";
 import api from "@/utils/apiSetup";
 import { useRouter } from "next/router";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
+import DOMPurify from "dompurify";
 import { GiConfirmed } from "react-icons/gi";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -49,12 +50,19 @@ const BlogCreatePage = () => {
       setPrivateCommunity(communities[0]);
     }
   }, [communities]);
+  const sanitizedContent = useMemo(
+    () =>
+      DOMPurify.sanitize(content, {
+        USE_PROFILES: { html: true },
+      }),
+    [content]
+  );
+
   useEffect(() => {
-    console.log("divRef", divRef.current);
     if (divRef.current) {
-      divRef.current.innerHTML = content;
+      divRef.current.innerHTML = sanitizedContent;
     }
-  }, [preview, divRef.current, content]);
+  }, [preview, sanitizedContent]);
 
   const viewPreview = () => {
     setPreview((prev) => !prev);

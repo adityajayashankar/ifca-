@@ -2,6 +2,18 @@
 import ReactDOM from "react-dom";
 import dynamic from "next/dynamic";
 import { useEffect, useRef } from "react";
+import DOMPurify from "dompurify";
+
+// Allowlist of safe rich-text tags/attributes (matches Quill message formatting).
+// Anything else (e.g. <script>, event handlers, javascript: URLs) is stripped.
+const SANITIZE_CONFIG = {
+  ALLOWED_TAGS: [
+    "p", "br", "strong", "b", "em", "i", "u", "s", "strike",
+    "ol", "ul", "li", "a", "span", "sub", "sup", "blockquote", "h1", "h2",
+  ],
+  ALLOWED_ATTR: ["href", "target", "rel", "class"],
+  ALLOW_DATA_ATTR: false,
+};
 
 const QuillNoSSRWrapper = dynamic(import("react-quill"), {
   ssr: false,
@@ -39,7 +51,8 @@ const UserMesssage = ({
   let dateTimeStr = `${dateStr} ${time}`;
   const divRef = useRef();
   useEffect(() => {
-    divRef.current.innerHTML = content;
+    if (typeof window === "undefined") return;
+    divRef.current.innerHTML = DOMPurify.sanitize(content || "", SANITIZE_CONFIG);
   }, [content]);
 
   if (isExpert) {

@@ -10,6 +10,7 @@ import {
   setAllTags,
 } from "@/store/features/userSlice";
 import api from "@/utils/apiSetup";
+import DOMPurify from "dompurify";
 import { useRouter } from "next/router";
 import React, { useState, useRef, useEffect } from "react";
 import { GiConfirmed } from "react-icons/gi";
@@ -52,7 +53,7 @@ const BlogCreatePage = () => {
   useEffect(() => {
     console.log("divRef", divRef.current);
     if (divRef.current) {
-      divRef.current.innerHTML = content;
+      divRef.current.innerHTML = DOMPurify.sanitize(content);
     }
   }, [preview, divRef.current, content]);
 

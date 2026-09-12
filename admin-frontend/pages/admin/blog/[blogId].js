@@ -7,6 +7,24 @@ import { useRouter } from "next/router";
 import React, { useEffect, useRef } from "react";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
+import DOMPurify from "dompurify";
+
+// Centralized sanitization config so other consumers of blog content can reuse it.
+const SANITIZE_CONFIG = {
+  ALLOWED_TAGS: [
+    "h1", "h2", "h3", "h4", "h5", "h6",
+    "p", "br", "hr",
+    "strong", "em", "b", "i", "u", "s", "code", "pre",
+    "blockquote", "ul", "ol", "li",
+    "a", "img", "figure", "figcaption",
+    "table", "thead", "tbody", "tr", "th", "td",
+  ],
+  ALLOWED_ATTR: ["href", "src", "alt", "title", "target", "rel"],
+  FORBID_ATTR: ["style", "onerror", "onload", "onclick"],
+};
+
+export const sanitizeBlogContent = (content) =>
+  DOMPurify.sanitize(content || "", SANITIZE_CONFIG);
 const ViewBlogPage = ({}) => {
   //   const [content, setContent] = useState("");
   // console.log(blogData);
@@ -22,7 +40,7 @@ const ViewBlogPage = ({}) => {
   const divRef = useRef();
   useEffect(() => {
     if (divRef.current) {
-      divRef.current.innerHTML = blogData.content;
+      divRef.current.innerHTML = sanitizeBlogContent(blogData.content);
     }
   }, [blogData, divRef]);
   const handleRouteBack = (e) => {
