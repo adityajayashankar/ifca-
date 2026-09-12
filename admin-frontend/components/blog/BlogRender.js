@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+import DOMPurify from "dompurify";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import CreatePostContainer from "../community/home/CreatePostContainer";
 import PostX from "../SocialPost/PostX";
@@ -7,7 +8,16 @@ const BlogRender = ({ handleRouteBack, blogData }) => {
   const divRef = useRef();
   useEffect(() => {
     if (divRef.current) {
-      divRef.current.innerHTML = blogData.content;
+      divRef.current.innerHTML = DOMPurify.sanitize(blogData.content, {
+        ALLOWED_TAGS: [
+          "p", "b", "i", "em", "strong", "u", "s", "br", "hr",
+          "a", "img", "ul", "ol", "li", "blockquote", "pre", "code",
+          "h1", "h2", "h3", "h4", "h5", "h6", "span", "div", "table",
+          "thead", "tbody", "tr", "th", "td"
+        ],
+        ALLOWED_ATTR: ["href", "src", "alt", "title", "target", "rel", "class"],
+        ALLOW_DATA_ATTR: false
+      });
     }
   }, [divRef, blogData]);
   return (
