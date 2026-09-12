@@ -116,8 +116,15 @@ exports.createExpert = async function (req, res, next) {
       return res.status(409).json({ message: 'Phone number already registered.' });
     }
 
-    // Generate password if not provided
-    const password = providedPassword || "Abcd@123"
+    // Generate password if not provided (never use a hard-coded default)
+    const password = providedPassword || generatePassword.generate({
+      length: 12,
+      numbers: true,
+      symbols: true,
+      uppercase: true,
+      lowercase: true,
+      strict: true,
+    });
 
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -169,7 +176,8 @@ exports.createExpert = async function (req, res, next) {
       },
       credentials: {
         email: expert.email,
-        password: password, // Return plain password for admin reference
+        // Plaintext password is intentionally not returned; it is delivered
+        // only via the welcome email to prevent credential exposure.
       }
     });
 
@@ -258,8 +266,15 @@ exports.bulkUploadExperts = async function (req, res, next) {
           continue;
         }
 
-        // Generate password
-        const password = "Abcd@123"
+        // Generate a unique random password per expert (no hard-coded default)
+        const password = generatePassword.generate({
+          length: 12,
+          numbers: true,
+          symbols: true,
+          uppercase: true,
+          lowercase: true,
+          strict: true,
+        });
 
         // Hash password
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -310,7 +325,8 @@ exports.bulkUploadExperts = async function (req, res, next) {
           },
           credentials: {
             email: result.expert.email,
-            password: password,
+            // Plaintext password is intentionally not returned; it is delivered
+            // only via the welcome email to prevent credential exposure.
           }
         });
 

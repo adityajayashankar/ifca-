@@ -49,12 +49,16 @@ async function testMoodleAPI() {
         } catch (userKeyError) {
             console.log('User key error:', userKeyError.response?.data || userKeyError.message);
             
-            // Test 4: Fallback to token-based login
+            // Test 4: Fallback to token-based login (requires explicit env var; no hard-coded credentials)
+            if (!process.env.MOODLE_DEFAULT_PASSWORD) {
+                console.error('MOODLE_DEFAULT_PASSWORD is not set. Skipping fallback token-based login test.');
+                return;
+            }
             console.log('\n4. Testing fallback token-based login...');
             const tokenResponse = await axios.post(`${process.env.MOODLE_URL}/login/token.php`, null, {
                 params: {
                     username: 'admin',
-                    password: process.env.MOODLE_DEFAULT_PASSWORD || 'admin',
+                    password: process.env.MOODLE_DEFAULT_PASSWORD,
                     service: 'moodle_mobile_app'
                 }
             });

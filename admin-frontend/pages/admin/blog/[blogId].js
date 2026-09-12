@@ -5,6 +5,7 @@ import { selectOneBlog, setSelectedBlog } from "@/store/features/blogSlice";
 import { resolveUnifiedUser } from "@/utils/resolveUser";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef } from "react";
+import DOMPurify from "dompurify";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 const ViewBlogPage = ({}) => {
@@ -21,8 +22,18 @@ const ViewBlogPage = ({}) => {
   }, [router]);
   const divRef = useRef();
   useEffect(() => {
-    if (divRef.current) {
-      divRef.current.innerHTML = blogData.content;
+    if (divRef.current && blogData?.content) {
+      divRef.current.innerHTML = DOMPurify.sanitize(blogData.content, {
+        ALLOWED_TAGS: [
+          "p", "h1", "h2", "h3", "h4", "h5", "h6",
+          "ul", "ol", "li", "a", "img", "strong", "em", "b", "i", "u",
+          "code", "pre", "blockquote", "br", "hr", "span", "table",
+          "thead", "tbody", "tr", "td", "th"
+        ],
+        ALLOWED_ATTR: ["href", "src", "alt", "title", "target", "rel", "class"],
+        FORBID_TAGS: ["script", "style", "iframe", "object", "embed", "form"],
+        FORBID_ATTR: ["onerror", "onload", "onclick", "onmouseover"]
+      });
     }
   }, [blogData, divRef]);
   const handleRouteBack = (e) => {

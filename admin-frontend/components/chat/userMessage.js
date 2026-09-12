@@ -2,6 +2,7 @@
 import ReactDOM from "react-dom";
 import dynamic from "next/dynamic";
 import { useEffect, useRef } from "react";
+import DOMPurify from "dompurify";
 
 const QuillNoSSRWrapper = dynamic(import("react-quill"), {
   ssr: false,
@@ -39,7 +40,7 @@ const UserMesssage = ({
   let dateTimeStr = `${dateStr} ${time}`;
   const divRef = useRef();
   useEffect(() => {
-    divRef.current.innerHTML = content;
+    divRef.current.innerHTML = DOMPurify.sanitize(content);
   }, [content]);
 
   if (isExpert) {

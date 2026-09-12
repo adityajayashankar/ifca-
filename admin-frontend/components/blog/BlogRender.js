@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+import DOMPurify from "dompurify";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import CreatePostContainer from "../community/home/CreatePostContainer";
 import PostX from "../SocialPost/PostX";
@@ -7,7 +8,9 @@ const BlogRender = ({ handleRouteBack, blogData }) => {
   const divRef = useRef();
   useEffect(() => {
     if (divRef.current) {
-      divRef.current.innerHTML = blogData.content;
+      divRef.current.innerHTML = DOMPurify.sanitize(blogData.content, {
+        USE_PROFILES: { html: true },
+      });
     }
   }, [divRef, blogData]);
   return (
