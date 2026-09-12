@@ -10,6 +10,7 @@ import {
   setAllTags,
 } from "@/store/features/userSlice";
 import api from "@/utils/apiSetup";
+import DOMPurify from "isomorphic-dompurify";
 import { useRouter } from "next/router";
 import React, { useState, useRef, useEffect } from "react";
 import { GiConfirmed } from "react-icons/gi";
@@ -50,9 +51,21 @@ const BlogCreatePage = () => {
     }
   }, [communities]);
   useEffect(() => {
-    console.log("divRef", divRef.current);
     if (divRef.current) {
-      divRef.current.innerHTML = content;
+      divRef.current.innerHTML = DOMPurify.sanitize(content, {
+        USE_PROFILES: { html: true },
+        FORBID_TAGS: ["script", "style", "iframe", "object", "embed", "form"],
+        FORBID_ATTR: [
+          "onerror",
+          "onload",
+          "onclick",
+          "onmouseover",
+          "onfocus",
+          "onblur",
+          "onchange",
+          "onsubmit",
+        ],
+      });
     }
   }, [preview, divRef.current, content]);
 
