@@ -27,7 +27,7 @@
         "aos": "^2.3.4",
         "autoprefixer": "^10.4.2",
         "aws-sdk": "^2.1338.0",
-        "axios": "^0.26.1",
+        "axios": "^1.8.4",
         "country-state-city": "^3.2.1",
         "crypto-js": "^4.2.0",
         "date-fns": "^2.29.3",
@@ -64,10 +64,16 @@
         "redux-persist": "^6.0.0",
         "sass": "^1.57.1",
         "sharp": "^0.30.6",
-        "socket.io-client": "^4.5.3",
-        "swiper": "^8.4.5",
+        "socket.io-client": "^4.7.5",
+        "swiper": "^11.1.14",
         "tailwind-scrollbar": "^2.0.1",
         "tailwind-scrollbar-hide": "^1.1.7"
+    },
+    "overrides": {
+        "glob": "^10.3.10",
+        "tar": "^6.2.1",
+        "tar-fs": "^2.1.2",
+        "socket.io-parser": "^4.2.4"
     },
     "devDependencies": {
         "@testing-library/jest-dom": "^5.16.2",
