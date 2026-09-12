@@ -1,3 +1,4 @@
+const crypto = require('crypto');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const { createCustomError } = require('../../middleware/errorHandling');
@@ -7,6 +8,32 @@ const bcrypt = require("bcryptjs");
 const emailService = require("../../services/email.service.js");
 const XLSX = require("xlsx");
 const generateDefaultPhotoURL = require('../../utils/generateDefaultPhotoURL');
+
+// Helper function to generate a cryptographically secure random password
+// (>= 12 chars, guaranteed upper, lower, digit, and symbol)
+const generateSecurePassword = (length = 16) => {
+  const upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const lower = 'abcdefghijklmnopqrstuvwxyz';
+  const digits = '0123456789';
+  const symbols = '!@#$%^&*()-_=+[]{}';
+  const all = upper + lower + digits + symbols;
+
+  const pick = (charset) => charset[crypto.randomInt(charset.length)];
+
+  // Guarantee at least one character from each required class
+  const chars = [pick(upper), pick(lower), pick(digits), pick(symbols)];
+  for (let i = chars.length; i < length; i++) {
+    chars.push(pick(all));
+  }
+
+  // Fisher-Yates shuffle using a secure random source
+  for (let i = chars.length - 1; i > 0; i--) {
+    const j = crypto.randomInt(i + 1);
+    [chars[i], chars[j]] = [chars[j], chars[i]];
+  }
+
+  return chars.join('');
+};
 
 // Helper function to send welcome email to partner
 const sendPartnerWelcomeEmail = async (partner, password) => {
@@ -113,8 +140,8 @@ exports.createPartner = async function (req, res, next) {
       return res.status(409).json({ message: 'Phone number already registered.' });
     }
 
-    // Generate password if not provided
-    const password = providedPassword || "Abcd@123"
+    // Generate password if not provided (never use a hard-coded default)
+    const password = providedPassword || generateSecurePassword();
 
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -253,8 +280,8 @@ exports.bulkUploadPartners = async function (req, res, next) {
           continue;
         }
 
-        // Generate password
-        const password = "Abcd@123"
+        // Generate a unique, cryptographically secure password per partner
+        const password = generateSecurePassword();
 
         // Hash password
         const hashedPassword = await bcrypt.hash(password, 10);
