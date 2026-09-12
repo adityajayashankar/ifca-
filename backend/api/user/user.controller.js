@@ -25,6 +25,7 @@ const { rewardsManagement } = require('../../services/rewards/rewards.service');
 const { RewardType, RewardAction } = require('@prisma/client');
 const generateDefaultPhotoURL = require('../../utils/generateDefaultPhotoURL');
 const axios = require('axios');
+const crypto = require('crypto');
 
 const MOODLE_API_URL = process.env.MOODLE_API_URL || 'https://ifcaifcalms.cocreate.ventures/webservice/rest/server.php';
 const MOODLE_API_TOKEN = process.env.MOODLE_API_TOKEN;
@@ -117,7 +118,9 @@ exports.updateUserById = async function (req, res, next) {
       let passwordToUse = user.password;
       let setPassword = false;
       if (!passwordToUse) {
-        passwordToUse = 'Abcd@123';
+        // Generate a cryptographically random temporary password; a fixed default
+        // may only come from environment configuration, never from code.
+        passwordToUse = process.env.DEFAULT_USER_PASSWORD || crypto.randomBytes(12).toString('base64url');
         setPassword = true;
       }
       // If password needs to be set or updated, hash it and update DB
@@ -306,7 +309,6 @@ exports.updateUserById = async function (req, res, next) {
                 data: {
                   moodleUserId: moodleUser.id,
                   moodleUsername: moodleUser.username,
-                  moodlePassword: passwordToUse,
                 },
               });
               createdMoodle = true;
