@@ -4,6 +4,7 @@ import RHS from "@/components/blog/RHS";
 import { selectOneBlog, setSelectedBlog } from "@/store/features/blogSlice";
 import { resolveUnifiedUser } from "@/utils/resolveUser";
 import { useRouter } from "next/router";
+import DOMPurify from "dompurify";
 import React, { useEffect, useRef } from "react";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,7 +23,7 @@ const ViewBlogPage = ({}) => {
   const divRef = useRef();
   useEffect(() => {
     if (divRef.current) {
-      divRef.current.innerHTML = blogData.content;
+      divRef.current.innerHTML = DOMPurify.sanitize(blogData.content || "");
     }
   }, [blogData, divRef]);
   const handleRouteBack = (e) => {
