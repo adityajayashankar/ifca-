@@ -7,6 +7,28 @@ const bcrypt = require("bcryptjs");
 const emailService = require("../../services/email.service.js");
 const XLSX = require("xlsx");
 const generateDefaultPhotoURL = require('../../utils/generateDefaultPhotoURL');
+const crypto = require('crypto');
+
+// Generate a cryptographically random password that meets complexity requirements
+const generateSecurePassword = () => {
+  const upper = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+  const lower = 'abcdefghijkmnpqrstuvwxyz';
+  const digits = '23456789';
+  const special = '@#$%&*!';
+  const all = upper + lower + digits + special;
+  const pick = (chars) => chars[crypto.randomInt(chars.length)];
+  let password = pick(upper) + pick(lower) + pick(digits) + pick(special);
+  while (password.length < 12) {
+    password += pick(all);
+  }
+  // Fisher-Yates shuffle with crypto-secure randomness
+  const arr = password.split('');
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = crypto.randomInt(i + 1);
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr.join('');
+};
 
 // Helper function to send welcome email to partner
 const sendPartnerWelcomeEmail = async (partner, password) => {
@@ -113,8 +135,8 @@ exports.createPartner = async function (req, res, next) {
       return res.status(409).json({ message: 'Phone number already registered.' });
     }
 
-    // Generate password if not provided
-    const password = providedPassword || "Abcd@123"
+    // Use admin-provided password if given, otherwise generate a secure random password
+    const password = providedPassword || generateSecurePassword();
 
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -164,7 +186,7 @@ exports.createPartner = async function (req, res, next) {
       },
       credentials: {
         email: partner.email,
-        password: password, // Return plain password for admin reference
+        message: 'Credentials have been sent to the partner via email.'
       }
     });
 
@@ -253,8 +275,8 @@ exports.bulkUploadPartners = async function (req, res, next) {
           continue;
         }
 
-        // Generate password
-        const password = "Abcd@123"
+        // Generate a secure random password
+        const password = generateSecurePassword();
 
         // Hash password
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -307,7 +329,7 @@ exports.bulkUploadPartners = async function (req, res, next) {
           },
           credentials: {
             email: result.partner.email,
-            password: password,
+            message: 'Credentials have been sent to the partner via email.'
           }
         });
 
