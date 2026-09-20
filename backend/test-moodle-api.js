@@ -1,6 +1,11 @@
 require('dotenv').config();
 const axios = require('axios');
 
+if (!process.env.MOODLE_DEFAULT_PASSWORD) {
+    console.error('MOODLE_DEFAULT_PASSWORD is required');
+    process.exit(1);
+}
+
 async function testMoodleAPI() {
     try {
         console.log('Testing Moodle API connection...');
@@ -54,7 +59,7 @@ async function testMoodleAPI() {
             const tokenResponse = await axios.post(`${process.env.MOODLE_URL}/login/token.php`, null, {
                 params: {
                     username: 'admin',
-                    password: process.env.MOODLE_DEFAULT_PASSWORD || 'admin',
+                    password: process.env.MOODLE_DEFAULT_PASSWORD,
                     service: 'moodle_mobile_app'
                 }
             });
