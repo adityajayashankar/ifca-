@@ -32,6 +32,18 @@ const sendExpertWelcomeEmail = async (expert, password) => {
   }
 };
 
+// Helper to generate a strong, unique password per expert
+const generateSecurePassword = () =>
+  generatePassword.generate({
+    length: 12,
+    numbers: true,
+    symbols: true,
+    uppercase: true,
+    lowercase: true,
+    excludeSimilarCharacters: true,
+    strict: true,
+  });
+
 // Helper function to validate expert data
 const validateExpertData = (data) => {
   const errors = [];
@@ -116,8 +128,8 @@ exports.createExpert = async function (req, res, next) {
       return res.status(409).json({ message: 'Phone number already registered.' });
     }
 
-    // Generate password if not provided
-    const password = providedPassword || "Abcd@123"
+    // Generate a secure password if not provided (never use a hard-coded default)
+    const password = providedPassword || generateSecurePassword();
 
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -167,10 +179,6 @@ exports.createExpert = async function (req, res, next) {
         photoURL: expert.photoURL,
         isActive: expert.isActive,
       },
-      credentials: {
-        email: expert.email,
-        password: password, // Return plain password for admin reference
-      }
     });
 
   } catch (error) {
@@ -258,8 +266,8 @@ exports.bulkUploadExperts = async function (req, res, next) {
           continue;
         }
 
-        // Generate password
-        const password = "Abcd@123"
+        // Generate a unique secure password per expert (never hard-coded)
+        const password = generateSecurePassword();
 
         // Hash password
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -308,10 +316,6 @@ exports.bulkUploadExperts = async function (req, res, next) {
             name: result.expert.name,
             phone: result.expert.phone,
           },
-          credentials: {
-            email: result.expert.email,
-            password: password,
-          }
         });
 
         console.log(`✅ Expert ${i + 1}/${expertsData.length} created: ${email}`);
