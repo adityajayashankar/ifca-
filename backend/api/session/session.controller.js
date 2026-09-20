@@ -1044,6 +1044,14 @@ exports.checkMeetingStatus = async function (req, res, next) {
       });
     }
 
+    // CWE-918: strictly validate roomId before using it in an outbound URL.
+    // Only alphanumeric characters and hyphens, max 64 chars (100ms room id format).
+    if (typeof roomId !== "string" || !/^[A-Za-z0-9-]{1,64}$/.test(roomId)) {
+      return res.status(400).json({
+        error: "Invalid roomId parameter"
+      });
+    }
+
     const app_access_key = process.env.MS_APP_ACCESS_KEY;
     const app_secret_key = process.env.MS_APP_SECRET_KEY;
 
@@ -1068,12 +1076,21 @@ exports.checkMeetingStatus = async function (req, res, next) {
       jwtid: uuid4(),
     });
 
-    // Check room status
-    const response = await axios.get(`https://api.100ms.live/v2/rooms/${roomId}`, {
+    // Check room status — build URL safely (CWE-918)
+    const requestUrl = new URL(
+      "https://api.100ms.live/v2/rooms/" + encodeURIComponent(roomId)
+    );
+    if (requestUrl.hostname !== "api.100ms.live") {
+      return res.status(400).json({
+        error: "Invalid roomId parameter"
+      });
+    }
+    const response = await axios.get(requestUrl.toString(), {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
+      maxRedirects: 0,
     });
 
     const room = response.data;

@@ -28,6 +28,11 @@ const axios = require('axios');
 
 const MOODLE_API_URL = process.env.MOODLE_API_URL || 'https://ifcaifcalms.cocreate.ventures/webservice/rest/server.php';
 const MOODLE_API_TOKEN = process.env.MOODLE_API_TOKEN;
+if (!MOODLE_API_TOKEN) {
+  throw new Error(
+    'Missing required environment variable MOODLE_API_TOKEN. Supply it via the deployment environment or secrets manager.'
+  );
+}
 
 exports.getUserById = async function (req, res, next) {
   const { id } = req.params;
@@ -117,7 +122,12 @@ exports.updateUserById = async function (req, res, next) {
       let passwordToUse = user.password;
       let setPassword = false;
       if (!passwordToUse) {
-        passwordToUse = 'Abcd@123';
+        passwordToUse = process.env.DEFAULT_USER_PASSWORD;
+        if (!passwordToUse) {
+          throw new Error(
+            'Missing required environment variable DEFAULT_USER_PASSWORD. Supply it via the deployment environment or secrets manager.'
+          );
+        }
         setPassword = true;
       }
       // If password needs to be set or updated, hash it and update DB

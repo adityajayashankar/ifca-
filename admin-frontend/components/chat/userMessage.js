@@ -2,6 +2,15 @@
 import ReactDOM from "react-dom";
 import dynamic from "next/dynamic";
 import { useEffect, useRef } from "react";
+import DOMPurify from "dompurify";
+
+const sanitizeMessageHtml = (html) => {
+  if (typeof window === "undefined") return "";
+  return DOMPurify.sanitize(html, {
+    FORBID_TAGS: ["style", "script", "iframe", "object", "embed"],
+    FORBID_ATTR: ["onerror", "onclick", "onload", "onmouseover", "onfocus", "onblur"],
+  });
+};
 
 const QuillNoSSRWrapper = dynamic(import("react-quill"), {
   ssr: false,
@@ -39,7 +48,7 @@ const UserMesssage = ({
   let dateTimeStr = `${dateStr} ${time}`;
   const divRef = useRef();
   useEffect(() => {
-    divRef.current.innerHTML = content;
+    divRef.current.innerHTML = sanitizeMessageHtml(content);
   }, [content]);
 
   if (isExpert) {

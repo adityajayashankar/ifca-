@@ -21,6 +21,20 @@ const { OAuth2Client } = require('google-auth-library');
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID; 
 const googleClient = new OAuth2Client(GOOGLE_CLIENT_ID);
 
+// Fail-fast validation for required secrets (loaded via existing dotenv/config mechanism).
+// NOTE: The previously committed Fast2SMS key has been removed from source and MUST be
+// rotated/revoked at the provider; the new key must exist only in the environment.
+const FAST2SMS_API_KEY = process.env.FAST2SMS_API_KEY;
+const DEFAULT_MOODLE_PASSWORD = process.env.DEFAULT_MOODLE_PASSWORD;
+if (!FAST2SMS_API_KEY) {
+  console.error('FATAL: FAST2SMS_API_KEY environment variable is required but not set.');
+  process.exit(1);
+}
+if (!DEFAULT_MOODLE_PASSWORD) {
+  console.error('FATAL: DEFAULT_MOODLE_PASSWORD environment variable is required but not set.');
+  process.exit(1);
+}
+
 // Helper: Get user roles from unifiedUser record
 function getUserRolesFromUnifiedUser(unifiedUser) {
   const roles = [];
@@ -315,14 +329,14 @@ exports.signup = async (req, res) => {
 
     // 5. Create Moodle user (userType === 'user') - Optional, won't break signup
     let moodleUser = null;
-    const defaultMoodlePassword = "Abcd@1234";
+    const defaultMoodlePassword = DEFAULT_MOODLE_PASSWORD;
 
     if (userType === 'user') {
       try {
         console.log("📤 Creating Moodle user with:");
         console.log({
           username: phone,
-          password: defaultMoodlePassword,
+          // Do not log secret values
           firstname: name.split(' ')[0],
           lastname: name.split(' ').slice(1).join(' ') || name.split(' ')[0],
           email
@@ -448,7 +462,7 @@ exports.signup = async (req, res) => {
         ? {
             moodleUserId: moodleUser.id,
             username: moodleUser.username,
-            password: defaultMoodlePassword,
+            // Password intentionally omitted from API response (never return secrets)
           }
         : null,
     });
@@ -1309,7 +1323,9 @@ exports.changePasswordUser = async (req, res) => {
 };
 
 const fast2smsApiUrl = "https://www.fast2sms.com/dev/bulkV2";
-const fast2smsApiKey = "xBl4RbUHJAcNoEdeQVharzIDuPXZOSMgf5i8TqCynkWtL6ps30WrqMyphflQPeo0BIScCdmTanRZt16D";
+// API key is provided via environment (FAST2SMS_API_KEY); the previously committed key
+// must be revoked/rotated at Fast2SMS.
+const fast2smsApiKey = FAST2SMS_API_KEY;
 
 
 
@@ -1639,8 +1655,8 @@ exports.googleComplete = async (req, res) => {
     // Check if user already exists
     let unifiedUser = await prisma.unifiedUser.findUnique({ where: { email } });
     if (unifiedUser) return res.status(409).json({ message: 'User already exists' });
-    // Create user
-    const defaultPassword = "Abcd@1234";
+    // Create user (default password comes from environment, never hard-coded)
+    const defaultPassword = DEFAULT_MOODLE_PASSWORD;
     const hashedPassword = await bcrypt.hash(defaultPassword, 10);
     let user = await prisma.user.create({
       data: {
