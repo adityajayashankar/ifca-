@@ -12,6 +12,7 @@ import {
 import api from "@/utils/apiSetup";
 import { useRouter } from "next/router";
 import React, { useState, useRef, useEffect } from "react";
+import DOMPurify from "dompurify";
 import { GiConfirmed } from "react-icons/gi";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -41,11 +42,18 @@ const BlogCreatePage = () => {
     }
   }, [communities]);
   useEffect(() => {
-    console.log("divRef", divRef.current);
     if (divRef.current) {
-      divRef.current.innerHTML = content;
+      divRef.current.innerHTML = DOMPurify.sanitize(content, {
+        ALLOWED_TAGS: [
+          "p", "br", "b", "strong", "i", "em", "u", "s", "strike", "blockquote",
+          "ul", "ol", "li", "h1", "h2", "h3", "h4", "h5", "h6", "a", "img",
+          "span", "div", "code", "pre", "hr", "table", "thead", "tbody", "tr",
+          "th", "td", "sup", "sub",
+        ],
+        ALLOWED_ATTR: ["href", "src", "alt", "title", "target", "rel", "class", "style"],
+      });
     }
-  }, [preview, divRef.current, content]);
+  }, [preview, content]);
 
   const viewPreview = () => {
     setPreview((prev) => !prev);
